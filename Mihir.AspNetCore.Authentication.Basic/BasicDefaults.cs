@@ -4,6 +4,5 @@
 	{
 		public const string AuthenticationScheme = "Basic";
 		public const string DisplayName = "Basic";
-		public const string DefaultRealm = "Stirling";
 	}
 }

@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Mihir Dilip</Authors>
+    <Company>Mihir Dilip</Company>
+    <Description>Basic Scheme Authentication implementation for ASP.NET core</Description>
+    <RepositoryUrl>https://github.com/mihirdilip/Mihir.AspNetCore.Authentication.Basic</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
