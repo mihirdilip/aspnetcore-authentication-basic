@@ -87,3 +87,6 @@ public class BasicUserValidationService : IBasicUserValidationService
 - [aspnet/Security](https://github.com/aspnet/Security)
 - [ASP.NET Core Security documentation](https://docs.microsoft.com/en-us/aspnet/core/security)
 - [RFC 7617: Technical spec for HTTP Basic](https://tools.ietf.org/html/rfc7617)
+
+## License
+[MIT License](LICENSE)
