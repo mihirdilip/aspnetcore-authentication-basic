@@ -1,8 +1,26 @@
 # Mihir.AspNetCore.Authentication.Basic
 Basic Scheme Authentication Implementation for ASP.NET Core 2.0
 
+## Installing
+This library is published on NuGet. So the NuGet package can be installed directly to your project if you wish to use it with making any custom changes to the code.
+
+Download directly from [Mihir.AspNetCore.Authentication.Basic](https://www.nuget.org/packages/Mihir.AspNetCore.Authentication.Basic).
+
+Or by running the below command on your project.
+
+```
+PM> Install-Package Mihir.AspNetCore.Authentication.Basic
+```
+
+## Example Usage
+
 Setting it up is quite simple. You will need basic working knowledge of ASP.NET Core 2.0 to get started using this code.
 
+On Startup.cs, as shown below, add 2 lines in ConfigureServices method `services.AddAuthentication(BasicDefaults.AuthenticationScheme).AddBasic<BasicUserValidationService>(options => { options.Realm = "My App"; });`. And a line `app.UseAuthentication();` in Configure method.
+
+Also add an implementation of IBasicUserValidationService as shown below in BasicUserValidationService.cs
+
+#### Startup.cs
 
 ```C#
 using Mihir.AspNetCore.Authentication.Basic;
@@ -32,8 +50,11 @@ public class Startup
 		app.UseMvc();
 	}
 }
+```
 
-
+#### BasicUserValidationService.cs
+```C#
+using Mihir.AspNetCore.Authentication.Basic;
 public class BasicUserValidationService : IBasicUserValidationService
 {
 	private readonly ILogger<BasicUserValidationService> _logger;
@@ -47,7 +68,7 @@ public class BasicUserValidationService : IBasicUserValidationService
 	{
 		try
 		{
-			// write your implementation here..
+			// write your implementation here and return true or false depending on the validation..
 			return Task.FromResult(true);
 		}
 		catch (Exception e)
@@ -61,7 +82,7 @@ public class BasicUserValidationService : IBasicUserValidationService
  
  
 
-__References__
+## References
 - [Creating an authentication scheme in ASP.NET Core 2.0](https://joonasw.net/view/creating-auth-scheme-in-aspnet-core-2)
 - [aspnet/Security](https://github.com/aspnet/Security)
 - [ASP.NET Core Security documentation](https://docs.microsoft.com/en-us/aspnet/core/security)
