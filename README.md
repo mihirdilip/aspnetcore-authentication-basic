@@ -89,4 +89,4 @@ public class BasicUserValidationService : IBasicUserValidationService
 - [RFC 7617: Technical spec for HTTP Basic](https://tools.ietf.org/html/rfc7617)
 
 ## License
-[MIT License](LICENSE)
+[MIT License](LICENSE.txt)

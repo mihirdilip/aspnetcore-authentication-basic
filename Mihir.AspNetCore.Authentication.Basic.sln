@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2011
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mihir.AspNetCore.Authentication.Basic", "Mihir.AspNetCore.Authentication.Basic\Mihir.AspNetCore.Authentication.Basic.csproj", "{F8FEFB06-9F93-4F50-8530-80F5C0A677FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mihir.AspNetCore.Authentication.Basic", "Mihir.AspNetCore.Authentication.Basic\Mihir.AspNetCore.Authentication.Basic.csproj", "{F8FEFB06-9F93-4F50-8530-80F5C0A677FC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C704A959-E8CB-4F13-9212-D830FCEDBAEC}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
