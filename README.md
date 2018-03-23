@@ -89,4 +89,4 @@ public class BasicUserValidationService : IBasicUserValidationService
 - [RFC 7617: Technical spec for HTTP Basic](https://tools.ietf.org/html/rfc7617)
 
 ## License
-[MIT License](LICENSE.txt)
+[MIT License](https://github.com/mihirdilip/Mihir.AspNetCore.Authentication.Basic/blob/master/LICENSE.txt)
