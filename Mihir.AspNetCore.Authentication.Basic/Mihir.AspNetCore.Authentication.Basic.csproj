@@ -8,7 +8,7 @@
     <RepositoryUrl>https://github.com/mihirdilip/Mihir.AspNetCore.Authentication.Basic</RepositoryUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/mihirdilip/Mihir.AspNetCore.Authentication.Basic</PackageProjectUrl>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Copyright>Copyright (c) 2018 Mihir Dilip</Copyright>
     <PackageLicenseUrl>https://github.com/mihirdilip/Mihir.AspNetCore.Authentication.Basic/blob/master/LICENSE.txt</PackageLicenseUrl>
     <RepositoryType>GitHub</RepositoryType>
@@ -17,6 +17,10 @@
     <NeutralLanguage />
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>- Challenge property moved from BasicOptions to BasicHandler</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\Mihir.AspNetCore.Authentication.Basic.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
