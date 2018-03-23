@@ -20,6 +20,8 @@ On [**Startup.cs**](#startupcs), as shown below, add 2 lines in *ConfigureServic
 
 Also add an implementation of *IBasicUserValidationService* as shown below in [**BasicUserValidationService.cs**](#basicuservalidationservicecs).
 
+**NOTE: Always use HTTPS (SSL Certificate) protocol in production when using Basic authentication.**
+
 #### Startup.cs
 
 ```C#
