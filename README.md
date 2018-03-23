@@ -2,7 +2,7 @@
 Basic Scheme Authentication Implementation for ASP.NET Core 2.0
 
 ## Installing
-This library is published on NuGet. So the NuGet package can be installed directly to your project if you wish to use it with making any custom changes to the code.
+This library is published on NuGet. So the NuGet package can be installed directly to your project if you wish to use it without making any custom changes to the code.
 
 Download directly from [Mihir.AspNetCore.Authentication.Basic](https://www.nuget.org/packages/Mihir.AspNetCore.Authentication.Basic).
 
@@ -16,9 +16,9 @@ PM> Install-Package Mihir.AspNetCore.Authentication.Basic
 
 Setting it up is quite simple. You will need basic working knowledge of ASP.NET Core 2.0 to get started using this code.
 
-On Startup.cs, as shown below, add 2 lines in ConfigureServices method `services.AddAuthentication(BasicDefaults.AuthenticationScheme).AddBasic<BasicUserValidationService>(options => { options.Realm = "My App"; });`. And a line `app.UseAuthentication();` in Configure method.
+On [**Startup.cs**](#startupcs), as shown below, add 2 lines in *ConfigureServices* method `services.AddAuthentication(BasicDefaults.AuthenticationScheme).AddBasic<BasicUserValidationService>(options => { options.Realm = "My App"; });`. And a line `app.UseAuthentication();` in *Configure* method.
 
-Also add an implementation of IBasicUserValidationService as shown below in BasicUserValidationService.cs
+Also add an implementation of *IBasicUserValidationService* as shown below in [**BasicUserValidationService.cs**](#basicuservalidationservicecs).
 
 #### Startup.cs
 
