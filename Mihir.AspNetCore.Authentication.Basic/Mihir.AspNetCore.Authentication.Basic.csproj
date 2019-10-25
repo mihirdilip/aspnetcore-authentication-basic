@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Mihir Dilip</Authors>
     <Company>Mihir Dilip</Company>
-    <Description>Basic Scheme Authentication Implementation for ASP.NET Core 2.0 and above.</Description>
+    <Description>Basic Scheme Authentication Implementation for ASP.NET Core 2.2</Description>
     <RepositoryUrl>https://github.com/mihirdilip/Mihir.AspNetCore.Authentication.Basic</RepositoryUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/mihirdilip/Mihir.AspNetCore.Authentication.Basic</PackageProjectUrl>
