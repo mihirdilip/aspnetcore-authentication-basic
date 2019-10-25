@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -10,8 +10,8 @@
     <PackageProjectUrl>https://github.com/mihirdilip/Mihir.AspNetCore.Authentication.Basic</PackageProjectUrl>
     <Version>2.0.0</Version>
     <Copyright>Copyright (c) 2019 Mihir Dilip</Copyright>
-    <PackageLicenseUrl>https://github.com/mihirdilip/Mihir.AspNetCore.Authentication.Basic/blob/master/LICENSE.txt</PackageLicenseUrl>
-    <RepositoryType>GitHub</RepositoryType>
+    <PackageLicenseUrl></PackageLicenseUrl>
+	<RepositoryType>GitHub</RepositoryType>
     <PackageIconUrl />
     <PackageTags>asp-net-core, aspnetcore, netstandard, netstandard20, basic-authentication, basicauthentication, dotnetcore, asp-net-core-basic-authentication, aspnetcore-basic-authentication, security, authentication, asp-net-core-authentication, aspnetcore-authentication</PackageTags>
     <NeutralLanguage />
@@ -20,6 +20,7 @@
 - Microsoft.AspNetCore.All package upgraded to 2.0.9 on SampleWebApi project to fix the vulnerabilities found in the previous versions
 - New SampleWebApi.Shared and SampleWebApi_2_2 project added for WebApi for .NET Core 2.2 on the github repository
 - Fixed a bug in the Sample project to do with Object Null Exception</PackageReleaseNotes>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -28,6 +29,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
