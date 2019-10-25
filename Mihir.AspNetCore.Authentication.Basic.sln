@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2011
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mihir.AspNetCore.Authentication.Basic", "Mihir.AspNetCore.Authentication.Basic\Mihir.AspNetCore.Authentication.Basic.csproj", "{F8FEFB06-9F93-4F50-8530-80F5C0A677FC}"
 EndProject
@@ -11,9 +11,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebApi", "SampleWebApi\SampleWebApi.csproj", "{1DB7BD52-D1E0-4248-819F-8424AFF55689}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleWebApi", "SampleWebApi\SampleWebApi.csproj", "{1DB7BD52-D1E0-4248-819F-8424AFF55689}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebApi_2_2", "SampleWebApi_2_2\SampleWebApi_2_2.csproj", "{95EF44A2-B735-425E-97D8-19DB54730E1B}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SampleWebApi.Shared", "SampleWebApi.Shared\SampleWebApi.Shared.shproj", "{E544FB20-29F3-41F5-A78E-6164F9C43B3C}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SampleWebApi.Shared\SampleWebApi.Shared.projitems*{e544fb20-29f3-41f5-a78e-6164f9c43b3c}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -27,6 +34,10 @@ Global
 		{1DB7BD52-D1E0-4248-819F-8424AFF55689}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DB7BD52-D1E0-4248-819F-8424AFF55689}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DB7BD52-D1E0-4248-819F-8424AFF55689}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95EF44A2-B735-425E-97D8-19DB54730E1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95EF44A2-B735-425E-97D8-19DB54730E1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95EF44A2-B735-425E-97D8-19DB54730E1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95EF44A2-B735-425E-97D8-19DB54730E1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

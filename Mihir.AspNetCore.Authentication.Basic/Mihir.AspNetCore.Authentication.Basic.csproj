@@ -4,19 +4,22 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Mihir Dilip</Authors>
     <Company>Mihir Dilip</Company>
-    <Description>Basic Scheme Authentication Implementation for ASP.NET Core 2.0</Description>
+    <Description>Basic Scheme Authentication Implementation for ASP.NET Core 2.0 and above.</Description>
     <RepositoryUrl>https://github.com/mihirdilip/Mihir.AspNetCore.Authentication.Basic</RepositoryUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/mihirdilip/Mihir.AspNetCore.Authentication.Basic</PackageProjectUrl>
-    <Version>1.0.2</Version>
-    <Copyright>Copyright (c) 2018 Mihir Dilip</Copyright>
+    <Version>2.0.0</Version>
+    <Copyright>Copyright (c) 2019 Mihir Dilip</Copyright>
     <PackageLicenseUrl>https://github.com/mihirdilip/Mihir.AspNetCore.Authentication.Basic/blob/master/LICENSE.txt</PackageLicenseUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageIconUrl />
-    <PackageTags>asp-net-core, aspnetcore, netstandard, netstandard20, basic-authentication, basicauthentication</PackageTags>
+    <PackageTags>asp-net-core, aspnetcore, netstandard, netstandard20, basic-authentication, basicauthentication, dotnetcore, asp-net-core-basic-authentication, aspnetcore-basic-authentication, security, authentication, asp-net-core-authentication, aspnetcore-authentication</PackageTags>
     <NeutralLanguage />
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>- Challenge property moved from BasicOptions to BasicHandler</PackageReleaseNotes>
+    <PackageReleaseNotes>- Microsoft.AspNetCore.Authentication NuGet package upgraded to 2.2.0
+- Microsoft.AspNetCore.All package upgraded to 2.0.9 on SampleWebApi project to fix the vulnerabilities found in the previous versions
+- New SampleWebApi.Shared and SampleWebApi_2_2 project added for WebApi for .NET Core 2.2 on the github repository
+- Fixed a bug in the Sample project to do with Object Null Exception</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -24,7 +27,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
   </ItemGroup>
 
 </Project>

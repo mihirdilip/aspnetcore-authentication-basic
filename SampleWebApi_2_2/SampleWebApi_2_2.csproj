@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mihir.AspNetCore.Authentication.Basic\Mihir.AspNetCore.Authentication.Basic.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\SampleWebApi.Shared\SampleWebApi.Shared.projitems" Label="Shared" />
+
+</Project>
