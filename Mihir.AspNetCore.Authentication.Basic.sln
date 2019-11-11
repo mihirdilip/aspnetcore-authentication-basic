@@ -13,9 +13,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleWebApi", "SampleWebApi\SampleWebApi.csproj", "{1DB7BD52-D1E0-4248-819F-8424AFF55689}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebApi_2_2", "SampleWebApi_2_2\SampleWebApi_2_2.csproj", "{95EF44A2-B735-425E-97D8-19DB54730E1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleWebApi_2_2", "SampleWebApi_2_2\SampleWebApi_2_2.csproj", "{95EF44A2-B735-425E-97D8-19DB54730E1B}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SampleWebApi.Shared", "SampleWebApi.Shared\SampleWebApi.Shared.shproj", "{E544FB20-29F3-41F5-A78E-6164F9C43B3C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{CF13271D-BF3F-4167-BEBA-DD02D33992F2}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -41,6 +43,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1DB7BD52-D1E0-4248-819F-8424AFF55689} = {CF13271D-BF3F-4167-BEBA-DD02D33992F2}
+		{95EF44A2-B735-425E-97D8-19DB54730E1B} = {CF13271D-BF3F-4167-BEBA-DD02D33992F2}
+		{E544FB20-29F3-41F5-A78E-6164F9C43B3C} = {CF13271D-BF3F-4167-BEBA-DD02D33992F2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70815049-1680-480A-BF5A-00536D6C9C20}

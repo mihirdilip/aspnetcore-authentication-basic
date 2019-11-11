@@ -8,10 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Mihir.AspNetCore.Authentication.Basic\Mihir.AspNetCore.Authentication.Basic.csproj" />
+    <PackageReference Include="Mihir.AspNetCore.Authentication.Basic" Version="2.0.0" />
   </ItemGroup>
 
   <Import Project="..\SampleWebApi.Shared\SampleWebApi.Shared.projitems" Label="Shared" />
