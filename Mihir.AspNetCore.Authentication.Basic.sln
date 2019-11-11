@@ -3,50 +3,50 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mihir.AspNetCore.Authentication.Basic", "Mihir.AspNetCore.Authentication.Basic\Mihir.AspNetCore.Authentication.Basic.csproj", "{F8FEFB06-9F93-4F50-8530-80F5C0A677FC}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C704A959-E8CB-4F13-9212-D830FCEDBAEC}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleWebApi", "SampleWebApi\SampleWebApi.csproj", "{1DB7BD52-D1E0-4248-819F-8424AFF55689}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleWebApi_2_2", "SampleWebApi_2_2\SampleWebApi_2_2.csproj", "{95EF44A2-B735-425E-97D8-19DB54730E1B}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SampleWebApi.Shared", "SampleWebApi.Shared\SampleWebApi.Shared.shproj", "{E544FB20-29F3-41F5-A78E-6164F9C43B3C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{CF13271D-BF3F-4167-BEBA-DD02D33992F2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleWebApi", "samples\SampleWebApi\SampleWebApi.csproj", "{305CC2B0-5D45-422E-8C1C-B3B7321644A1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleWebApi_2_2", "samples\SampleWebApi_2_2\SampleWebApi_2_2.csproj", "{46E553F5-EB75-4417-BDD1-3278589B9748}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SampleWebApi.Shared", "samples\SampleWebApi.Shared\SampleWebApi.Shared.shproj", "{E544FB20-29F3-41F5-A78E-6164F9C43B3C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mihir.AspNetCore.Authentication.Basic", "Mihir.AspNetCore.Authentication.Basic\Mihir.AspNetCore.Authentication.Basic.csproj", "{47F7F3E7-69A3-44B7-B1AD-55257EC06933}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		SampleWebApi.Shared\SampleWebApi.Shared.projitems*{e544fb20-29f3-41f5-a78e-6164f9c43b3c}*SharedItemsImports = 13
+		samples\SampleWebApi.Shared\SampleWebApi.Shared.projitems*{e544fb20-29f3-41f5-a78e-6164f9c43b3c}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F8FEFB06-9F93-4F50-8530-80F5C0A677FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F8FEFB06-9F93-4F50-8530-80F5C0A677FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F8FEFB06-9F93-4F50-8530-80F5C0A677FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F8FEFB06-9F93-4F50-8530-80F5C0A677FC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1DB7BD52-D1E0-4248-819F-8424AFF55689}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1DB7BD52-D1E0-4248-819F-8424AFF55689}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1DB7BD52-D1E0-4248-819F-8424AFF55689}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1DB7BD52-D1E0-4248-819F-8424AFF55689}.Release|Any CPU.Build.0 = Release|Any CPU
-		{95EF44A2-B735-425E-97D8-19DB54730E1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{95EF44A2-B735-425E-97D8-19DB54730E1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{95EF44A2-B735-425E-97D8-19DB54730E1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{95EF44A2-B735-425E-97D8-19DB54730E1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{305CC2B0-5D45-422E-8C1C-B3B7321644A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{305CC2B0-5D45-422E-8C1C-B3B7321644A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{305CC2B0-5D45-422E-8C1C-B3B7321644A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{305CC2B0-5D45-422E-8C1C-B3B7321644A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46E553F5-EB75-4417-BDD1-3278589B9748}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46E553F5-EB75-4417-BDD1-3278589B9748}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46E553F5-EB75-4417-BDD1-3278589B9748}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46E553F5-EB75-4417-BDD1-3278589B9748}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47F7F3E7-69A3-44B7-B1AD-55257EC06933}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47F7F3E7-69A3-44B7-B1AD-55257EC06933}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47F7F3E7-69A3-44B7-B1AD-55257EC06933}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47F7F3E7-69A3-44B7-B1AD-55257EC06933}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{1DB7BD52-D1E0-4248-819F-8424AFF55689} = {CF13271D-BF3F-4167-BEBA-DD02D33992F2}
-		{95EF44A2-B735-425E-97D8-19DB54730E1B} = {CF13271D-BF3F-4167-BEBA-DD02D33992F2}
+		{305CC2B0-5D45-422E-8C1C-B3B7321644A1} = {CF13271D-BF3F-4167-BEBA-DD02D33992F2}
+		{46E553F5-EB75-4417-BDD1-3278589B9748} = {CF13271D-BF3F-4167-BEBA-DD02D33992F2}
 		{E544FB20-29F3-41F5-A78E-6164F9C43B3C} = {CF13271D-BF3F-4167-BEBA-DD02D33992F2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
