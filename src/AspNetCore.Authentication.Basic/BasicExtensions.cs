@@ -18,6 +18,7 @@ namespace Mihir.AspNetCore.Authentication.Basic
 		/// Adds basic authentication scheme to the project. It takes a implementation of <see cref="IBasicUserValidationService"/> as type parameter.
 		/// </summary>
 		/// <typeparam name="TBasicUserValidationService"></typeparam>
+		/// <param name="builder"></param>
 		/// <param name="configureOptions">Sets the <see cref="BasicOptions"/>. Realm option property must be set.</param>
 		/// <returns>The instance of <see cref="AuthenticationBuilder"/></returns>
 		public static AuthenticationBuilder AddBasic<TBasicUserValidationService>(this AuthenticationBuilder builder, Action<BasicOptions> configureOptions)

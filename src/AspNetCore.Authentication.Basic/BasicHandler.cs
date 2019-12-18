@@ -22,6 +22,14 @@ namespace Mihir.AspNetCore.Authentication.Basic
 	{
 		private readonly IBasicUserValidationService _basicUserValidationService;
 
+		/// <summary>
+		/// Basic Handler Constructor.
+		/// </summary>
+		/// <param name="options"></param>
+		/// <param name="logger"></param>
+		/// <param name="encoder"></param>
+		/// <param name="clock"></param>
+		/// <param name="basicUserValidationService"></param>
 		public BasicHandler(IOptionsMonitor<BasicOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock, IBasicUserValidationService basicUserValidationService) 
 			: base(options, logger, encoder, clock)
 		{
