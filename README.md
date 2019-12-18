@@ -1,15 +1,17 @@
-# Mihir.AspNetCore.Authentication.Basic
-Basic Scheme Authentication Implementation for ASP.NET Core 2.2
+# AspNetCore.Authentication.Basic
+Easy to use and very light weight Microsoft style Basic Scheme Authentication Implementation for ASP.NET Core.
 
 ## Installing
 This library is published on NuGet. So the NuGet package can be installed directly to your project if you wish to use it without making any custom changes to the code.
 
-Download directly from [Mihir.AspNetCore.Authentication.Basic](https://www.nuget.org/packages/Mihir.AspNetCore.Authentication.Basic).
+Download directly from:  
+Old Package link - [Mihir.AspNetCore.Authentication.Basic](https://www.nuget.org/packages/Mihir.AspNetCore.Authentication.Basic).  
+New Package link - [AspNetCore.Authentication.Basic](https://www.nuget.org/packages/AspNetCore.Authentication.Basic).  
 
 Or by running the below command on your project.
 
 ```
-PM> Install-Package Mihir.AspNetCore.Authentication.Basic
+PM> Install-Package AspNetCore.Authentication.Basic
 ```
 
 ## Example Usage
@@ -25,7 +27,7 @@ Also add an implementation of *IBasicUserValidationService* as shown below in [*
 #### Startup.cs
 
 ```C#
-using Mihir.AspNetCore.Authentication.Basic;
+using AspNetCore.Authentication.Basic;
 public class Startup
 {
 	public Startup(IConfiguration configuration)
@@ -56,7 +58,7 @@ public class Startup
 
 #### BasicUserValidationService.cs
 ```C#
-using Mihir.AspNetCore.Authentication.Basic;
+using AspNetCore.Authentication.Basic;
 public class BasicUserValidationService : IBasicUserValidationService
 {
 	private readonly ILogger<BasicUserValidationService> _logger;
@@ -91,4 +93,4 @@ public class BasicUserValidationService : IBasicUserValidationService
 - [RFC 7617: Technical spec for HTTP Basic](https://tools.ietf.org/html/rfc7617)
 
 ## License
-[MIT License](https://github.com/mihirdilip/Mihir.AspNetCore.Authentication.Basic/blob/master/LICENSE.txt)
+[MIT License](https://github.com/mihirdilip/AspNetCore.Authentication.Basic/blob/master/LICENSE.txt)
