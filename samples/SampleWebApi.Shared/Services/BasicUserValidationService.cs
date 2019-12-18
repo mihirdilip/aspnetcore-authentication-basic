@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using AspNetCore.Authentication.Basic;
 using Microsoft.Extensions.Logging;
-using Mihir.AspNetCore.Authentication.Basic;
 using SampleWebApi.Repositories;
+using System;
+using System.Threading.Tasks;
 
 namespace SampleWebApi.Services
 {

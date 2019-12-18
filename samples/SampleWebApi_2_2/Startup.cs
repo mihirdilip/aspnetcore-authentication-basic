@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Mihir.AspNetCore.Authentication.Basic;
+using AspNetCore.Authentication.Basic;
 using SampleWebApi.Repositories;
 using SampleWebApi.Services;
 
