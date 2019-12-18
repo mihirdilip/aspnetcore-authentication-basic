@@ -13,7 +13,7 @@ namespace Mihir.AspNetCore.Authentication.Basic
 	public interface IBasicUserValidationService
 	{
 		/// <summary>
-		/// Implementation of the username & password validation logic.
+		/// Implementation of the username &amp; password validation logic.
 		/// </summary>
 		/// <param name="username"></param>
 		/// <param name="password"></param>
