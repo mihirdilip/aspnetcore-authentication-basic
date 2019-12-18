@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Mihir Dilip</Authors>
+    <Company>Mihir Dilip</Company>
+    <Description>This NuGet package has been made obsolete and moved to a new package named 'AspNetCore.Authentication.Basic'. Please consider removing this package and download the new one as there will be no future updates on this package. Sorry for the inconvenience caused. This was done purely for the naming of the package. New package name is 'AspNetCore.Authentication.Basic' which can be downloaded using NuGet Package Manager or from https://www.nuget.org/packages/AspNetCore.Authentication.Basic.
+
+Easy to use and very light weight Microsoft style Basic Scheme Authentication Implementation for ASP.NET Core.</Description>
+    <RepositoryUrl>https://github.com/mihirdilip/aspnetcore-authentication-basic</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/mihirdilip/aspnetcore-authentication-basic</PackageProjectUrl>
+    <Version>2.0.1</Version>
+    <Copyright>Copyright (c) 2019 Mihir Dilip</Copyright>
+    <PackageLicenseUrl></PackageLicenseUrl>
+	<RepositoryType>GitHub</RepositoryType>
+    <PackageIconUrl />
+    <PackageTags>asp-net-core, aspnetcore, netstandard, netstandard20, basic-authentication, basicauthentication, dotnetcore, asp-net-core-basic-authentication, aspnetcore-basic-authentication, security, authentication, asp-net-core-authentication, aspnetcore-authentication</PackageTags>
+    <NeutralLanguage />
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>This NuGet package has been made obsolete and moved to a new package named 'AspNetCore.Authentication.Basic'. Please consider removing this package and download the new one as there will be no future updates on this package. Sorry for the inconvenience caused. This was done purely for the naming of the package. New package name is 'AspNetCore.Authentication.Basic' which can be downloaded using NuGet Package Manager or from https://www.nuget.org/packages/AspNetCore.Authentication.Basic.</PackageReleaseNotes>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <RootNamespace>Mihir.AspNetCore.Authentication.Basic</RootNamespace>
+    <PackageId>Mihir.AspNetCore.Authentication.Basic</PackageId>
+    <Product>Mihir.AspNetCore.Authentication.Basic</Product>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\Mihir.AspNetCore.Authentication.Basic.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
