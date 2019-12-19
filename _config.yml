@@ -1,1 +1,5 @@
+title: AspNetCore.Authentication.Basic
+description: Easy to use and very light weight Microsoft style Basic Scheme Authentication Implementation for ASP.NET Core.
+show_downloads: true
+google_analytics:
 theme: jekyll-theme-midnight
