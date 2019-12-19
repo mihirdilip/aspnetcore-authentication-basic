@@ -1,10 +1,12 @@
 # AspNetCore.Authentication.Basic
 Easy to use and very light weight Microsoft style Basic Scheme Authentication Implementation for ASP.NET Core.
 
+[View On GitHub](https://github.com/mihirdilip/aspnetcore-authentication-basic)
+
 ## Installing
 This library is published on NuGet. So the NuGet package can be installed directly to your project if you wish to use it without making any custom changes to the code.
 
-Download directly from below link. Please consider downloading the new package as the old one has been made obsolete.
+Download directly from below link. Please consider downloading the new package as the old one has been made obsolete.  
 New Package link - [AspNetCore.Authentication.Basic](https://www.nuget.org/packages/AspNetCore.Authentication.Basic).  
 Old Package link - [Mihir.AspNetCore.Authentication.Basic](https://www.nuget.org/packages/Mihir.AspNetCore.Authentication.Basic).  
 
