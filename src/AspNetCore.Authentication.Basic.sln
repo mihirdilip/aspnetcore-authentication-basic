@@ -13,8 +13,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleWebApi_2_2", "..\samp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore.Authentication.Basic", "AspNetCore.Authentication.Basic\AspNetCore.Authentication.Basic.csproj", "{B2492C13-5F4E-4002-9E66-0ACF73045668}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7BFEA4E3-5506-40A1-B6EB-BC8BA3687D23}"
+	ProjectSection(SolutionItems) = preProject
+		..\LICENSE.txt = ..\LICENSE.txt
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\samples\SampleWebApi.Shared\SampleWebApi.Shared.projitems*{07c59e2a-3e40-4fc0-a8cf-0656ab00e8a7}*SharedItemsImports = 5
+		..\samples\SampleWebApi.Shared\SampleWebApi.Shared.projitems*{0801aed9-ea38-4e7e-af4d-26e9b67e5254}*SharedItemsImports = 5
 		..\samples\SampleWebApi.Shared\SampleWebApi.Shared.projitems*{e544fb20-29f3-41f5-a78e-6164f9c43b3c}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
