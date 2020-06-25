@@ -174,10 +174,10 @@ app.UseEndpoints(endpoints =>
 ``` 
 
 ## References
-- [Creating an authentication scheme in ASP.NET Core 2.0](https://joonasw.net/view/creating-auth-scheme-in-aspnet-core-2)
-- [aspnet/Security](https://github.com/aspnet/Security)
-- [ASP.NET Core Security documentation](https://docs.microsoft.com/en-us/aspnet/core/security)
 - [RFC 7617: Technical spec for HTTP Basic](https://tools.ietf.org/html/rfc7617)
+- [ASP.NET Core Security documentation](https://docs.microsoft.com/en-us/aspnet/core/security)
+- [aspnet/Security](https://github.com/dotnet/aspnetcore/tree/master/src/Security)
+- [Creating an authentication scheme in ASP.NET Core 2.0](https://joonasw.net/view/creating-auth-scheme-in-aspnet-core-2)
 
 ## License
 [MIT License](https://github.com/mihirdilip/aspnetcore-authentication-basic/blob/master/LICENSE.txt)
