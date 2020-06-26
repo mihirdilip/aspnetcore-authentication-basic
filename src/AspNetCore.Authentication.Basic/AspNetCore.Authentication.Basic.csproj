@@ -17,9 +17,12 @@
     <NeutralLanguage />
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-    <RootNamespace>AspNetCore.Authentication.Basic</RootNamespace>
-    <PackageId>AspNetCore.Authentication.Basic</PackageId>
-    <Product>AspNetCore.Authentication.Basic</Product>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>E:\GitHub\aspnetcore-authentication-basic\src\key.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
