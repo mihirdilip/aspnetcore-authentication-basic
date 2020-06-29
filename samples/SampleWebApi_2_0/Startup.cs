@@ -41,7 +41,7 @@ namespace SampleWebApi
 					// Alternatively, add [Authorize] attribute to Controller or Action Method where necessary.
 					options.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build()));
 				}
-			).AddXmlSerializerFormatters();	// To enable XML along with JSON
+			); //.AddXmlSerializerFormatters();	// To enable XML along with JSON
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

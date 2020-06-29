@@ -41,7 +41,7 @@ namespace SampleWebApi_2_2
 				// Alternatively, add [Authorize] attribute to Controller or Action Method where necessary.
 				options.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build()));
 			})
-				.AddXmlSerializerFormatters()   // To enable XML along with JSON
+				//.AddXmlSerializerFormatters()   // To enable XML along with JSON
 				.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 		}
 

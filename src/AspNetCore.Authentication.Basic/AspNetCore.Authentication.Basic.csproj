@@ -6,11 +6,9 @@
     <RepositoryUrl>https://github.com/mihirdilip/aspnetcore-authentication-basic/tree/3.1.5</RepositoryUrl>
     <PackageProjectUrl>https://github.com/mihirdilip/aspnetcore-authentication-basic/tree/3.1.5</PackageProjectUrl>
     <PackageTags>aspnetcore, security, authentication, microsoft, microsoft.aspnetcore.authentication, microsoft-aspnetcore-authentication, microsoft.aspnetcore.authentication.basic, microsoft-aspnetcore-authentication-basic, asp-net-core, netstandard, netstandard20, basic-authentication, basicauthentication, dotnetcore, dotnetcore3.1, asp-net-core-basic-authentication, aspnetcore-basic-authentication, asp-net-core-authentication, aspnetcore-authentication, asp, aspnet, basic, authentication-scheme</PackageTags>
-    <PackageReleaseNotes>
-      - Multitarget framework support added
-      - Source Link support added
-      - Strong Name Key support added (breaking change!)
-    </PackageReleaseNotes>
+    <PackageReleaseNotes>- Multitarget framework support added
+- Source Link support added
+- Strong Name Key support added (BREAKING CHANGE FOR SOME OF THE EXISTING USERS!)</PackageReleaseNotes>
     <Description>Easy to use and very light weight Microsoft style Basic Scheme Authentication implementation for ASP.NET Core.</Description>
     <Authors>Mihir Dilip</Authors>
     <Company>Mihir Dilip</Company>

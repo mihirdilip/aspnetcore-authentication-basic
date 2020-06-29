@@ -32,13 +32,6 @@ Also add an implementation of *IBasicUserValidationService* as shown below in [*
 using AspNetCore.Authentication.Basic;
 public class Startup
 {
-	public Startup(IConfiguration configuration)
-	{
-		Configuration = configuration;
-	}
-
-	public IConfiguration Configuration { get; }
-
 	public void ConfigureServices(IServiceCollection services)
 	{
 		// Add the Basic scheme authentication here..
@@ -81,13 +74,6 @@ public class Startup
 using AspNetCore.Authentication.Basic;
 public class Startup
 {
-	public Startup(IConfiguration configuration)
-	{
-		Configuration = configuration;
-	}
-
-	public IConfiguration Configuration { get; }
-
 	public void ConfigureServices(IServiceCollection services)
 	{
 		// Add the Basic scheme authentication here..
