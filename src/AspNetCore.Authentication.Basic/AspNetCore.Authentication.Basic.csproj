@@ -16,6 +16,7 @@
     <Company>Mihir Dilip</Company>
     <Copyright>Copyright (c) 2020 Mihir Dilip</Copyright>    
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Title>$(AssemblyName)</Title>
     <RepositoryType>git</RepositoryType>
     <PackageIconUrl />
     <NeutralLanguage />
