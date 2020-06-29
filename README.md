@@ -181,4 +181,3 @@ app.UseEndpoints(endpoints =>
 
 ## License
 [MIT License](https://github.com/mihirdilip/aspnetcore-authentication-basic/blob/master/LICENSE.txt)
-
