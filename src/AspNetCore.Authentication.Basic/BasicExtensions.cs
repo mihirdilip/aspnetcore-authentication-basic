@@ -23,11 +23,11 @@ namespace AspNetCore.Authentication.Basic
 		public static AuthenticationBuilder AddBasic<TBasicUserValidationService>(this AuthenticationBuilder builder, Action<BasicOptions> configureOptions)
 			where TBasicUserValidationService : class, IBasicUserValidationService
 		{
-			// Adds post configure options to the pipeline.
-			builder.Services.AddSingleton<IPostConfigureOptions<BasicOptions>, BasicPostConfigureOptions>();
-
 			// Adds implementation of IBasicUserValidationService to the dependency container.
 			builder.Services.AddTransient<IBasicUserValidationService, TBasicUserValidationService>();
+			
+			// Adds post configure options to the pipeline.
+			builder.Services.AddSingleton<IPostConfigureOptions<BasicOptions>, BasicPostConfigureOptions>();
 
 			// Adds basic authentication scheme to the pipeline.
 			return builder.AddScheme<BasicOptions, BasicHandler>(BasicDefaults.AuthenticationScheme, configureOptions);
