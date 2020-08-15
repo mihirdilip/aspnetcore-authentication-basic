@@ -11,6 +11,11 @@ namespace AspNetCore.Authentication.Basic
     /// </summary>
     public class BasicOptions : AuthenticationSchemeOptions
 	{
+        public BasicOptions()
+        {
+            Events = new BasicEvents();
+        }
+
         /// <summary>
         /// Gets or sets the realm property. It is used with WWW-Authenticate response header when challenging un-authenticated requests.
         /// <see href="https://tools.ietf.org/html/rfc7235#section-2.2"/>
@@ -37,14 +42,6 @@ namespace AspNetCore.Authentication.Basic
             set => base.Events = value;
         }
 
-        /// <inheritdoc/>
-        public override void Validate()
-        {
-            base.Validate();
-            if (!SuppressWWWAuthenticateHeader && string.IsNullOrWhiteSpace(Realm))
-            {
-                throw new InvalidOperationException("Realm must be set in basic options");
-            }
-        }
+        internal Type BasicUserValidationServiceType { get; set; } = null;
     }
 }

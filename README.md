@@ -18,6 +18,8 @@ PM> Install-Package AspNetCore.Authentication.Basic
 
 ## Example Usage
 
+Samples are available under [samples directory](samples).
+
 Setting it up is quite simple. You will need basic working knowledge of ASP.NET Core 2.2 or newer to get started using this code.
 
 On [**Startup.cs**](#startupcs), as shown below, add 2 lines in *ConfigureServices* method `services.AddAuthentication(BasicDefaults.AuthenticationScheme).AddBasic<BasicUserValidationService>(options => { options.Realm = "My App"; });`. And a line `app.UseAuthentication();` in *Configure* method.
@@ -35,10 +37,17 @@ public class Startup
 	public void ConfigureServices(IServiceCollection services)
 	{
 		// Add the Basic scheme authentication here..
-		// AddBasic extension takes an implementation of IBasicUserValidationService for validating the username and password. 
-		// It also requires Realm to be set in the options.
-		services.AddAuthentication(BasicDefaults.AuthenticationScheme)
-			.AddBasic<BasicUserValidationService>(options => { options.Realm = "My App"; });
+        // It requires Realm to be set in the options if SuppressWWWAuthenticateHeader is not set.
+        // If an implementation of IBasicUserValidationService interface is registered in the dependency register as well as OnValidateCredentials delegete on options.Events is also set then this delegate will be used instead of an implementation of IBasicUserValidationService.
+        services.AddAuthentication(BasicDefaults.AuthenticationScheme)
+
+            // The below AddBasic without type parameter will require OnValidateCredentials delegete on options.Events to be set unless an implementation of IBasicUserValidationService interface is registered in the dependency register.
+            // Please note if both the delgate and validation server are set then the delegate will be used instead of BasicUserValidationService.
+            //.AddBasic(options => { options.Realm = "My App"; });
+
+            // The below AddBasic with type parameter will add the BasicUserValidationService to the dependency register. 
+            // Please note if OnValidateCredentials delegete on options.Events is also set then this delegate will be used instead of BasicUserValidationService.
+            .AddBasic<BasicUserValidationService>(options => { options.Realm = "My App"; });
 
 		services.AddControllers();
 
@@ -77,10 +86,17 @@ public class Startup
 	public void ConfigureServices(IServiceCollection services)
 	{
 		// Add the Basic scheme authentication here..
-		// AddBasic extension takes an implementation of IBasicUserValidationService for validating the username and password. 
-		// It also requires Realm to be set in the options.
-		services.AddAuthentication(BasicDefaults.AuthenticationScheme)
-			.AddBasic<BasicUserValidationService>(options => { options.Realm = "My App"; });
+        // It requires Realm to be set in the options if SuppressWWWAuthenticateHeader is not set.
+        // If an implementation of IBasicUserValidationService interface is registered in the dependency register as well as OnValidateCredentials delegete on options.Events is also set then this delegate will be used instead of an implementation of IBasicUserValidationService.
+        services.AddAuthentication(BasicDefaults.AuthenticationScheme)
+
+            // The below AddBasic without type parameter will require OnValidateCredentials delegete on options.Events to be set unless an implementation of IBasicUserValidationService interface is registered in the dependency register.
+            // Please note if both the delgate and validation server are set then the delegate will be used instead of BasicUserValidationService.
+            //.AddBasic(options => { options.Realm = "My App"; });
+
+            // The below AddBasic with type parameter will add the BasicUserValidationService to the dependency register. 
+            // Please note if OnValidateCredentials delegete on options.Events is also set then this delegate will be used instead of BasicUserValidationService.
+            .AddBasic<BasicUserValidationService>(options => { options.Realm = "My App"; });
 
 		services.AddMvc();
 
@@ -163,7 +179,6 @@ app.UseEndpoints(endpoints =>
 - [RFC 7617: Technical spec for HTTP Basic](https://tools.ietf.org/html/rfc7617)
 - [ASP.NET Core Security documentation](https://docs.microsoft.com/en-us/aspnet/core/security)
 - [aspnet/Security](https://github.com/dotnet/aspnetcore/tree/master/src/Security)
-- [Creating an authentication scheme in ASP.NET Core 2.0](https://joonasw.net/view/creating-auth-scheme-in-aspnet-core-2)
 
 ## License
 [MIT License](https://github.com/mihirdilip/aspnetcore-authentication-basic/blob/master/LICENSE.txt)

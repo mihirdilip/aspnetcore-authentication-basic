@@ -7,8 +7,11 @@
   <Import Project="..\SampleWebApi.Shared\SampleWebApi.Shared.projitems" Label="Shared" />
 
   <ItemGroup>
-    <PackageReference Include="AspNetCore.Authentication.Basic" Version="3.1.0-preview.1" />
+    <PackageReference Include="AspNetCore.Authentication.Basic" Version="3.1.0" />
   </ItemGroup>
 
+  <!--<ItemGroup>
+    <ProjectReference Include="..\..\src\AspNetCore.Authentication.Basic\AspNetCore.Authentication.Basic.csproj" />
+  </ItemGroup>-->
 
 </Project>

@@ -4,6 +4,8 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace AspNetCore.Authentication.Basic
 {
@@ -38,49 +40,39 @@ namespace AspNetCore.Authentication.Basic
         public string Password { get; }
 
         /// <summary>
-        /// Call this method at the end after credentials are validated and are valid.
-        /// NOTE: This call will be igoned if <see cref="ResultContext{TOptions}.Principal"/> is already set or, 
-        /// any of these methods is called <see cref="ResultContext{TOptions}.NoResult"/>, <see cref="ResultContext{TOptions}.Success"/>, <see cref="ResultContext{TOptions}.Fail(string)"/>, <see cref="ResultContext{TOptions}.Fail(Exception)"/>
+        /// Calling this method will handle construction of authentication principal (<see cref="ClaimsPrincipal">) from the user details 
+        /// which will be assiged to the <see cref="ResultContext{TOptions}.Principal"/> property 
+        /// and <see cref="ResultContext{TOptions}.Success"/> method will also be called.
         /// </summary>
-        public void ValidationSucceeded()
+        /// <param name="claims">Claims to be added to the identity.</param>
+        public void ValidationSucceeded(IEnumerable<Claim> claims = null)
         {
-            if (Principal != null && Result != null)
-            {
-                ValidationResult = true;
-            }
+            Principal = BasicUtils.BuildClaimsPrincipal(Username, Scheme.Name, Options.ClaimsIssuer, claims);
+            Success();
         }
 
         /// <summary>
-        /// Call this method at the end after credentials are validated and are not valid.
-        /// NOTE: This call will be igoned if <see cref="ResultContext{TOptions}.Principal"/> is already set or, 
-        /// any of these methods is called <see cref="ResultContext{TOptions}.NoResult"/>, <see cref="ResultContext{TOptions}.Success"/>, <see cref="ResultContext{TOptions}.Fail(string)"/>, <see cref="ResultContext{TOptions}.Fail(Exception)"/>
+        /// If parameter <paramref name="failureMessage"/> passed is empty or null then NoResult() method is called 
+        /// otherwise, <see cref="ResultContext{TOptions}.Fail(string)"/> method will be called.
         /// </summary>
-        /// <param name="failureMessage">The failure message.</param>
+        /// <param name="failureMessage">(Optional) The failure message.</param>
         public void ValidationFailed(string failureMessage = null) 
         {
-            ValidationFailed(
-                string.IsNullOrWhiteSpace(failureMessage) 
-                    ? null 
-                    : new Exception(failureMessage)
-            );
+            if (string.IsNullOrWhiteSpace(failureMessage))
+            {
+                NoResult();
+                return;
+            }
+            Fail(failureMessage);
         }
 
         /// <summary>
-        /// Call this method at the end after credentials are validated and are not valid.
-        /// NOTE: This call will be igoned if <see cref="ResultContext{TOptions}.Principal"/> is already set or, 
-        /// any of these methods is called <see cref="ResultContext{TOptions}.NoResult"/>, <see cref="ResultContext{TOptions}.Success"/>, <see cref="ResultContext{TOptions}.Fail(string)"/>, <see cref="ResultContext{TOptions}.Fail(Exception)"/>
+        /// Calling this method is same as calling <see cref="ResultContext{TOptions}.Fail(Exception)"/> method.
         /// </summary>
         /// <param name="failureException">The failure exception.</param>
         public void ValidationFailed(Exception failureException)
         {
-            if (Principal != null && Result != null)
-            {
-                ValidationResult = false;
-                ValidationFailureException = failureException;
-            }
+            Fail(failureException);
         }
-
-        internal bool? ValidationResult { get; private set; }
-        internal Exception ValidationFailureException { get; private set; }
     }
 }

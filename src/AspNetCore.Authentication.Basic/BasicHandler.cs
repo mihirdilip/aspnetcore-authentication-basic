@@ -2,12 +2,12 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using System;
 using System.Net.Http.Headers;
-using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -19,8 +19,6 @@ namespace AspNetCore.Authentication.Basic
     /// </summary>
     internal class BasicHandler : AuthenticationHandler<BasicOptions>
 	{
-		private readonly IBasicUserValidationService _basicUserValidationService;
-
 		/// <summary>
 		/// Basic Handler Constructor.
 		/// </summary>
@@ -29,10 +27,9 @@ namespace AspNetCore.Authentication.Basic
 		/// <param name="encoder"></param>
 		/// <param name="clock"></param>
 		/// <param name="basicUserValidationService"></param>
-		public BasicHandler(IOptionsMonitor<BasicOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock, IBasicUserValidationService basicUserValidationService) 
+		public BasicHandler(IOptionsMonitor<BasicOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock) 
 			: base(options, logger, encoder, clock)
 		{
-			_basicUserValidationService = basicUserValidationService ?? throw new ArgumentNullException(nameof(basicUserValidationService));
 		}
 
 		private string Challenge => $"{BasicDefaults.AuthenticationScheme} realm=\"{Options.Realm}\", charset=\"UTF-8\"";
@@ -79,85 +76,25 @@ namespace AspNetCore.Authentication.Basic
 			}
             catch (Exception exception)
             {
-				return AuthenticateResult.Fail(exception);
-            }
+				Logger.LogError(exception, "Error decoding credentials from header value.");
+				return AuthenticateResult.Fail("Error decoding credentials from header value." + Environment.NewLine + exception.Message);
+
+			}
             
 			try
 			{
-				// Raise validate credentials event.
-				// It can either have a result set or a principal set or just a bool? validation result set.
-				var validateCredentialsContext = new BasicValidateCredentialsContext(Context, Scheme, Options, credentials.Username, credentials.Password);
-				await Events.ValidateCredentialsAsync(validateCredentialsContext).ConfigureAwait(false);
-				
-				if (validateCredentialsContext.Result != null)
+				var validateCredentialsResult = await RaiseAndHandleEventValidateCredentialsAsync(credentials).ConfigureAwait(false);
+				if (validateCredentialsResult != null)
                 {
-					return validateCredentialsContext.Result;
-                }
-				
-				if (validateCredentialsContext.Principal?.Identity != null && validateCredentialsContext.Principal.Identity.IsAuthenticated)
-				{
-					// If claims principal is set and is authenticated then build a ticket by calling and return success.
-					validateCredentialsContext.Success();
-					return validateCredentialsContext.Result;
-				}
-
-				var hasValidationSucceeded = false;
-				var validationFailureMessage = "Invalid username or password.";
-
-				if (validateCredentialsContext.ValidationResult.HasValue)
-                {
-					hasValidationSucceeded = validateCredentialsContext.ValidationResult.Value;
-
-					// If validation result was not successful return failure.
-					if (!hasValidationSucceeded)
-					{
-						return AuthenticateResult.Fail(
-							validateCredentialsContext.ValidationFailureException ?? new Exception(validationFailureMessage)
-						);
-					}
-				}
-
-				// If validation result was not set then validate using the implementation of IBasicUserValidationService.
-				if (!hasValidationSucceeded)
-                {
-					if (_basicUserValidationService is DefaultBasicUserValidationService)
-                    {
-						throw new InvalidOperationException($"Either {nameof(Options.Events.OnValidateCredentials)} delegate on configure options {nameof(Options.Events)} should be set or an implementaion of {nameof(IBasicUserValidationService)} should be registered in the dependency container.");
-                    }
-					hasValidationSucceeded = await _basicUserValidationService.IsValidAsync(credentials.Username, credentials.Password);
-				}
-
-				// Return fail if validation not succeeded.
-				if (!hasValidationSucceeded)
-				{
-					return AuthenticateResult.Fail(validationFailureMessage);
-				}
-
-				// Create claims principal.
-				var claims = new[] 
-				{
-					new Claim(ClaimTypes.NameIdentifier, credentials.Username, ClaimValueTypes.String, ClaimsIssuer),
-					new Claim(ClaimTypes.Name, credentials.Username, ClaimValueTypes.String, ClaimsIssuer)					
-				};
-				var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, Scheme.Name));
-				
-				// Raise authentication succeeded event.
-				var authenticationSucceededContext = new BasicAuthenticationSucceededContext(Context, Scheme, Options, principal);
-				await Events.AuthenticationSucceededAsync(authenticationSucceededContext).ConfigureAwait(false);
-				
-				if (authenticationSucceededContext.Result != null)
-                {
-					return authenticationSucceededContext.Result;
+					// If result is set then return it.
+					return validateCredentialsResult;
                 }
 
-				if (authenticationSucceededContext.Principal?.Identity != null && authenticationSucceededContext.Principal.Identity.IsAuthenticated)
-				{
-					// If claims principal is set and is authenticated then build a ticket by calling and return success.
-					authenticationSucceededContext.Success();
-					return authenticationSucceededContext.Result;
-				}
-
-				return AuthenticateResult.Fail("No authenticated prinicipal set.");
+				// Validate using the implementation of IBasicUserValidationService.
+				var hasValidationSucceeded = await ValidateUsingBasicUserValidationServiceAsync(credentials.Username, credentials.Password).ConfigureAwait(false);
+				return hasValidationSucceeded
+					? await RaiseAndHandleAuthenticationSucceededAsync(credentials).ConfigureAwait(false)
+					: AuthenticateResult.Fail("Invalid username or password.");
 			}
             catch (Exception exception)
             {
@@ -211,6 +148,70 @@ namespace AspNetCore.Authentication.Basic
 				Response.Headers[HeaderNames.WWWAuthenticate] = Challenge;
 			}
 			await base.HandleChallengeAsync(properties);
+		}
+
+		private async Task<AuthenticateResult> RaiseAndHandleEventValidateCredentialsAsync(BasicCredentials credentials)
+        {
+			var validateCredentialsContext = new BasicValidateCredentialsContext(Context, Scheme, Options, credentials.Username, credentials.Password);
+			await Events.ValidateCredentialsAsync(validateCredentialsContext).ConfigureAwait(false);
+
+			if (validateCredentialsContext.Result != null)
+			{
+				return validateCredentialsContext.Result;
+			}
+
+			if (validateCredentialsContext.Principal?.Identity != null && validateCredentialsContext.Principal.Identity.IsAuthenticated)
+			{
+				// If claims principal is set and is authenticated then build a ticket by calling and return success.
+				validateCredentialsContext.Success();
+				return validateCredentialsContext.Result;
+			}
+
+			return null;
+		}
+
+		private async Task<AuthenticateResult> RaiseAndHandleAuthenticationSucceededAsync(BasicCredentials credentials)
+        {
+			// ..create claims principal.
+			var principal = BasicUtils.BuildClaimsPrincipal(credentials.Username, Scheme.Name, ClaimsIssuer);
+
+			// Raise authentication succeeded event.
+			var authenticationSucceededContext = new BasicAuthenticationSucceededContext(Context, Scheme, Options, principal);
+			await Events.AuthenticationSucceededAsync(authenticationSucceededContext).ConfigureAwait(false);
+
+			if (authenticationSucceededContext.Result != null)
+			{
+				return authenticationSucceededContext.Result;
+			}
+
+			if (authenticationSucceededContext.Principal?.Identity != null && authenticationSucceededContext.Principal.Identity.IsAuthenticated)
+			{
+				// If claims principal is set and is authenticated then build a ticket by calling and return success.
+				authenticationSucceededContext.Success();
+				return authenticationSucceededContext.Result;
+			}
+
+			Logger.LogError("No authenticated prinicipal set.");
+			return AuthenticateResult.Fail("No authenticated prinicipal set.");
+		}
+
+		private async Task<bool> ValidateUsingBasicUserValidationServiceAsync(string username, string password)
+        {
+			var basicUserValidationService = Context.RequestServices.GetService<IBasicUserValidationService>();
+			if (basicUserValidationService == null)
+			{
+				if (Options.BasicUserValidationServiceType != null)
+				{
+					basicUserValidationService = Context.RequestServices.GetService(Options.BasicUserValidationServiceType) as IBasicUserValidationService;
+				}
+
+				if (basicUserValidationService == null)
+				{
+					throw new InvalidOperationException($"Either {nameof(Options.Events.OnValidateCredentials)} delegate on configure options {nameof(Options.Events)} should be set or an implementaion of {nameof(IBasicUserValidationService)} should be registered in the dependency container.");
+				}
+			}
+			
+			return await basicUserValidationService.IsValidAsync(username, password).ConfigureAwait(false);
 		}
 
 		private BasicCredentials DecodeBasicCredentials(string credentials)

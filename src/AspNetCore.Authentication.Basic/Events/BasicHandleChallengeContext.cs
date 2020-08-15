@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 namespace AspNetCore.Authentication.Basic
 {
     /// <summary>
-    /// Context used when challenging unauthenticated response.
+    /// Context used when challenging unauthorized response.
     /// </summary>
     public class BasicHandleChallengeContext : PropertiesContext<BasicOptions>
     {

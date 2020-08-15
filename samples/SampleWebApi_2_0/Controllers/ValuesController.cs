@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Text;
 
 namespace SampleWebApi_2_2.Controllers
 {
@@ -13,29 +14,21 @@ namespace SampleWebApi_2_2.Controllers
 			return new string[] { "value1", "value2" };
 		}
 
-		// GET api/values/5
-		[HttpGet("{id}")]
-		public string Get(int id)
-		{
-			return "value";
-		}
+		[HttpGet("claims")]
+		public string Claims()
+        {
+			var sb = new StringBuilder();
+            foreach (var claim in User.Claims)
+            {
+				sb.AppendLine($"{claim.Type}: {claim.Value}");
+            }
+			return sb.ToString();
+        }
 
-		// POST api/values
-		[HttpPost]
-		public void Post([FromBody] string value)
+		[HttpGet("forbid")]
+		public new IActionResult Forbid()
 		{
-		}
-
-		// PUT api/values/5
-		[HttpPut("{id}")]
-		public void Put(int id, [FromBody] string value)
-		{
-		}
-
-		// DELETE api/values/5
-		[HttpDelete("{id}")]
-		public void Delete(int id)
-		{
+			return base.Forbid();
 		}
 	}
 }

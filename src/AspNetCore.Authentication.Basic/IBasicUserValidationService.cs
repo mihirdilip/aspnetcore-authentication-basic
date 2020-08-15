@@ -18,12 +18,4 @@ namespace AspNetCore.Authentication.Basic
 		/// <returns></returns>
 		Task<bool> IsValidAsync(string username, string password);
 	}
-
-    internal class DefaultBasicUserValidationService : IBasicUserValidationService
-    {
-        public Task<bool> IsValidAsync(string username, string password)
-        {
-			return Task.FromResult(false);
-        }
-    }
 }
