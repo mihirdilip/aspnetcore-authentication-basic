@@ -18,6 +18,7 @@ namespace AspNetCore.Authentication.Basic
 
         /// <summary>
         /// Gets or sets the realm property. It is used with WWW-Authenticate response header when challenging un-authenticated requests.
+        /// Required to be set if SuppressWWWAuthenticateHeader is not set to true.
         /// <see href="https://tools.ietf.org/html/rfc7235#section-2.2"/>
         /// </summary>
         public string Realm { get; set; }

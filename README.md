@@ -143,7 +143,44 @@ public class BasicUserValidationService : IBasicUserValidationService
 	}
 }
 ```
- 
+
+## Configuration (BasicOptions)
+#### Realm
+Required to be set if SuppressWWWAuthenticateHeader is not set to true. It is used with WWW-Authenticate response header when challenging un-authenticated requests.  
+   
+#### SuppressWWWAuthenticateHeader
+Default value is false.  
+When set to true, it will NOT return WWW-Authenticate response header when challenging un-authenticated requests.  
+When set to false, it will return WWW-Authenticate response header when challenging un-authenticated requests.
+
+#### Events
+The object provided by the application to process events raised by the basic authentication middleware.  
+The application may implement the interface fully, or it may create an instance of BasicEvents and assign delegates only to the events it wants to process.
+- ##### OnValidateCredentials
+	A delegate assigned to this property will be invoked just before validating credentials.  
+	You must provide a delegate for this property for authentication to occur.  
+	In your delegate you should either call context.ValidationSucceeded() which will handle construction of authentication principal from the user details which will be assiged the context.Principal property and call context.Success(), or construct an authentication principal from the user details & attach it to the context.Principal property and finally call context.Success() method.  
+	If only context.Principal property set without calling context.Success() method then, Success() method is automaticalled called.
+
+- ##### OnAuthenticationSucceeded  
+	A delegate assigned to this property will be invoked when the authentication succeeds. It will not be called if OnValidateCredentials delegate is assigned.  
+    It can be used for adding claims, headers, etc to the response.
+
+- ##### OnAuthenticationFailed  
+	A delegate assigned to this property will be invoked when the authentication fails.
+
+- ##### OnHandleChallenge  
+	A delegate assigned to this property will be invoked before a challenge is sent back to the caller when handling unauthorized response.  
+	Only use this if you know what you are doing and if you want to use custom implementation.  Set the delegate to deal with 401 challenge concerns, if an authentication scheme in question deals an authentication interaction as part of it's request flow. (like adding a response header, or changing the 401 result to 302 of a login page or external sign-in location.)  
+    Call context.Handled() at the end so that any default logic for this challenge will be skipped.
+
+- ##### OnHandleForbidden  
+	A delegate assigned to this property will be invoked if Authorization fails and results in a Forbidden response.  
+	Only use this if you know what you are doing and if you want to use custom implementation.  
+	Set the delegate to handle Forbid.  
+	Call context.Handled() at the end so that any default logic will be skipped.
+
+
 ## Additional Notes
 Please note that, by default, with ASP.NET Core, all the requests are not challenged for authentication. So don't worry if your *BasicUserValidationService* is not hit when you don't pass the required basic authentication details with the request. It is a normal behaviour. ASP.NET Core challenges authentication only when it is specifically told to do so either by decorating controller/method with *[Authorize]* filter attribute or by some other means. 
 
