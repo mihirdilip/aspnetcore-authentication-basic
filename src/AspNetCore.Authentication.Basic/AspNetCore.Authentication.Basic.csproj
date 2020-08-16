@@ -1,34 +1,61 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netcoreapp3.1;netcoreapp3.0;netstandard2.0;net461</TargetFrameworks>
+    <Version>3.1.0</Version>
+    <RepositoryUrl>https://github.com/mihirdilip/aspnetcore-authentication-basic/tree/3.1.0</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/mihirdilip/aspnetcore-authentication-basic/tree/3.1.0</PackageProjectUrl>
+    <PackageTags>aspnetcore, security, authentication, microsoft, microsoft.aspnetcore.authentication, microsoft-aspnetcore-authentication, microsoft.aspnetcore.authentication.basic, microsoft-aspnetcore-authentication-basic, asp-net-core, netstandard, netstandard20, basic-authentication, basicauthentication, dotnetcore, dotnetcore3.1, asp-net-core-basic-authentication, aspnetcore-basic-authentication, asp-net-core-authentication, aspnetcore-authentication, asp, aspnet, basic, authentication-scheme</PackageTags>
+    <PackageReleaseNotes>- Multitarget framework support added
+- Source Link support added
+- Strong Name Key support added
+- SuppressWWWAuthenticateHeader added to configure options
+- Events added to configure options
+    </PackageReleaseNotes>
+    <Description>Easy to use and very light weight Microsoft style Basic Scheme Authentication implementation for ASP.NET Core.</Description>
     <Authors>Mihir Dilip</Authors>
     <Company>Mihir Dilip</Company>
-    <Description>Easy to use and very light weight Microsoft style Basic Scheme Authentication Implementation for ASP.NET Core.</Description>
-    <RepositoryUrl>https://github.com/mihirdilip/aspnetcore-authentication-basic/tree/2.2.0</RepositoryUrl>
+    <Copyright>Copyright (c) 2020 Mihir Dilip</Copyright>    
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageProjectUrl>https://github.com/mihirdilip/aspnetcore-authentication-basic/tree/2.2.0</PackageProjectUrl>
-    <Version>2.2.0</Version>
-    <Copyright>Copyright (c) 2019 Mihir Dilip</Copyright>
-    <PackageLicenseUrl></PackageLicenseUrl>
-	<RepositoryType>GitHub</RepositoryType>
+    <Title>$(AssemblyName)</Title>
+    <RepositoryType>git</RepositoryType>
     <PackageIconUrl />
-    <PackageTags>aspnetcore, security, authentication, microsoft, microsoft.aspnetcore.authentication, microsoft-aspnetcore-authentication, microsoft.aspnetcore.authentication.basic, microsoft-aspnetcore-authentication-basic, asp-net-core, netstandard, netstandard20, basic-authentication, basicauthentication, dotnetcore, asp-net-core-basic-authentication, aspnetcore-basic-authentication, asp-net-core-authentication, aspnetcore-authentication, asp, aspnet, basic, authentication-scheme</PackageTags>
     <NeutralLanguage />
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes></PackageReleaseNotes>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-    <RootNamespace>AspNetCore.Authentication.Basic</RootNamespace>
-    <PackageId>AspNetCore.Authentication.Basic</PackageId>
-    <Product>AspNetCore.Authentication.Basic</Product>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\Mihir.AspNetCore.Authentication.Basic.xml</DocumentationFile>
+  <PropertyGroup>
+    <!-- Strong Name Key -->
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(SolutionDir)key.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Source Link - https://github.com/dotnet/sourcelink -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- Source Link - https://github.com/dotnet/sourcelink -->
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\$(TargetFramework)\AspNetCore.Authentication.Basic.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'net461'">
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0' Or '$(TargetFramework)' == 'netcoreapp3.1'">
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <ItemGroup>

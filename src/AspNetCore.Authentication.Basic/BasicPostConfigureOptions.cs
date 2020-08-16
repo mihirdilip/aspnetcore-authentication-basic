@@ -6,16 +6,21 @@ using System;
 
 namespace AspNetCore.Authentication.Basic
 {
-	/// <summary>
-	/// This post configure options checks whether the required option property <see cref="BasicOptions.Realm" /> is set or not on <see cref="BasicOptions"/>.
-	/// </summary>
-	class BasicPostConfigureOptions : IPostConfigureOptions<BasicOptions>
+    /// <summary>
+    /// This post configure options checks whether the required option property <see cref="BasicOptions.Realm" /> is set or not on <see cref="BasicOptions"/>.
+    /// </summary>
+    internal class BasicPostConfigureOptions : IPostConfigureOptions<BasicOptions>
 	{
 		public void PostConfigure(string name, BasicOptions options)
 		{
-			if (string.IsNullOrWhiteSpace(options.Realm))
+			if (!options.SuppressWWWAuthenticateHeader && string.IsNullOrWhiteSpace(options.Realm))
 			{
 				throw new InvalidOperationException("Realm must be set in basic options");
+			}
+
+			if (options.Events?.OnValidateCredentials == null && options.EventsType == null && options.BasicUserValidationServiceType == null)
+            {
+				throw new InvalidOperationException($"Either {nameof(options.Events.OnValidateCredentials)} delegate on configure options {nameof(options.Events)} should be set or an implementaion of {nameof(IBasicUserValidationService)} should be registered in the dependency container.");
 			}
 		}
 	}

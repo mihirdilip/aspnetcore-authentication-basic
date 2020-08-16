@@ -5,11 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <Compile Remove="wwwroot\**" />
+    <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="wwwroot\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNetCore.Authentication.Basic" Version="2.2.0" />
+    <PackageReference Include="AspNetCore.Authentication.Basic" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />
   </ItemGroup>
 
@@ -18,5 +21,9 @@
   </ItemGroup>
 
   <Import Project="..\SampleWebApi.Shared\SampleWebApi.Shared.projitems" Label="Shared" />
+  
+  <!--<ItemGroup>
+    <ProjectReference Include="..\..\src\AspNetCore.Authentication.Basic\AspNetCore.Authentication.Basic.csproj" />
+  </ItemGroup>-->
 
 </Project>

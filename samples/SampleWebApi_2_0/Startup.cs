@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SampleWebApi.Repositories;
@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace SampleWebApi_2_2
+namespace SampleWebApi
 {
     public class Startup
 	{
@@ -148,16 +148,15 @@ namespace SampleWebApi_2_2
                 });
 
             services.AddMvc(options =>
-			{
-				// ALWAYS USE HTTPS (SSL) protocol in production when using Basic authentication.
-				//options.Filters.Add<RequireHttpsAttribute>();
+				{
+					// ALWAYS USE HTTPS (SSL) protocol in production when using Basic authentication.
+					//options.Filters.Add<RequireHttpsAttribute>();
 
-				// All the requests will need to be authorized. 
-				// Alternatively, add [Authorize] attribute to Controller or Action Method where necessary.
-				options.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build()));
-			})
-				//.AddXmlSerializerFormatters()   // To enable XML along with JSON
-				.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+					// All the requests will need to be authorized. 
+					// Alternatively, add [Authorize] attribute to Controller or Action Method where necessary.
+					options.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build()));
+				}
+			); //.AddXmlSerializerFormatters();	// To enable XML along with JSON
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -169,11 +168,10 @@ namespace SampleWebApi_2_2
 			}
 			else
 			{
-				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-				app.UseHsts();
+				// ALWAYS USE HTTPS (SSL) protocol in production when using Basic authentication.
+				app.UseRewriter(new RewriteOptions().AddRedirectToHttpsPermanent());
 			}
 
-			app.UseHttpsRedirection();
 			app.UseAuthentication();
 			app.UseMvc();
 		}
