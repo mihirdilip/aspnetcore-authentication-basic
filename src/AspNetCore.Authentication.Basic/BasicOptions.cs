@@ -11,6 +11,9 @@ namespace AspNetCore.Authentication.Basic
     /// </summary>
     public class BasicOptions : AuthenticationSchemeOptions
 	{
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public BasicOptions()
         {
             Events = new BasicEvents();

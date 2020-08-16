@@ -26,7 +26,6 @@ namespace AspNetCore.Authentication.Basic
 		/// <param name="logger"></param>
 		/// <param name="encoder"></param>
 		/// <param name="clock"></param>
-		/// <param name="basicUserValidationService"></param>
 		public BasicHandler(IOptionsMonitor<BasicOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock) 
 			: base(options, logger, encoder, clock)
 		{

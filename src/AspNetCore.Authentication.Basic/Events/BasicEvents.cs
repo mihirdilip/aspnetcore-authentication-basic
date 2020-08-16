@@ -17,7 +17,7 @@ namespace AspNetCore.Authentication.Basic
         /// <remarks>
         /// You must provide a delegate for this property for authentication to occur.
         /// In your delegate you should either call context.ValidationSucceeded() which will handle construction of authentication principal from the user details which will be assiged the context.Principal property and call context.Success(),
-        /// or construct an authentication principal from the user details & attach it to the context.Principal property and finally call context.Success() method.
+        /// or construct an authentication principal from the user details &amp; attach it to the context.Principal property and finally call context.Success() method.
         /// If only context.Principal property set without calling context.Success() method then, Success() method is automaticalled called.
         /// </remarks>
         public Func<BasicValidateCredentialsContext, Task> OnValidateCredentials { get; set; }

@@ -40,7 +40,7 @@ namespace AspNetCore.Authentication.Basic
         public string Password { get; }
 
         /// <summary>
-        /// Calling this method will handle construction of authentication principal (<see cref="ClaimsPrincipal">) from the user details 
+        /// Calling this method will handle construction of authentication principal (<see cref="ClaimsPrincipal" />) from the user details 
         /// which will be assiged to the <see cref="ResultContext{TOptions}.Principal"/> property 
         /// and <see cref="ResultContext{TOptions}.Success"/> method will also be called.
         /// </summary>
