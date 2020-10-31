@@ -16,7 +16,7 @@ namespace AspNetCore.Authentication.Basic
 	{
 		/// <summary>
 		/// Adds basic authentication scheme to the project. 
-		/// <see cref="BasicEvents.OnValidateCredentials"/> delegate must be set on the <see cref="BasicOptions.Events"/> if an implementation of <see cref="IBasicUserValidationService"/> is not registered in the dependency container.
+		/// <see cref="BasicEvents.OnValidateCredentials"/> delegate must be set on the <see cref="BasicOptions.Events"/>.
 		/// </summary>
 		/// <param name="builder"></param>
 		/// <returns>The instance of <see cref="AuthenticationBuilder"/></returns>
@@ -25,7 +25,7 @@ namespace AspNetCore.Authentication.Basic
 
 		/// <summary>
 		/// Adds basic authentication scheme to the project. 
-		/// <see cref="BasicEvents.OnValidateCredentials"/> delegate must be set on the <see cref="BasicOptions.Events"/> if an implementation of <see cref="IBasicUserValidationService"/> is not registered in the dependency container.
+		/// <see cref="BasicEvents.OnValidateCredentials"/> delegate must be set on the <see cref="BasicOptions.Events"/>.
 		/// </summary>
 		/// <param name="builder"></param>
 		/// <param name="authenticationScheme">The authentication scheme.</param>
@@ -35,7 +35,7 @@ namespace AspNetCore.Authentication.Basic
 
 		/// <summary>
 		/// Adds basic authentication scheme to the project. 
-		/// <see cref="BasicEvents.OnValidateCredentials"/> delegate must be set on the Events property on <paramref name="configureOptions"/> if an implementation of <see cref="IBasicUserValidationService"/> is not registered in the dependency container.
+		/// <see cref="BasicEvents.OnValidateCredentials"/> delegate must be set on the Events property on <paramref name="configureOptions"/>.
 		/// </summary>
 		/// <param name="builder"></param>
 		/// <param name="configureOptions">The configure options.</param>
@@ -45,7 +45,7 @@ namespace AspNetCore.Authentication.Basic
 
 		/// <summary>
 		/// Adds basic authentication scheme to the project. 
-		/// <see cref="BasicEvents.OnValidateCredentials"/> delegate must be set on the Events property on <paramref name="configureOptions"/> if an implementation of <see cref="IBasicUserValidationService"/> is not registered in the dependency container.
+		/// <see cref="BasicEvents.OnValidateCredentials"/> delegate must be set on the Events property on <paramref name="configureOptions"/>.
 		/// </summary>
 		/// <param name="builder"></param>
 		/// <param name="authenticationScheme">The authentication scheme.</param>
@@ -56,7 +56,7 @@ namespace AspNetCore.Authentication.Basic
 
 		/// <summary>
 		/// Adds basic authentication scheme to the project. 
-		/// <see cref="BasicEvents.OnValidateCredentials"/> delegate must be set on the Events property on <paramref name="configureOptions"/> if an implementation of <see cref="IBasicUserValidationService"/> is not registered in the dependency container.
+		/// <see cref="BasicEvents.OnValidateCredentials"/> delegate must be set on the Events property on <paramref name="configureOptions"/>.
 		/// </summary>
 		/// <param name="builder"></param>
 		/// <param name="authenticationScheme">The authentication scheme.</param>

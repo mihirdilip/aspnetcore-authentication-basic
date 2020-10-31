@@ -196,21 +196,28 @@ namespace AspNetCore.Authentication.Basic
 
 		private async Task<bool> ValidateUsingBasicUserValidationServiceAsync(string username, string password)
         {
-			var basicUserValidationService = Context.RequestServices.GetService<IBasicUserValidationService>();
+			IBasicUserValidationService basicUserValidationService = null;
+			if (Options.BasicUserValidationServiceType != null)
+			{
+				basicUserValidationService = ActivatorUtilities.GetServiceOrCreateInstance(Context.RequestServices, Options.BasicUserValidationServiceType) as IBasicUserValidationService;
+			}
+
 			if (basicUserValidationService == null)
 			{
-				if (Options.BasicUserValidationServiceType != null)
-				{
-					basicUserValidationService = Context.RequestServices.GetService(Options.BasicUserValidationServiceType) as IBasicUserValidationService;
-				}
+				throw new InvalidOperationException($"Either {nameof(Options.Events.OnValidateCredentials)} delegate on configure options {nameof(Options.Events)} should be set or use an extention method with type parameter of type {nameof(IBasicUserValidationService)}.");
+			}
 
-				if (basicUserValidationService == null)
+			try
+			{
+				return await basicUserValidationService.IsValidAsync(username, password).ConfigureAwait(false);
+			}
+			finally
+			{
+				if (basicUserValidationService is IDisposable disposableBasicUserValidationService)
 				{
-					throw new InvalidOperationException($"Either {nameof(Options.Events.OnValidateCredentials)} delegate on configure options {nameof(Options.Events)} should be set or an implementaion of {nameof(IBasicUserValidationService)} should be registered in the dependency container.");
+					disposableBasicUserValidationService.Dispose();
 				}
 			}
-			
-			return await basicUserValidationService.IsValidAsync(username, password).ConfigureAwait(false);
 		}
 
 		private BasicCredentials DecodeBasicCredentials(string credentials)

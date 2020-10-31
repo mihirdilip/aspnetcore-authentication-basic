@@ -20,7 +20,7 @@ namespace AspNetCore.Authentication.Basic
 
 			if (options.Events?.OnValidateCredentials == null && options.EventsType == null && options.BasicUserValidationServiceType == null)
             {
-				throw new InvalidOperationException($"Either {nameof(options.Events.OnValidateCredentials)} delegate on configure options {nameof(options.Events)} should be set or an implementaion of {nameof(IBasicUserValidationService)} should be registered in the dependency container.");
+				throw new InvalidOperationException($"Either {nameof(BasicOptions.Events.OnValidateCredentials)} delegate on configure options {nameof(BasicOptions.Events)} should be set or use an extention method with type parameter of type {nameof(IBasicUserValidationService)}.");
 			}
 		}
 	}
