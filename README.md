@@ -52,10 +52,10 @@ public class Startup
 		services.AddControllers();
 
 		//// By default, authentication is not challenged for every request which is ASP.NET Core's default intended behaviour.
-		//// So to challenge authentication for every requests please use below option instead of above services.AddControllers().
-		//services.AddControllers(options => 
+		//// So to challenge authentication for every requests please use below FallbackPolicy option.
+		//services.AddAuthorization(options =>
 		//{
-		//	options.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build()));
+		//	options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 		//});
 	}
 
@@ -153,6 +153,10 @@ Default value is false.
 When set to true, it will NOT return WWW-Authenticate response header when challenging un-authenticated requests.  
 When set to false, it will return WWW-Authenticate response header when challenging un-authenticated requests.
 
+#### IgnoreAuthenticationIfAllowAnonymous
+Default value is false.  
+If set to true, it checks if AllowAnonymous filter on controller action or metadata on the endpoint which, if found, it does not try to authenticate the request.
+
 #### Events
 The object provided by the application to process events raised by the basic authentication middleware.  
 The application may implement the interface fully, or it may create an instance of BasicEvents and assign delegates only to the events it wants to process.
@@ -187,9 +191,9 @@ Please note that, by default, with ASP.NET Core, all the requests are not challe
 However, if you want all the requests to challenge authentication by default, depending on what you are using, you can add the below options line to *ConfigureServices* method on *Startup* class.
 
 ```C#
-services.AddControllers(options => 
-{ 
-    options.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build()));
+services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 });
 
 // OR
