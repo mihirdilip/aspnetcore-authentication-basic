@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace SampleWebApi_3_1
+namespace SampleWebApi_5_0
 {
     public class Startup
     {
