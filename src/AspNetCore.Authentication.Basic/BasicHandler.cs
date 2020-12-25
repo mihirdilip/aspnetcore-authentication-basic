@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -26,7 +27,7 @@ namespace AspNetCore.Authentication.Basic
 		/// <param name="logger"></param>
 		/// <param name="encoder"></param>
 		/// <param name="clock"></param>
-		public BasicHandler(IOptionsMonitor<BasicOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock) 
+		public BasicHandler(IOptionsMonitor<BasicOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
 			: base(options, logger, encoder, clock)
 		{
 		}
@@ -36,7 +37,7 @@ namespace AspNetCore.Authentication.Basic
 		/// <summary>
 		/// Get or set <see cref="BasicEvents"/>.
 		/// </summary>
-        protected new BasicEvents Events { get => (BasicEvents)base.Events; set => base.Events = value; }
+		protected new BasicEvents Events { get => (BasicEvents)base.Events; set => base.Events = value; }
 
 		/// <summary>
 		/// Create an instance of <see cref="BasicEvents"/>.
@@ -50,6 +51,12 @@ namespace AspNetCore.Authentication.Basic
 		/// <returns><see cref="AuthenticateResult"/></returns>
 		protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
 		{
+			if (IgnoreAuthenticationIfAllowAnonymous())
+			{
+				Logger.LogInformation("AllowAnonymous found on the endpoint so request was not authenticated.");
+				return AuthenticateResult.NoResult();
+			}
+
 			if (!Request.Headers.ContainsKey(HeaderNames.Authorization))
 			{
 				Logger.LogInformation("No 'Authorization' header found in the request.");
@@ -61,7 +68,7 @@ namespace AspNetCore.Authentication.Basic
 				Logger.LogInformation("No valid 'Authorization' header found in the request.");
 				return AuthenticateResult.NoResult();
 			}
-			
+
 			if (!headerValue.Scheme.Equals(BasicDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase))
 			{
 				Logger.LogInformation($"'Authorization' header found but the scheme is not a '{BasicDefaults.AuthenticationScheme}' scheme.");
@@ -69,25 +76,25 @@ namespace AspNetCore.Authentication.Basic
 			}
 
 			BasicCredentials credentials;
-            try
-            {
+			try
+			{
 				credentials = DecodeBasicCredentials(headerValue.Parameter);
 			}
-            catch (Exception exception)
-            {
+			catch (Exception exception)
+			{
 				Logger.LogError(exception, "Error decoding credentials from header value.");
 				return AuthenticateResult.Fail("Error decoding credentials from header value." + Environment.NewLine + exception.Message);
 
 			}
-            
+
 			try
 			{
 				var validateCredentialsResult = await RaiseAndHandleEventValidateCredentialsAsync(credentials).ConfigureAwait(false);
 				if (validateCredentialsResult != null)
-                {
+				{
 					// If result is set then return it.
 					return validateCredentialsResult;
-                }
+				}
 
 				// Validate using the implementation of IBasicUserValidationService.
 				var hasValidationSucceeded = await ValidateUsingBasicUserValidationServiceAsync(credentials.Username, credentials.Password).ConfigureAwait(false);
@@ -95,23 +102,23 @@ namespace AspNetCore.Authentication.Basic
 					? await RaiseAndHandleAuthenticationSucceededAsync(credentials).ConfigureAwait(false)
 					: AuthenticateResult.Fail("Invalid username or password.");
 			}
-            catch (Exception exception)
-            {
+			catch (Exception exception)
+			{
 				var authenticationFailedContext = new BasicAuthenticationFailedContext(Context, Scheme, Options, exception);
 				await Events.AuthenticationFailedAsync(authenticationFailedContext).ConfigureAwait(false);
-				
+
 				if (authenticationFailedContext.Result != null)
 				{
 					return authenticationFailedContext.Result;
 				}
-				
+
 				throw;
 			}
 		}
 
 		/// <inheritdoc/>
-        protected override async Task HandleForbiddenAsync(AuthenticationProperties properties)
-        {
+		protected override async Task HandleForbiddenAsync(AuthenticationProperties properties)
+		{
 			// Raise handle forbidden event.
 			var handleForbiddenContext = new BasicHandleForbiddenContext(Context, Scheme, Options, properties);
 			await Events.HandleForbiddenAsync(handleForbiddenContext).ConfigureAwait(false);
@@ -121,7 +128,7 @@ namespace AspNetCore.Authentication.Basic
 			}
 
 			await base.HandleForbiddenAsync(properties);
-        }
+		}
 
 		/// <summary>
 		/// Handles the un-authenticated requests. 
@@ -150,7 +157,7 @@ namespace AspNetCore.Authentication.Basic
 		}
 
 		private async Task<AuthenticateResult> RaiseAndHandleEventValidateCredentialsAsync(BasicCredentials credentials)
-        {
+		{
 			var validateCredentialsContext = new BasicValidateCredentialsContext(Context, Scheme, Options, credentials.Username, credentials.Password);
 			await Events.ValidateCredentialsAsync(validateCredentialsContext).ConfigureAwait(false);
 
@@ -170,7 +177,7 @@ namespace AspNetCore.Authentication.Basic
 		}
 
 		private async Task<AuthenticateResult> RaiseAndHandleAuthenticationSucceededAsync(BasicCredentials credentials)
-        {
+		{
 			// ..create claims principal.
 			var principal = BasicUtils.BuildClaimsPrincipal(credentials.Username, Scheme.Name, ClaimsIssuer);
 
@@ -194,8 +201,18 @@ namespace AspNetCore.Authentication.Basic
 			return AuthenticateResult.Fail("No authenticated prinicipal set.");
 		}
 
+		private bool IgnoreAuthenticationIfAllowAnonymous()
+		{
+#if (NET461 || NETSTANDARD2_0)
+			return false;
+#else
+			return Options.IgnoreAuthenticationIfAllowAnonymous
+				&& Context.GetEndpoint()?.Metadata?.GetMetadata<Microsoft.AspNetCore.Authorization.IAllowAnonymous>() != null;
+#endif
+		}
+
 		private async Task<bool> ValidateUsingBasicUserValidationServiceAsync(string username, string password)
-        {
+		{
 			IBasicUserValidationService basicUserValidationService = null;
 			if (Options.BasicUserValidationServiceType != null)
 			{
@@ -221,7 +238,7 @@ namespace AspNetCore.Authentication.Basic
 		}
 
 		private BasicCredentials DecodeBasicCredentials(string credentials)
-        {
+		{
 			string username;
 			string password;
 			try
@@ -245,25 +262,25 @@ namespace AspNetCore.Authentication.Basic
 			{
 				throw new Exception("Username cannot be empty.");
 			}
-			
+
 			if (password == null)
 			{
 				password = string.Empty;
 			}
-			
+
 			return new BasicCredentials(username, password);
 		}
 
 		private struct BasicCredentials
-        {
-            public BasicCredentials(string username, string password)
-            {
-                Username = username;
-                Password = password;
-            }
+		{
+			public BasicCredentials(string username, string password)
+			{
+				Username = username;
+				Password = password;
+			}
 
-            public string Username { get; }
-            public string Password { get; }
-        }
+			public string Username { get; }
+			public string Password { get; }
+		}
 	}
 }
