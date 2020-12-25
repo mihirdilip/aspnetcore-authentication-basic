@@ -48,6 +48,9 @@ namespace SampleWebApi_3_1
                     //// Optional option to suppress the browser login dialog for ajax calls.
                     //options.SuppressWWWAuthenticateHeader = true;
 
+                    //// Optional option to ignore authentication if AllowAnonumous metadata/filter attribute is added to an endpoint.
+                    //options.IgnoreAuthenticationIfAllowAnonymous = true;
+
                     //// Optional events to override the basic original logic with custom logic.
                     //// Only use this if you know what you are doing at your own risk. Any of the events can be assigned. 
                     options.Events = new BasicEvents
@@ -149,13 +152,19 @@ namespace SampleWebApi_3_1
 
             services.AddControllers(options =>
             {
-                // ALWAYS USE HTTPS (SSL) protocol in production when using Basic authentication.
+                // ALWAYS USE HTTPS (SSL) protocol in production when using ApiKey authentication.
                 //options.Filters.Add<RequireHttpsAttribute>();
 
-                // All the requests will need to be authorized. 
-                // Alternatively, add [Authorize] attribute to Controller or Action Method where necessary.
-                options.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build()));
             }); //.AddXmlSerializerFormatters()   // To enable XML along with JSON;
+
+            // All the requests will need to be authorized. 
+            // Alternatively, add [Authorize] attribute to Controller or Action Method where necessary.
+            services.AddAuthorization(options =>
+            {
+                options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -170,7 +179,7 @@ namespace SampleWebApi_3_1
 
             app.UseHttpsRedirection();
             app.UseRouting();
-            
+
             app.UseAuthentication();    // NOTE: DEFAULT TEMPLATE DOES NOT HAVE THIS, THIS LINE IS REQUIRED AND HAS TO BE ADDED!!!
 
             app.UseAuthorization();
