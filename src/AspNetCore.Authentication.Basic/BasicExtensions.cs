@@ -9,10 +9,10 @@ using System;
 
 namespace AspNetCore.Authentication.Basic
 {
-    /// <summary>
-    /// Extension methods for basic authentication.
-    /// </summary>
-    public static class BasicExtensions
+	/// <summary>
+	/// Extension methods for basic authentication.
+	/// </summary>
+	public static class BasicExtensions
 	{
 		/// <summary>
 		/// Adds basic authentication scheme to the project. 

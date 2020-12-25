@@ -7,10 +7,10 @@ using System.Security.Claims;
 
 namespace AspNetCore.Authentication.Basic
 {
-    /// <summary>
-    /// Utility class.
-    /// </summary>
-    internal static class BasicUtils
+	/// <summary>
+	/// Utility class.
+	/// </summary>
+	internal static class BasicUtils
 	{
 		/// <summary>
 		/// Builds Claims Principal from the provided information. 

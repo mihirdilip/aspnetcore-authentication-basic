@@ -37,17 +37,17 @@ public class Startup
 	public void ConfigureServices(IServiceCollection services)
 	{
 		// Add the Basic scheme authentication here..
-        // It requires Realm to be set in the options if SuppressWWWAuthenticateHeader is not set.
-        // If an implementation of IBasicUserValidationService interface is registered in the dependency register as well as OnValidateCredentials delegete on options.Events is also set then this delegate will be used instead of an implementation of IBasicUserValidationService.
-        services.AddAuthentication(BasicDefaults.AuthenticationScheme)
+		// It requires Realm to be set in the options if SuppressWWWAuthenticateHeader is not set.
+		// If an implementation of IBasicUserValidationService interface is registered in the dependency register as well as OnValidateCredentials delegete on options.Events is also set then this delegate will be used instead of an implementation of IBasicUserValidationService.
+		services.AddAuthentication(BasicDefaults.AuthenticationScheme)
 
-            // The below AddBasic without type parameter will require OnValidateCredentials delegete on options.Events to be set unless an implementation of IBasicUserValidationService interface is registered in the dependency register.
-            // Please note if both the delgate and validation server are set then the delegate will be used instead of BasicUserValidationService.
-            //.AddBasic(options => { options.Realm = "My App"; });
+			// The below AddBasic without type parameter will require OnValidateCredentials delegete on options.Events to be set unless an implementation of IBasicUserValidationService interface is registered in the dependency register.
+			// Please note if both the delgate and validation server are set then the delegate will be used instead of BasicUserValidationService.
+			//.AddBasic(options => { options.Realm = "My App"; });
 
-            // The below AddBasic with type parameter will add the BasicUserValidationService to the dependency register. 
-            // Please note if OnValidateCredentials delegete on options.Events is also set then this delegate will be used instead of BasicUserValidationService.
-            .AddBasic<BasicUserValidationService>(options => { options.Realm = "My App"; });
+			// The below AddBasic with type parameter will add the BasicUserValidationService to the dependency register. 
+			// Please note if OnValidateCredentials delegete on options.Events is also set then this delegate will be used instead of BasicUserValidationService.
+			.AddBasic<BasicUserValidationService>(options => { options.Realm = "My App"; });
 
 		services.AddControllers();
 
@@ -86,17 +86,17 @@ public class Startup
 	public void ConfigureServices(IServiceCollection services)
 	{
 		// Add the Basic scheme authentication here..
-        // It requires Realm to be set in the options if SuppressWWWAuthenticateHeader is not set.
-        // If an implementation of IBasicUserValidationService interface is registered in the dependency register as well as OnValidateCredentials delegete on options.Events is also set then this delegate will be used instead of an implementation of IBasicUserValidationService.
-        services.AddAuthentication(BasicDefaults.AuthenticationScheme)
+		// It requires Realm to be set in the options if SuppressWWWAuthenticateHeader is not set.
+		// If an implementation of IBasicUserValidationService interface is registered in the dependency register as well as OnValidateCredentials delegete on options.Events is also set then this delegate will be used instead of an implementation of IBasicUserValidationService.
+		services.AddAuthentication(BasicDefaults.AuthenticationScheme)
 
-            // The below AddBasic without type parameter will require OnValidateCredentials delegete on options.Events to be set unless an implementation of IBasicUserValidationService interface is registered in the dependency register.
-            // Please note if both the delgate and validation server are set then the delegate will be used instead of BasicUserValidationService.
-            //.AddBasic(options => { options.Realm = "My App"; });
+			// The below AddBasic without type parameter will require OnValidateCredentials delegete on options.Events to be set unless an implementation of IBasicUserValidationService interface is registered in the dependency register.
+			// Please note if both the delgate and validation server are set then the delegate will be used instead of BasicUserValidationService.
+			//.AddBasic(options => { options.Realm = "My App"; });
 
-            // The below AddBasic with type parameter will add the BasicUserValidationService to the dependency register. 
-            // Please note if OnValidateCredentials delegete on options.Events is also set then this delegate will be used instead of BasicUserValidationService.
-            .AddBasic<BasicUserValidationService>(options => { options.Realm = "My App"; });
+			// The below AddBasic with type parameter will add the BasicUserValidationService to the dependency register. 
+			// Please note if OnValidateCredentials delegete on options.Events is also set then this delegate will be used instead of BasicUserValidationService.
+			.AddBasic<BasicUserValidationService>(options => { options.Realm = "My App"; });
 
 		services.AddMvc();
 
@@ -168,7 +168,7 @@ The application may implement the interface fully, or it may create an instance 
 
 - ##### OnAuthenticationSucceeded  
 	A delegate assigned to this property will be invoked when the authentication succeeds. It will not be called if OnValidateCredentials delegate is assigned.  
-    It can be used for adding claims, headers, etc to the response.
+	It can be used for adding claims, headers, etc to the response.
 
 - ##### OnAuthenticationFailed  
 	A delegate assigned to this property will be invoked when the authentication fails.
@@ -176,7 +176,7 @@ The application may implement the interface fully, or it may create an instance 
 - ##### OnHandleChallenge  
 	A delegate assigned to this property will be invoked before a challenge is sent back to the caller when handling unauthorized response.  
 	Only use this if you know what you are doing and if you want to use custom implementation.  Set the delegate to deal with 401 challenge concerns, if an authentication scheme in question deals an authentication interaction as part of it's request flow. (like adding a response header, or changing the 401 result to 302 of a login page or external sign-in location.)  
-    Call context.Handled() at the end so that any default logic for this challenge will be skipped.
+	Call context.Handled() at the end so that any default logic for this challenge will be skipped.
 
 - ##### OnHandleForbidden  
 	A delegate assigned to this property will be invoked if Authorization fails and results in a Forbidden response.  
@@ -193,14 +193,14 @@ However, if you want all the requests to challenge authentication by default, de
 ```C#
 services.AddAuthorization(options =>
 {
-    options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+	options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 });
 
 // OR
 
 services.AddMvc(options => 
 {
-    options.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build()));
+	options.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build()));
 });
 ```
   
@@ -209,10 +209,10 @@ If you are not using MVC but, using Endpoints on ASP.NET Core 3.0 or newer, you 
 ```C#
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapGet("/", async context =>
-    {
-        await context.Response.WriteAsync("Hello World!");
-    }).RequireAuthorization();  // NOTE THIS HERE!!!! 
+	endpoints.MapGet("/", async context =>
+	{
+		await context.Response.WriteAsync("Hello World!");
+	}).RequireAuthorization();  // NOTE THIS HERE!!!! 
 });
 ``` 
 

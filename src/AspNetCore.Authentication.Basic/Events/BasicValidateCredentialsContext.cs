@@ -22,7 +22,7 @@ namespace AspNetCore.Authentication.Basic
         /// <param name="options"></param>
         /// <param name="username"></param>
         /// <param name="password"></param>
-        public BasicValidateCredentialsContext(HttpContext context, AuthenticationScheme scheme, BasicOptions options, string username, string password) 
+        public BasicValidateCredentialsContext(HttpContext context, AuthenticationScheme scheme, BasicOptions options, string username, string password)
             : base(context, scheme, options)
         {
             Username = username;
@@ -56,7 +56,7 @@ namespace AspNetCore.Authentication.Basic
         /// otherwise, <see cref="ResultContext{TOptions}.Fail(string)"/> method will be called.
         /// </summary>
         /// <param name="failureMessage">(Optional) The failure message.</param>
-        public void ValidationFailed(string failureMessage = null) 
+        public void ValidationFailed(string failureMessage = null)
         {
             if (string.IsNullOrWhiteSpace(failureMessage))
             {

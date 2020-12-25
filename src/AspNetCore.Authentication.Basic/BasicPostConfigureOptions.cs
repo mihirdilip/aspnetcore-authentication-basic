@@ -6,10 +6,10 @@ using System;
 
 namespace AspNetCore.Authentication.Basic
 {
-    /// <summary>
-    /// This post configure options checks whether the required option property <see cref="BasicOptions.Realm" /> is set or not on <see cref="BasicOptions"/>.
-    /// </summary>
-    internal class BasicPostConfigureOptions : IPostConfigureOptions<BasicOptions>
+	/// <summary>
+	/// This post configure options checks whether the required option property <see cref="BasicOptions.Realm" /> is set or not on <see cref="BasicOptions"/>.
+	/// </summary>
+	internal class BasicPostConfigureOptions : IPostConfigureOptions<BasicOptions>
 	{
 		public void PostConfigure(string name, BasicOptions options)
 		{
@@ -19,7 +19,7 @@ namespace AspNetCore.Authentication.Basic
 			}
 
 			if (options.Events?.OnValidateCredentials == null && options.EventsType == null && options.BasicUserValidationServiceType == null)
-            {
+			{
 				throw new InvalidOperationException($"Either {nameof(BasicOptions.Events.OnValidateCredentials)} delegate on configure options {nameof(BasicOptions.Events)} should be set or use an extention method with type parameter of type {nameof(IBasicUserValidationService)}.");
 			}
 		}
