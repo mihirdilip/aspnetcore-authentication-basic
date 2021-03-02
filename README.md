@@ -132,18 +132,23 @@ using AspNetCore.Authentication.Basic;
 public class BasicUserValidationService : IBasicUserValidationService
 {
 	private readonly ILogger<BasicUserValidationService> _logger;
-	
-	public BasicUserValidationService(ILogger<BasicUserValidationService> logger)
+	private readonly IUserRepository _userRepository;
+
+	public BasicUserValidationService(ILogger<BasicUserValidationService> logger, IUserRepository userRepository)
 	{
 		_logger = logger;
+		_userRepository = userRepository;
 	}
 
-	public Task<bool> IsValidAsync(string username, string password)
+	public async Task<bool> IsValidAsync(string username, string password)
 	{
 		try
 		{
-			// write your implementation here and return true or false depending on the validation..
-			return Task.FromResult(true);
+			// NOTE: DO NOT USE THIS IMPLEMENTATION. THIS IS FOR DEMO PURPOSE ONLY
+			// Write your implementation here and return true or false depending on the validation..
+			var user = await _userRepository.GetUserByUsername(username);
+			var isValid = user != null && user.Password == password;
+			return isValid;
 		}
 		catch (Exception e)
 		{
@@ -164,8 +169,8 @@ Required to be set if SuppressWWWAuthenticateHeader is not set to true. It is us
    
 ### SuppressWWWAuthenticateHeader
 Default value is false.  
-When set to true, it will NOT return WWW-Authenticate response header when challenging un-authenticated requests.  
-When set to false, it will return WWW-Authenticate response header when challenging un-authenticated requests.
+If set to true, it will NOT return WWW-Authenticate response header when challenging un-authenticated requests.  
+If set to false, it will return WWW-Authenticate response header when challenging un-authenticated requests.
 
 ### IgnoreAuthenticationIfAllowAnonymous (available on ASP.NET Core 3.0 onwards)
 Default value is false.  
@@ -177,7 +182,7 @@ The application may implement the interface fully, or it may create an instance 
 - #### OnValidateCredentials
 	A delegate assigned to this property will be invoked just before validating credentials.  
 	You must provide a delegate for this property for authentication to occur.  
-	In your delegate you should either call context.ValidationSucceeded() which will handle construction of authentication principal from the user details which will be assiged the context.Principal property and call context.Success(), or construct an authentication principal from the user details & attach it to the context.Principal property and finally call context.Success() method.  
+	In your delegate you should either call context.ValidationSucceeded() which will handle construction of authentication claims principal from the user details which will be assiged the context.Principal property and calls context.Success(), or construct an authentication claims principal from the user details and assign it to the context.Principal property and finally call context.Success() method.  
 	If only context.Principal property set without calling context.Success() method then, Success() method is automaticalled called.
 
 - #### OnAuthenticationSucceeded  
@@ -185,7 +190,7 @@ The application may implement the interface fully, or it may create an instance 
 	It can be used for adding claims, headers, etc to the response.
 
 - #### OnAuthenticationFailed  
-	A delegate assigned to this property will be invoked when the authentication fails.
+	A delegate assigned to this property will be invoked when any unexpected exception is thrown within the library.
 
 - #### OnHandleChallenge  
 	A delegate assigned to this property will be invoked before a challenge is sent back to the caller when handling unauthorized response.  
