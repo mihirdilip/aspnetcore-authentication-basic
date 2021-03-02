@@ -2,17 +2,16 @@
 
   <PropertyGroup>
     <TargetFrameworks>net5.0;netcoreapp3.1;netcoreapp3.0;netstandard2.0;net461</TargetFrameworks>
-    <Version>5.0.0</Version>
+    <Version>5.1.0</Version>
     <RepositoryUrl>https://github.com/mihirdilip/aspnetcore-authentication-basic/tree/$(Version)</RepositoryUrl>
     <PackageProjectUrl>https://github.com/mihirdilip/aspnetcore-authentication-basic/tree/$(Version)</PackageProjectUrl>
     <PackageTags>aspnetcore, security, authentication, microsoft, microsoft.aspnetcore.authentication, microsoft-aspnetcore-authentication, microsoft.aspnetcore.authentication.basic, microsoft-aspnetcore-authentication-basic, asp-net-core, netstandard, netstandard20, basic-authentication, basicauthentication, dotnetcore, dotnetcore3.1, net5, net5.0, asp-net-core-basic-authentication, aspnetcore-basic-authentication, net5-basic-authentication, asp-net-core-authentication, aspnetcore-authentication, net5-authentication, asp, aspnet, basic, authentication-scheme</PackageTags>
-    <PackageReleaseNotes>- .Net 5.0 target framework added
-- IgnoreAuthenticationIfAllowAnonymous added to the BasicOptions from netcoreapp3.0 onwards
+    <PackageReleaseNotes>- Visibility of all the handlers changed to public
     </PackageReleaseNotes>
     <Description>Easy to use and very light weight Microsoft style Basic Scheme Authentication implementation for ASP.NET Core.</Description>
     <Authors>Mihir Dilip</Authors>
     <Company>Mihir Dilip</Company>
-    <Copyright>Copyright (c) 2020 Mihir Dilip</Copyright>    
+    <Copyright>Copyright (c) 2021 Mihir Dilip</Copyright>    
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Title>$(AssemblyName)</Title>
     <RepositoryType>git</RepositoryType>
