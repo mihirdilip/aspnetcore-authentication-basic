@@ -18,7 +18,7 @@ namespace AspNetCore.Authentication.Basic
 	/// <summary>
 	/// Inherited from <see cref="AuthenticationHandler{TOptions}"/> for basic authentication.
 	/// </summary>
-	internal class BasicHandler : AuthenticationHandler<BasicOptions>
+	public class BasicHandler : AuthenticationHandler<BasicOptions>
 	{
 		/// <summary>
 		/// Basic Handler Constructor.
