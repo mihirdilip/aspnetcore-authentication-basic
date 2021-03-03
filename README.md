@@ -300,7 +300,7 @@ public void ConfigureServices(IServiceCollection services)
 ## Release Notes
 | Version | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Notes |
 |---------|-------|
-|5.1.0    | <ul><li>Visibility of all the handlers changed to public</li><li>Tests added</li><li>Readme updated</li><li>Copyright year updated on License</li></ul> |
+|5.1.0    | <ul><li>Visibility of the handler changed to public</li><li>Tests added</li><li>Readme updated</li><li>Copyright year updated on License</li></ul> |
 |5.0.0    | <ul><li>Net 5.0 target framework added</li><li>IgnoreAuthenticationIfAllowAnonymous added to the ApiKeyOptions from netcoreapp3.0 onwards</li></ul> |
 |3.1.1    | <ul><li>Fixed issue with resolving of IBasicUserValidationService implementation when using multiple schemes</li></ul> |
 |3.1.0    | <ul><li>Multitarget framework support added</li><li>Strong Name Key support added</li><li>Source Link support added</li><li>SuppressWWWAuthenticateHeader added to configure options</li><li>Events added to configure options</li></ul> |
