@@ -15,7 +15,7 @@ namespace AspNetCore.Authentication.Basic
 		{
 			if (!options.SuppressWWWAuthenticateHeader && string.IsNullOrWhiteSpace(options.Realm))
 			{
-				throw new InvalidOperationException("Realm must be set in basic options");
+				throw new InvalidOperationException($"{nameof(BasicOptions.Realm)} must be set in {typeof(BasicOptions).Name} when setting up the authentication.");
 			}
 
 			if (options.Events?.OnValidateCredentials == null && options.EventsType == null && options.BasicUserValidationServiceType == null)

@@ -43,6 +43,14 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Unit Testing - To make internal visible to tests -->
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>
+        $(MSBuildProjectName).Tests, PublicKey=0024000004800000940000000602000000240000525341310004000001000100196de3cf1767e4651bd29928a1dfdc149897770adb2439fd0f42a480f0f0c955606d6e6cae87cbdcdfbd1686ec7775789b82fa869387c31dcc740991f3d3d2db407b0a28d772fe343cdf8f1b12ee53bb625aee854f56e0be93f11c307c0dbc54aad277111fc04db0eed2513a20d5663c50412afd34e8c8fb98459d8f4d90e5b6</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\$(TargetFramework)\AspNetCore.Authentication.Basic.xml</DocumentationFile>
   </PropertyGroup>

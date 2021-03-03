@@ -253,9 +253,9 @@ namespace AspNetCore.Authentication.Basic
 				username = usernameAndPasswordSplit[0];
 				password = usernameAndPasswordSplit[1];
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
-				throw new Exception($"Problem decoding '{BasicDefaults.AuthenticationScheme}' scheme credentials.");
+				throw new Exception($"Problem decoding '{BasicDefaults.AuthenticationScheme}' scheme credentials.", e);
 			}
 
 			if (string.IsNullOrWhiteSpace(username))

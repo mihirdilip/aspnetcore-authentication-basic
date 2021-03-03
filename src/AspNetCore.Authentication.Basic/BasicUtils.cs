@@ -8,10 +8,10 @@ using System.Security.Claims;
 
 namespace AspNetCore.Authentication.Basic
 {
-    /// <summary>
-    /// Utility class.
-    /// </summary>
-    internal static class BasicUtils
+	/// <summary>
+	/// Utility class.
+	/// </summary>
+	internal static class BasicUtils
 	{
 		/// <summary>
 		/// Builds Claims Principal from the provided information. 
@@ -30,14 +30,17 @@ namespace AspNetCore.Authentication.Basic
 			var claimsList = new List<Claim>();
 			if (claims != null) claimsList.AddRange(claims);
 
-			if (!claimsList.Any(c => c.Type == ClaimTypes.NameIdentifier))
+			if (!string.IsNullOrWhiteSpace(username))
 			{
-				claimsList.Add(new Claim(ClaimTypes.NameIdentifier, username, ClaimValueTypes.String, claimsIssuer));
-			}
+				if (!claimsList.Any(c => c.Type == ClaimTypes.NameIdentifier))
+				{
+					claimsList.Add(new Claim(ClaimTypes.NameIdentifier, username, ClaimValueTypes.String, claimsIssuer));
+				}
 
-			if (!claimsList.Any(c => c.Type == ClaimTypes.Name))
-			{
-				claimsList.Add(new Claim(ClaimTypes.Name, username, ClaimValueTypes.String, claimsIssuer));
+				if (!claimsList.Any(c => c.Type == ClaimTypes.Name))
+				{
+					claimsList.Add(new Claim(ClaimTypes.Name, username, ClaimValueTypes.String, claimsIssuer));
+				}
 			}
 
 			return new ClaimsPrincipal(new ClaimsIdentity(claimsList, schemeName));
