@@ -18,7 +18,7 @@ namespace AspNetCore.Authentication.Basic
 	/// <summary>
 	/// Inherited from <see cref="AuthenticationHandler{TOptions}"/> for basic authentication.
 	/// </summary>
-	internal class BasicHandler : AuthenticationHandler<BasicOptions>
+	public class BasicHandler : AuthenticationHandler<BasicOptions>
 	{
 		/// <summary>
 		/// Basic Handler Constructor.
@@ -253,9 +253,9 @@ namespace AspNetCore.Authentication.Basic
 				username = usernameAndPasswordSplit[0];
 				password = usernameAndPasswordSplit[1];
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
-				throw new Exception($"Problem decoding '{BasicDefaults.AuthenticationScheme}' scheme credentials.");
+				throw new Exception($"Problem decoding '{BasicDefaults.AuthenticationScheme}' scheme credentials.", e);
 			}
 
 			if (string.IsNullOrWhiteSpace(username))

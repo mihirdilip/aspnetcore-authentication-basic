@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Mihir Dilip. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -24,18 +25,22 @@ namespace AspNetCore.Authentication.Basic
 		/// <returns></returns>
 		internal static ClaimsPrincipal BuildClaimsPrincipal(string username, string schemeName, string claimsIssuer, IEnumerable<Claim> claims = null)
 		{
-			var claimsList = new List<Claim>();
+			if (string.IsNullOrWhiteSpace(schemeName)) throw new ArgumentNullException(nameof(schemeName));
 
+			var claimsList = new List<Claim>();
 			if (claims != null) claimsList.AddRange(claims);
 
-			if (!claimsList.Any(c => c.Type == ClaimTypes.NameIdentifier))
+			if (!string.IsNullOrWhiteSpace(username))
 			{
-				claimsList.Add(new Claim(ClaimTypes.NameIdentifier, username, ClaimValueTypes.String, claimsIssuer));
-			}
+				if (!claimsList.Any(c => c.Type == ClaimTypes.NameIdentifier))
+				{
+					claimsList.Add(new Claim(ClaimTypes.NameIdentifier, username, ClaimValueTypes.String, claimsIssuer));
+				}
 
-			if (!claimsList.Any(c => c.Type == ClaimTypes.Name))
-			{
-				claimsList.Add(new Claim(ClaimTypes.Name, username, ClaimValueTypes.String, claimsIssuer));
+				if (!claimsList.Any(c => c.Type == ClaimTypes.Name))
+				{
+					claimsList.Add(new Claim(ClaimTypes.Name, username, ClaimValueTypes.String, claimsIssuer));
+				}
 			}
 
 			return new ClaimsPrincipal(new ClaimsIdentity(claimsList, schemeName));
