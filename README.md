@@ -40,7 +40,7 @@ Notes:
 - It requires Realm to be set in the options if SuppressWWWAuthenticateHeader is not set.
 - If an implementation of IBasicUserValidationService interface is used as well as BasicOptions.Events.OnValidateCredentials delegate is also set then this delegate will be used first.
 
-**Always use HTTPS (SSL Certificate) protocol in production when using API Key authentication.**
+**Always use HTTPS (SSL Certificate) protocol in production when using basic authentication.**
 
 #### Startup.cs (ASP.NET Core 3.0 onwards)
 
@@ -264,24 +264,24 @@ public void ConfigureServices(IServiceCollection services)
 			options.Events = new BasicEvents
 			{
 				OnValidateCredentials = async (context) =>
-                {
-                    var userRepository = context.HttpContext.RequestServices.GetRequiredService<IUserRepository>();
-                    var user = await userRepository.GetUserByUsername(context.Username);
-                    var isValid = user != null && user.Password == context.Password;
-                    if (isValid)
-                    {
-                        context.Response.Headers.Add("ValidationCustomHeader", "From OnValidateCredentials");
-                        var claims = new[]
-                        {
-                            new Claim("CustomClaimType", "Custom Claim Value - from OnValidateCredentials")
-                        };
-                        context.ValidationSucceeded(claims);    // claims are optional
-                    }
-                    else
-                    {
-                        context.ValidationFailed();
-                    }
-                }
+				{
+					var userRepository = context.HttpContext.RequestServices.GetRequiredService<IUserRepository>();
+					var user = await userRepository.GetUserByUsername(context.Username);
+					var isValid = user != null && user.Password == context.Password;
+					if (isValid)
+					{
+						context.Response.Headers.Add("ValidationCustomHeader", "From OnValidateCredentials");
+						var claims = new[]
+						{
+							new Claim("CustomClaimType", "Custom Claim Value - from OnValidateCredentials")
+						};
+						context.ValidationSucceeded(claims);    // claims are optional
+					}
+					else
+					{
+						context.ValidationFailed();
+					}
+				}
 			}
 		});
 
@@ -301,7 +301,7 @@ public void ConfigureServices(IServiceCollection services)
 | Version | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Notes |
 |---------|-------|
 |5.1.0    | <ul><li>Visibility of the handler changed to public</li><li>Tests added</li><li>Readme updated</li><li>Copyright year updated on License</li></ul> |
-|5.0.0    | <ul><li>Net 5.0 target framework added</li><li>IgnoreAuthenticationIfAllowAnonymous added to the ApiKeyOptions from netcoreapp3.0 onwards</li></ul> |
+|5.0.0    | <ul><li>Net 5.0 target framework added</li><li>IgnoreAuthenticationIfAllowAnonymous added to the BasicOptions from netcoreapp3.0 onwards</li></ul> |
 |3.1.1    | <ul><li>Fixed issue with resolving of IBasicUserValidationService implementation when using multiple schemes</li></ul> |
 |3.1.0    | <ul><li>Multitarget framework support added</li><li>Strong Name Key support added</li><li>Source Link support added</li><li>SuppressWWWAuthenticateHeader added to configure options</li><li>Events added to configure options</li></ul> |
 |2.2.0    | <ul><li>Basic Authentication Implementation for ASP.NET Core</li></ul> |
