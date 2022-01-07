@@ -53,7 +53,7 @@ namespace AspNetCore.Authentication.Basic
 		{
 			if (IgnoreAuthenticationIfAllowAnonymous())
 			{
-				Logger.LogInformation("AllowAnonymous found on the endpoint so request was not authenticated.");
+				Logger.LogDebug("AllowAnonymous found on the endpoint so request was not authenticated.");
 				return AuthenticateResult.NoResult();
 			}
 
