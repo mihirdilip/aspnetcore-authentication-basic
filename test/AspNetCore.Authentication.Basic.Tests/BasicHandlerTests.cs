@@ -29,6 +29,8 @@ namespace AspNetCore.Authentication.Basic.Tests
 		private readonly HttpClient _client;
 		private readonly TestServer _serverWithService;
 		private readonly HttpClient _clientWithService;
+		private readonly TestServer _serverWithServiceFactory;
+		private readonly HttpClient _clientWithServiceFactory;
 
 		public BasicHandlerTests()
 		{
@@ -37,6 +39,9 @@ namespace AspNetCore.Authentication.Basic.Tests
 
 			_serverWithService = TestServerBuilder.BuildTestServerWithService();
 			_clientWithService = _serverWithService.CreateClient();
+
+			_serverWithServiceFactory = TestServerBuilder.BuildTestServerWithServiceFactory();
+			_clientWithServiceFactory = _serverWithService.CreateClient();
 		}
 
 		public void Dispose()
@@ -46,6 +51,9 @@ namespace AspNetCore.Authentication.Basic.Tests
 
 			_clientWithService?.Dispose();
 			_serverWithService?.Dispose();
+
+			_serverWithServiceFactory?.Dispose();
+			_clientWithServiceFactory?.Dispose();
 		}
 
 		[Fact]
@@ -90,6 +98,27 @@ namespace AspNetCore.Authentication.Basic.Tests
 			var apiKeyProvider = services.GetService<IBasicUserValidationService>();
 			Assert.NotNull(apiKeyProvider);
 			Assert.Equal(typeof(FakeBasicUserValidationService), apiKeyProvider.GetType());
+		}
+
+		[Fact]
+		public async Task TBasicUserValidationService_Via_Factory_Verify_Handler()
+		{
+			var services = _serverWithServiceFactory.Host.Services;
+			var schemeProvider = services.GetRequiredService<IAuthenticationSchemeProvider>();
+			Assert.NotNull(schemeProvider);
+
+			var scheme = await schemeProvider.GetDefaultAuthenticateSchemeAsync();
+			Assert.NotNull(scheme);
+			Assert.Equal(typeof(BasicHandler), scheme.HandlerType);
+
+			var optionsSnapshot = services.GetService<IOptionsSnapshot<BasicOptions>>();
+			var options = optionsSnapshot.Get(scheme.Name);
+			Assert.NotNull(options);
+			Assert.Null(options.Events?.OnValidateCredentials);
+			Assert.Null(options.BasicUserValidationServiceType);
+
+			var basicUserValidationServiceFactory = services.GetService<IBasicUserValidationServiceFactory>();
+			Assert.NotNull(basicUserValidationServiceFactory);
 		}
 
 		#region HandleForbidden
@@ -292,11 +321,50 @@ namespace AspNetCore.Authentication.Basic.Tests
 		}
 
 		[Fact]
-		public async Task HandleAuthenticate_TBasicUserValidationService_invalid_key_unauthotized()
+		public async Task HandleAuthenticate_TBasicUserValidationService_invalid_key_unauthorized()
 		{
 			using var request = new HttpRequestMessage(HttpMethod.Get, TestServerBuilder.BaseUrl);
 			request.Headers.Authorization = new AuthenticationHeaderValue(BasicDefaults.AuthenticationScheme, "<invalid>");
 			using var response = await _clientWithService.SendAsync(request);
+			Assert.False(response.IsSuccessStatusCode);
+			Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+		}
+
+		[Fact]
+		public async Task HandleAuthenticate_TBasicUserValidationService_Via_Factory_Unauthorized()
+		{
+			using var request = new HttpRequestMessage(HttpMethod.Get, TestServerBuilder.BaseUrl);
+			using var response = await _clientWithServiceFactory.SendAsync(request);
+			Assert.False(response.IsSuccessStatusCode);
+			Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+		}
+
+		[Fact]
+		public async Task HandleAuthenticate_TBasicUserValidationService_Via_Factory_success()
+		{
+			using var request = new HttpRequestMessage(HttpMethod.Get, TestServerBuilder.BaseUrl);
+			request.Headers.Authorization = FakeUsers.FakeUser.ToAuthenticationHeaderValue();
+			using var response = await _clientWithServiceFactory.SendAsync(request);
+			Assert.True(response.IsSuccessStatusCode);
+			Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+		}
+
+		[Fact]
+		public async Task HandleAuthenticate_TBasicUserValidationService_Via_Factory_invalid_scheme_unauthorized()
+		{
+			using var request = new HttpRequestMessage(HttpMethod.Get, TestServerBuilder.BaseUrl);
+			request.Headers.Authorization = new AuthenticationHeaderValue("INVALID", "test");
+			using var response = await _clientWithServiceFactory.SendAsync(request);
+			Assert.False(response.IsSuccessStatusCode);
+			Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+		}
+
+		[Fact]
+		public async Task HandleAuthenticate_TBasicUserValidationService_Via_Factory_invalid_key_unauthorized()
+		{
+			using var request = new HttpRequestMessage(HttpMethod.Get, TestServerBuilder.BaseUrl);
+			request.Headers.Authorization = new AuthenticationHeaderValue(BasicDefaults.AuthenticationScheme, "<invalid>");
+			using var response = await _clientWithServiceFactory.SendAsync(request);
 			Assert.False(response.IsSuccessStatusCode);
 			Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
 		}
@@ -380,7 +448,7 @@ namespace AspNetCore.Authentication.Basic.Tests
 		[Fact]
 		public async Task HandleAuthenticate_OnValidateCredentials_result_null_without_provider_and_OnAuthenticationFailed_throws()
 		{
-			var expectedExceptionMessage = $"Either {nameof(BasicEvents.OnValidateCredentials)} delegate on configure options {nameof(BasicOptions.Events)} should be set or use an extention method with type parameter of type {nameof(IBasicUserValidationService)}.";
+			var expectedExceptionMessage = $"Either {nameof(BasicEvents.OnValidateCredentials)} delegate on configure options {nameof(BasicOptions.Events)} should be set or use an extension method with type parameter of type {nameof(IBasicUserValidationService)} or register an implementation of type {nameof(IBasicUserValidationServiceFactory)} in the service collection.";
 
 			using var server = TestServerBuilder.BuildTestServer(options =>
 			{
@@ -419,7 +487,7 @@ namespace AspNetCore.Authentication.Basic.Tests
 		[Fact]
 		public async Task HandleAuthenticate_OnValidateCredentials_result_null_without_provider_and_OnAuthenticationFailed_does_not_throw()
 		{
-			var expectedExceptionMessage = $"Either {nameof(BasicEvents.OnValidateCredentials)} delegate on configure options {nameof(BasicOptions.Events)} should be set or use an extention method with type parameter of type {nameof(IBasicUserValidationService)}.";
+			var expectedExceptionMessage = $"Either {nameof(BasicEvents.OnValidateCredentials)} delegate on configure options {nameof(BasicOptions.Events)} should be set or use an extension method with type parameter of type {nameof(IBasicUserValidationService)} or register an implementation of type {nameof(IBasicUserValidationServiceFactory)} in the service collection.";
 
 			using var server = TestServerBuilder.BuildTestServer(options =>
 			{

@@ -19,7 +19,7 @@ namespace AspNetCore.Authentication.Basic.Tests
         {
             var scheme = await GetSchemeAsync(a => a.AddBasic());
             Assert.NotNull(scheme);
-            Assert.Equal(typeof(BasicHandler).Name, scheme.HandlerType.Name);
+            Assert.Equal(nameof(BasicHandler), scheme.HandlerType.Name);
             Assert.Null(scheme.DisplayName);
         }
 
@@ -29,7 +29,7 @@ namespace AspNetCore.Authentication.Basic.Tests
             var schemeName = "CustomScheme";
             var scheme = await GetSchemeAsync(a => a.AddBasic(schemeName), schemeName);
             Assert.NotNull(scheme);
-            Assert.Equal(typeof(BasicHandler).Name, scheme.HandlerType.Name);
+            Assert.Equal(nameof(BasicHandler), scheme.HandlerType.Name);
             Assert.Null(scheme.DisplayName);
             Assert.Equal(schemeName, scheme.Name);
         }
@@ -39,7 +39,7 @@ namespace AspNetCore.Authentication.Basic.Tests
         {
             var scheme = await GetSchemeAsync(a => a.AddBasic(_ => { }));
             Assert.NotNull(scheme);
-            Assert.Equal(typeof(BasicHandler).Name, scheme.HandlerType.Name);
+            Assert.Equal(nameof(BasicHandler), scheme.HandlerType.Name);
             Assert.Null(scheme.DisplayName);
         }
 
@@ -49,7 +49,7 @@ namespace AspNetCore.Authentication.Basic.Tests
             var schemeName = "CustomScheme";
             var scheme = await GetSchemeAsync(a => a.AddBasic(schemeName, _ => { }), schemeName);
             Assert.NotNull(scheme);
-            Assert.Equal(typeof(BasicHandler).Name, scheme.HandlerType.Name);
+            Assert.Equal(nameof(BasicHandler), scheme.HandlerType.Name);
             Assert.Null(scheme.DisplayName);
             Assert.Equal(schemeName, scheme.Name);
         }
@@ -61,7 +61,7 @@ namespace AspNetCore.Authentication.Basic.Tests
             var displayName = "DisplayName";
             var scheme = await GetSchemeAsync(a => a.AddBasic(schemeName, displayName, _ => { }), schemeName);
             Assert.NotNull(scheme);
-            Assert.Equal(typeof(BasicHandler).Name, scheme.HandlerType.Name);
+            Assert.Equal(nameof(BasicHandler), scheme.HandlerType.Name);
             Assert.NotNull(scheme.DisplayName);
             Assert.Equal(displayName, scheme.DisplayName);
             Assert.Equal(schemeName, scheme.Name);
@@ -73,7 +73,7 @@ namespace AspNetCore.Authentication.Basic.Tests
         {
             var scheme = await GetSchemeAsync(a => a.AddBasic<MockUserValidationService>(), BasicDefaults.AuthenticationScheme);
             Assert.NotNull(scheme);
-            Assert.Equal(typeof(BasicHandler).Name, scheme.HandlerType.Name);
+            Assert.Equal(nameof(BasicHandler), scheme.HandlerType.Name);
             Assert.Null(scheme.DisplayName);
         }
 
@@ -83,7 +83,7 @@ namespace AspNetCore.Authentication.Basic.Tests
             var schemeName = "CustomScheme";
             var scheme = await GetSchemeAsync(a => a.AddBasic<MockUserValidationService>(schemeName), schemeName);
             Assert.NotNull(scheme);
-            Assert.Equal(typeof(BasicHandler).Name, scheme.HandlerType.Name);
+            Assert.Equal(nameof(BasicHandler), scheme.HandlerType.Name);
             Assert.Null(scheme.DisplayName);
             Assert.Equal(schemeName, scheme.Name);
         }
@@ -93,7 +93,7 @@ namespace AspNetCore.Authentication.Basic.Tests
         {
             var scheme = await GetSchemeAsync(a => a.AddBasic<MockUserValidationService>(_ => { }));
             Assert.NotNull(scheme);
-            Assert.Equal(typeof(BasicHandler).Name, scheme.HandlerType.Name);
+            Assert.Equal(nameof(BasicHandler), scheme.HandlerType.Name);
             Assert.Null(scheme.DisplayName);
         }
 
@@ -103,7 +103,7 @@ namespace AspNetCore.Authentication.Basic.Tests
             var schemeName = "CustomScheme";
             var scheme = await GetSchemeAsync(a => a.AddBasic<MockUserValidationService>(schemeName, _ => { }), schemeName);
             Assert.NotNull(scheme);
-            Assert.Equal(typeof(BasicHandler).Name, scheme.HandlerType.Name);
+            Assert.Equal(nameof(BasicHandler), scheme.HandlerType.Name);
             Assert.Null(scheme.DisplayName);
             Assert.Equal(schemeName, scheme.Name);
         }
@@ -115,7 +115,7 @@ namespace AspNetCore.Authentication.Basic.Tests
             var displayName = "DisplayName";
             var scheme = await GetSchemeAsync(a => a.AddBasic<MockUserValidationService>(schemeName, displayName, _ => { }), schemeName);
             Assert.NotNull(scheme);
-            Assert.Equal(typeof(BasicHandler).Name, scheme.HandlerType.Name);
+            Assert.Equal(nameof(BasicHandler), scheme.HandlerType.Name);
             Assert.NotNull(scheme.DisplayName);
             Assert.Equal(displayName, scheme.DisplayName);
             Assert.Equal(schemeName, scheme.Name);
@@ -142,12 +142,12 @@ namespace AspNetCore.Authentication.Basic.Tests
             var scheme = await schemeProvider.GetSchemeAsync(schemeName);
 
             Assert.NotNull(defaultScheme);
-            Assert.Equal(typeof(BasicHandler).Name, defaultScheme.HandlerType.Name);
+            Assert.Equal(nameof(BasicHandler), defaultScheme.HandlerType.Name);
             Assert.Null(defaultScheme.DisplayName);
             Assert.Equal(BasicDefaults.AuthenticationScheme, defaultScheme.Name);
 
             Assert.NotNull(scheme);
-            Assert.Equal(typeof(BasicHandler).Name, scheme.HandlerType.Name);
+            Assert.Equal(nameof(BasicHandler), scheme.HandlerType.Name);
             Assert.NotNull(scheme.DisplayName);
             Assert.Equal(displayName, scheme.DisplayName);
             Assert.Equal(schemeName, scheme.Name);
@@ -170,12 +170,12 @@ namespace AspNetCore.Authentication.Basic.Tests
             var scheme = await schemeProvider.GetSchemeAsync(schemeName);
 
             Assert.NotNull(defaultScheme);
-            Assert.Equal(typeof(BasicHandler).Name, defaultScheme.HandlerType.Name);
+            Assert.Equal(nameof(BasicHandler), defaultScheme.HandlerType.Name);
             Assert.Null(defaultScheme.DisplayName);
             Assert.Equal(BasicDefaults.AuthenticationScheme, defaultScheme.Name);
 
             Assert.NotNull(scheme);
-            Assert.Equal(typeof(BasicHandler).Name, scheme.HandlerType.Name);
+            Assert.Equal(nameof(BasicHandler), scheme.HandlerType.Name);
             Assert.NotNull(scheme.DisplayName);
             Assert.Equal(displayName, scheme.DisplayName);
             Assert.Equal(schemeName, scheme.Name);

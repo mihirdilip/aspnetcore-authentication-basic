@@ -13,5 +13,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Repositories\InMemoryUserRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Repositories\IUserRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\BasicUserValidationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\BasicUserValidationServiceFactory.cs" />
   </ItemGroup>
 </Project>

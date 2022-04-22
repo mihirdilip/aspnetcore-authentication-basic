@@ -78,4 +78,13 @@ namespace AspNetCore.Authentication.Basic.Tests.Infrastructure
             FakeUserIgnoreAuthenticationIfAllowAnonymous
         };
     }
+
+    class FakeBasicUserValidationServiceFactory : IBasicUserValidationServiceFactory
+	{
+		/// <inheritdoc />
+		public IBasicUserValidationService CreateBasicUserValidationService(string authenticationSchemaName)
+		{
+			return new FakeBasicUserValidationService();
+		}
+	}
 }

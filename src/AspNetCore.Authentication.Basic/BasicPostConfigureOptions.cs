@@ -6,21 +6,31 @@ using System;
 
 namespace AspNetCore.Authentication.Basic
 {
+	using Microsoft.Extensions.DependencyInjection;
+
 	/// <summary>
 	/// This post configure options checks whether the required option property <see cref="BasicOptions.Realm" /> is set or not on <see cref="BasicOptions"/>.
 	/// </summary>
 	internal class BasicPostConfigureOptions : IPostConfigureOptions<BasicOptions>
 	{
+		private readonly IServiceProvider serviceProvider;
+
+		public BasicPostConfigureOptions(IServiceProvider serviceProvider)
+		{
+			this.serviceProvider = serviceProvider;
+		}
+
 		public void PostConfigure(string name, BasicOptions options)
 		{
 			if (!options.SuppressWWWAuthenticateHeader && string.IsNullOrWhiteSpace(options.Realm))
 			{
-				throw new InvalidOperationException($"{nameof(BasicOptions.Realm)} must be set in {typeof(BasicOptions).Name} when setting up the authentication.");
+				throw new InvalidOperationException($"{nameof(BasicOptions.Realm)} must be set in {nameof(BasicOptions)} when setting up the authentication.");
 			}
 
-			if (options.Events?.OnValidateCredentials == null && options.EventsType == null && options.BasicUserValidationServiceType == null)
+			IBasicUserValidationServiceFactory basicUserValidationServiceFactory = this.serviceProvider.GetService<IBasicUserValidationServiceFactory>();
+			if (options.Events?.OnValidateCredentials == null && options.EventsType == null && options.BasicUserValidationServiceType == null && basicUserValidationServiceFactory == null)
 			{
-				throw new InvalidOperationException($"Either {nameof(BasicOptions.Events.OnValidateCredentials)} delegate on configure options {nameof(BasicOptions.Events)} should be set or use an extention method with type parameter of type {nameof(IBasicUserValidationService)}.");
+				throw new InvalidOperationException($"Either {nameof(BasicOptions.Events.OnValidateCredentials)} delegate on configure options {nameof(BasicOptions.Events)} should be set or use an extension method with type parameter of type {nameof(IBasicUserValidationService)} or register an implementation of type {nameof(IBasicUserValidationServiceFactory)} in the service collection.");
 			}
 		}
 	}

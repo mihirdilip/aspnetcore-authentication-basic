@@ -46,6 +46,18 @@ namespace AspNetCore.Authentication.Basic.Tests.Infrastructure
             );
         }
 
+		internal static TestServer BuildTestServerWithServiceFactory(Action<BasicOptions> configureOptions = null)
+		{
+			return BuildTestServer(
+				services =>
+				{
+					services.AddTransient<IBasicUserValidationServiceFactory, FakeBasicUserValidationServiceFactory>();
+					var authBuilder = services.AddAuthentication(BasicDefaults.AuthenticationScheme)
+						.AddBasic(configureOptions ?? DefaultBasicOptions());
+				}
+			);
+		}
+
         internal static TestServer BuildTestServer(Action<IServiceCollection> configureServices, Action<IApplicationBuilder> configure = null)
         {
             if (configureServices == null) throw new ArgumentNullException(nameof(configureServices));

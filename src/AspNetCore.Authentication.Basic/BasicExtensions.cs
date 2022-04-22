@@ -65,6 +65,11 @@ namespace AspNetCore.Authentication.Basic
 		/// <returns>The instance of <see cref="AuthenticationBuilder"/></returns>
 		public static AuthenticationBuilder AddBasic(this AuthenticationBuilder builder, string authenticationScheme, string displayName, Action<BasicOptions> configureOptions)
 		{
+			// Add the authentication scheme name for the specific options.
+			builder.Services.Configure<BasicOptions>(
+				authenticationScheme,
+				o => o.AuthenticationSchemeName = authenticationScheme);
+
 			// Adds post configure options to the pipeline.
 			builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<BasicOptions>, BasicPostConfigureOptions>());
 
@@ -137,10 +142,15 @@ namespace AspNetCore.Authentication.Basic
 		{
 			// Adds implementation of IBasicUserValidationService to the dependency container.
 			builder.Services.AddTransient<IBasicUserValidationService, TBasicUserValidationService>();
+
+			// Add the authentication scheme name for the specific options.
 			builder.Services.Configure<BasicOptions>(
 				authenticationScheme,
-				o => o.BasicUserValidationServiceType = typeof(TBasicUserValidationService)
-			);
+				o =>
+				{
+					o.AuthenticationSchemeName = authenticationScheme;
+					o.BasicUserValidationServiceType = typeof(TBasicUserValidationService);
+				});
 
 			// Adds post configure options to the pipeline.
 			builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<BasicOptions>, BasicPostConfigureOptions>());

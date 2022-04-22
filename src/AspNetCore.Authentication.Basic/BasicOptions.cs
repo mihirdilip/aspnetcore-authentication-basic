@@ -55,5 +55,7 @@ namespace AspNetCore.Authentication.Basic
 #endif
 
         internal Type BasicUserValidationServiceType { get; set; } = null;
-    }
+
+		internal string AuthenticationSchemeName { get; set; }
+	}
 }

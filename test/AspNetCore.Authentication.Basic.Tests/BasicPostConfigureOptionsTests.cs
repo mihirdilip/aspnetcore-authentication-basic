@@ -23,7 +23,7 @@ namespace AspNetCore.Authentication.Basic.Tests
 				RunAuthInitWithServiceAsync(_ => { })
 			);
 
-			Assert.Contains($"{nameof(BasicOptions.Realm)} must be set in {typeof(BasicOptions).Name} when setting up the authentication.", exception.Message);
+			Assert.Contains($"{nameof(BasicOptions.Realm)} must be set in {nameof(BasicOptions)} when setting up the authentication.", exception.Message);
 		}
 
 		[Fact]
@@ -45,7 +45,7 @@ namespace AspNetCore.Authentication.Basic.Tests
 		}
 
 		[Fact]
-		public async Task PostConfigure_Events_OnValidateKey_or_IBasicProvider_not_set_throws_exception()
+		public async Task PostConfigure_Events_OnValidateKey_or_IBasicUserValidationService_or_IBasicUserValidationServiceFactory_not_set_throws_exception()
 		{
 			var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
 				RunAuthInitAsync(options =>
@@ -54,11 +54,11 @@ namespace AspNetCore.Authentication.Basic.Tests
 				})
 			);
 
-			Assert.Contains($"Either {nameof(BasicOptions.Events.OnValidateCredentials)} delegate on configure options {nameof(BasicOptions.Events)} should be set or use an extention method with type parameter of type {nameof(IBasicUserValidationService)}.", exception.Message);
+			Assert.Contains($"Either {nameof(BasicOptions.Events.OnValidateCredentials)} delegate on configure options {nameof(BasicOptions.Events)} should be set or use an extension method with type parameter of type {nameof(IBasicUserValidationService)} or register an implementation of type {nameof(IBasicUserValidationServiceFactory)} in the service collection.", exception.Message);
 		}
 
 		[Fact]
-		public async Task PostConfigure_Events_OnValidateKey_set_but_IBasicProvider_not_set_no_exception_thrown()
+		public async Task PostConfigure_Events_OnValidateKey_set_but_IBasicUserValidationService_not_set_no_exception_thrown()
 		{
 			await RunAuthInitAsync(options =>
 			{
@@ -68,7 +68,7 @@ namespace AspNetCore.Authentication.Basic.Tests
 		}
 
 		[Fact]
-		public async Task PostConfigure_Events_OnValidateKey_not_set_but_IBasicProvider_set_no_exception_thrown()
+		public async Task PostConfigure_Events_OnValidateKey_not_set_but_IBasicUserValidationService_set_no_exception_thrown()
 		{
 			await RunAuthInitWithServiceAsync(options =>
 			{
@@ -76,6 +76,14 @@ namespace AspNetCore.Authentication.Basic.Tests
 			});
 		}
 
+		[Fact]
+		public async Task PostConfigure_Events_OnValidateKey_not_set_and_IBasicUserValidationService_not_set_but_IBasicUserValidationServiceFactory_registered_no_exception_thrown()
+		{
+			await RunAuthInitWithServiceFactoryAsync(options =>
+			{
+				options.SuppressWWWAuthenticateHeader = true;
+			});
+		}
 
 		private async Task RunAuthInitAsync(Action<BasicOptions> configureOptions)
 		{
@@ -86,6 +94,12 @@ namespace AspNetCore.Authentication.Basic.Tests
 		private async Task RunAuthInitWithServiceAsync(Action<BasicOptions> configureOptions)
 		{
 			var server = TestServerBuilder.BuildTestServerWithService(configureOptions);
+			await server.CreateClient().GetAsync(TestServerBuilder.BaseUrl);
+		}
+
+		private async Task RunAuthInitWithServiceFactoryAsync(Action<BasicOptions> configureOptions)
+		{
+			var server = TestServerBuilder.BuildTestServerWithServiceFactory(configureOptions);
 			await server.CreateClient().GetAsync(TestServerBuilder.BaseUrl);
 		}
 	}

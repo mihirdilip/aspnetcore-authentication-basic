@@ -15,6 +15,9 @@ using System.Threading.Tasks;
 
 namespace AspNetCore.Authentication.Basic
 {
+	using System.Collections.Generic;
+	using System.Security.Claims;
+
 	/// <summary>
 	/// Inherited from <see cref="AuthenticationHandler{TOptions}"/> for basic authentication.
 	/// </summary>
@@ -179,7 +182,7 @@ namespace AspNetCore.Authentication.Basic
 		private async Task<AuthenticateResult> RaiseAndHandleAuthenticationSucceededAsync(BasicCredentials credentials)
 		{
 			// ..create claims principal.
-			var principal = BasicUtils.BuildClaimsPrincipal(credentials.Username, Scheme.Name, ClaimsIssuer);
+			var principal = BasicUtils.BuildClaimsPrincipal(credentials.Username, Scheme.Name, ClaimsIssuer, new List<Claim>() /*TODO*/);
 
 			// Raise authentication succeeded event.
 			var authenticationSucceededContext = new BasicAuthenticationSucceededContext(Context, Scheme, Options, principal);
@@ -197,8 +200,8 @@ namespace AspNetCore.Authentication.Basic
 				return authenticationSucceededContext.Result;
 			}
 
-			Logger.LogError("No authenticated prinicipal set.");
-			return AuthenticateResult.Fail("No authenticated prinicipal set.");
+			Logger.LogError("No authenticated principal set.");
+			return AuthenticateResult.Fail("No authenticated principal set.");
 		}
 
 		private bool IgnoreAuthenticationIfAllowAnonymous()
@@ -214,14 +217,21 @@ namespace AspNetCore.Authentication.Basic
 		private async Task<bool> ValidateUsingBasicUserValidationServiceAsync(string username, string password)
 		{
 			IBasicUserValidationService basicUserValidationService = null;
-			if (Options.BasicUserValidationServiceType != null)
+
+			// Try to get an instance of the IBasicUserValidationServiceFactory.
+			var basicUserValidationServiceFactory = this.Context.RequestServices.GetService<IBasicUserValidationServiceFactory>();
+
+			// Try to get a IBasicUserValidationService instance from the factory.
+			basicUserValidationService = basicUserValidationServiceFactory?.CreateBasicUserValidationService(Options.AuthenticationSchemeName);
+
+			if (basicUserValidationService == null && Options.BasicUserValidationServiceType != null)
 			{
 				basicUserValidationService = ActivatorUtilities.GetServiceOrCreateInstance(Context.RequestServices, Options.BasicUserValidationServiceType) as IBasicUserValidationService;
 			}
 
 			if (basicUserValidationService == null)
 			{
-				throw new InvalidOperationException($"Either {nameof(Options.Events.OnValidateCredentials)} delegate on configure options {nameof(Options.Events)} should be set or use an extention method with type parameter of type {nameof(IBasicUserValidationService)}.");
+				throw new InvalidOperationException($"Either {nameof(Options.Events.OnValidateCredentials)} delegate on configure options {nameof(Options.Events)} should be set or use an extension method with type parameter of type {nameof(IBasicUserValidationService)} or register an implementation of type {nameof(IBasicUserValidationServiceFactory)} in the service collection.");
 			}
 
 			try

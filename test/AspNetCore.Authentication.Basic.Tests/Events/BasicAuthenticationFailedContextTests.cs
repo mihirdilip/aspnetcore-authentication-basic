@@ -12,7 +12,7 @@ namespace AspNetCore.Authentication.Basic.Tests.Events
 {
     public class BasicAuthenticationFailedContext
     {
-		private static readonly string ExpectedExceptionMessage = $"Either {nameof(BasicOptions.Events.OnValidateCredentials)} delegate on configure options {nameof(BasicOptions.Events)} should be set or use an extention method with type parameter of type {nameof(IBasicUserValidationService)}.";
+		private static readonly string ExpectedExceptionMessage = $"Either {nameof(BasicOptions.Events.OnValidateCredentials)} delegate on configure options {nameof(BasicOptions.Events)} should be set or use an extension method with type parameter of type {nameof(IBasicUserValidationService)} or register an implementation of type {nameof(IBasicUserValidationServiceFactory)} in the service collection.";
 
 		[Fact]
 		public async Task Exception_result_null()
