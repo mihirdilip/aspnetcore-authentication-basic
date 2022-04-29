@@ -27,10 +27,10 @@ namespace AspNetCore.Authentication.Basic
 				throw new InvalidOperationException($"{nameof(BasicOptions.Realm)} must be set in {nameof(BasicOptions)} when setting up the authentication.");
 			}
 
-			IBasicUserValidationServiceFactory basicUserValidationServiceFactory = this.serviceProvider.GetService<IBasicUserValidationServiceFactory>();
-			if (options.Events?.OnValidateCredentials == null && options.EventsType == null && options.BasicUserValidationServiceType == null && basicUserValidationServiceFactory == null)
+			IBasicUserAuthenticationServiceFactory basicUserAuthenticationServiceFactory = this.serviceProvider.GetService<IBasicUserAuthenticationServiceFactory>();
+			if (options.Events?.OnValidateCredentials == null && options.EventsType == null && options.BasicUserValidationServiceType == null && basicUserAuthenticationServiceFactory == null)
 			{
-				throw new InvalidOperationException($"Either {nameof(BasicOptions.Events.OnValidateCredentials)} delegate on configure options {nameof(BasicOptions.Events)} should be set or use an extension method with type parameter of type {nameof(IBasicUserValidationService)} or register an implementation of type {nameof(IBasicUserValidationServiceFactory)} in the service collection.");
+				throw new InvalidOperationException($"Either {nameof(BasicOptions.Events.OnValidateCredentials)} delegate on configure options {nameof(BasicOptions.Events)} should be set or use an extension method with type parameter of type {nameof(IBasicUserAuthenticationService)} or register an implementation of type {nameof(IBasicUserAuthenticationServiceFactory)} in the service collection.");
 			}
 		}
 	}

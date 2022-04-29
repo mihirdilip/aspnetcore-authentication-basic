@@ -41,7 +41,7 @@ namespace SampleWebApi
 
                 // The below AddBasic with type parameter will add the BasicUserValidationService to the dependency register. 
                 // Please note if OnValidateCredentials delegete on options.Events is also set then this delegate will be used instead of BasicUserValidationService.
-                .AddBasic<BasicUserValidationService>(options =>
+                .AddBasic<BasicUserAuthenticationService>(options =>
                 {
                     options.Realm = "Sample Web API";
 

@@ -71,7 +71,7 @@ namespace AspNetCore.Authentication.Basic.Tests
         [Fact]
         public async Task AddBasic_TBasicUserValidationService_verify_auth_scheme_handler_default()
         {
-            var scheme = await GetSchemeAsync(a => a.AddBasic<MockUserValidationService>(), BasicDefaults.AuthenticationScheme);
+            var scheme = await GetSchemeAsync(a => a.AddBasic<MockUserAuthenticationService>(), BasicDefaults.AuthenticationScheme);
             Assert.NotNull(scheme);
             Assert.Equal(nameof(BasicHandler), scheme.HandlerType.Name);
             Assert.Null(scheme.DisplayName);
@@ -81,7 +81,7 @@ namespace AspNetCore.Authentication.Basic.Tests
         public async Task AddBasic_TBasicUserValidationService_verify_auth_scheme_handler_with_scheme()
         {
             var schemeName = "CustomScheme";
-            var scheme = await GetSchemeAsync(a => a.AddBasic<MockUserValidationService>(schemeName), schemeName);
+            var scheme = await GetSchemeAsync(a => a.AddBasic<MockUserAuthenticationService>(schemeName), schemeName);
             Assert.NotNull(scheme);
             Assert.Equal(nameof(BasicHandler), scheme.HandlerType.Name);
             Assert.Null(scheme.DisplayName);
@@ -91,7 +91,7 @@ namespace AspNetCore.Authentication.Basic.Tests
         [Fact]
         public async Task AddBasic_TBasicUserValidationService_verify_auth_scheme_handler_with_configureOptions()
         {
-            var scheme = await GetSchemeAsync(a => a.AddBasic<MockUserValidationService>(_ => { }));
+            var scheme = await GetSchemeAsync(a => a.AddBasic<MockUserAuthenticationService>(_ => { }));
             Assert.NotNull(scheme);
             Assert.Equal(nameof(BasicHandler), scheme.HandlerType.Name);
             Assert.Null(scheme.DisplayName);
@@ -101,7 +101,7 @@ namespace AspNetCore.Authentication.Basic.Tests
         public async Task AddBasic_TBasicUserValidationService_verify_auth_scheme_handler_with_scheme_and_configureOptions()
         {
             var schemeName = "CustomScheme";
-            var scheme = await GetSchemeAsync(a => a.AddBasic<MockUserValidationService>(schemeName, _ => { }), schemeName);
+            var scheme = await GetSchemeAsync(a => a.AddBasic<MockUserAuthenticationService>(schemeName, _ => { }), schemeName);
             Assert.NotNull(scheme);
             Assert.Equal(nameof(BasicHandler), scheme.HandlerType.Name);
             Assert.Null(scheme.DisplayName);
@@ -113,7 +113,7 @@ namespace AspNetCore.Authentication.Basic.Tests
         {
             var schemeName = "CustomScheme";
             var displayName = "DisplayName";
-            var scheme = await GetSchemeAsync(a => a.AddBasic<MockUserValidationService>(schemeName, displayName, _ => { }), schemeName);
+            var scheme = await GetSchemeAsync(a => a.AddBasic<MockUserAuthenticationService>(schemeName, displayName, _ => { }), schemeName);
             Assert.NotNull(scheme);
             Assert.Equal(nameof(BasicHandler), scheme.HandlerType.Name);
             Assert.NotNull(scheme.DisplayName);
@@ -161,8 +161,8 @@ namespace AspNetCore.Authentication.Basic.Tests
 
             var services = new ServiceCollection();
             services.AddAuthentication()
-                .AddBasic<MockUserValidationService>()
-                .AddBasic<MockUserValidationService>(schemeName, displayName, _ => { });
+                .AddBasic<MockUserAuthenticationService>()
+                .AddBasic<MockUserAuthenticationService>(schemeName, displayName, _ => { });
 
             var sp = services.BuildServiceProvider();
             var schemeProvider = sp.GetRequiredService<IAuthenticationSchemeProvider>();
@@ -190,39 +190,39 @@ namespace AspNetCore.Authentication.Basic.Tests
         {
             var services = new ServiceCollection();
             services.AddAuthentication()
-                .AddBasic<MockUserValidationService>();
+                .AddBasic<MockUserAuthenticationService>();
 
-            var serviceDescriptor = Assert.Single(services.Where(s => s.ServiceType == typeof(IBasicUserValidationService)));
-            Assert.Equal(typeof(IBasicUserValidationService), serviceDescriptor.ServiceType);
-            Assert.Equal(typeof(MockUserValidationService), serviceDescriptor.ImplementationType);
+            var serviceDescriptor = Assert.Single(services.Where(s => s.ServiceType == typeof(IBasicUserAuthenticationService)));
+            Assert.Equal(typeof(IBasicUserAuthenticationService), serviceDescriptor.ServiceType);
+            Assert.Equal(typeof(MockUserAuthenticationService), serviceDescriptor.ImplementationType);
             Assert.Equal(ServiceLifetime.Transient, serviceDescriptor.Lifetime);
 
             var sp = services.BuildServiceProvider();
-            var provider = sp.GetService<IBasicUserValidationService>();
+            var provider = sp.GetService<IBasicUserAuthenticationService>();
 
             Assert.NotNull(provider);
-            Assert.Equal(typeof(MockUserValidationService), provider.GetType());
+            Assert.Equal(typeof(MockUserAuthenticationService), provider.GetType());
         }
 
         [Fact]
         public void AddBasic_TBasicUserValidationService_does_not_replace_previously_user_registered_IBasicUserValidationService()
         {
             var services = new ServiceCollection();
-            services.AddSingleton<IBasicUserValidationService, MockUserValidationService2>();
+            services.AddSingleton<IBasicUserAuthenticationService, MockUserAuthenticationService2>();
             services.AddAuthentication()
-                .AddBasic<MockUserValidationService>();
+                .AddBasic<MockUserAuthenticationService>();
 
-            var serviceDescriptors = services.Where(s => s.ServiceType == typeof(IBasicUserValidationService));
+            var serviceDescriptors = services.Where(s => s.ServiceType == typeof(IBasicUserAuthenticationService));
             Assert.Equal(2, serviceDescriptors.Count());
 
-            var serviceDescriptor = Assert.Single(serviceDescriptors.Where(s => s.ImplementationType == typeof(MockUserValidationService)));
-            Assert.Equal(typeof(IBasicUserValidationService), serviceDescriptor.ServiceType);
-            Assert.Equal(typeof(MockUserValidationService), serviceDescriptor.ImplementationType);
+            var serviceDescriptor = Assert.Single(serviceDescriptors.Where(s => s.ImplementationType == typeof(MockUserAuthenticationService)));
+            Assert.Equal(typeof(IBasicUserAuthenticationService), serviceDescriptor.ServiceType);
+            Assert.Equal(typeof(MockUserAuthenticationService), serviceDescriptor.ImplementationType);
             Assert.Equal(ServiceLifetime.Transient, serviceDescriptor.Lifetime);
 
-            serviceDescriptor = Assert.Single(serviceDescriptors.Where(s => s.ImplementationType == typeof(MockUserValidationService2)));
-            Assert.Equal(typeof(IBasicUserValidationService), serviceDescriptor.ServiceType);
-            Assert.Equal(typeof(MockUserValidationService2), serviceDescriptor.ImplementationType);
+            serviceDescriptor = Assert.Single(serviceDescriptors.Where(s => s.ImplementationType == typeof(MockUserAuthenticationService2)));
+            Assert.Equal(typeof(IBasicUserAuthenticationService), serviceDescriptor.ServiceType);
+            Assert.Equal(typeof(MockUserAuthenticationService2), serviceDescriptor.ImplementationType);
             Assert.Equal(ServiceLifetime.Singleton, serviceDescriptor.Lifetime);
         }
 
@@ -270,35 +270,35 @@ namespace AspNetCore.Authentication.Basic.Tests
         public void AddBasic_TBasicUserValidationService_allows_chaining()
         {
             var authenticationBuilder = new ServiceCollection().AddAuthentication();
-            Assert.Same(authenticationBuilder, authenticationBuilder.AddBasic<MockUserValidationService>());
+            Assert.Same(authenticationBuilder, authenticationBuilder.AddBasic<MockUserAuthenticationService>());
         }
 
         [Fact]
         public void AddBasic_TBasicUserValidationService_allows_chaining_with_scheme()
         {
             var authenticationBuilder = new ServiceCollection().AddAuthentication();
-            Assert.Same(authenticationBuilder, authenticationBuilder.AddBasic<MockUserValidationService>(string.Empty));
+            Assert.Same(authenticationBuilder, authenticationBuilder.AddBasic<MockUserAuthenticationService>(string.Empty));
         }
 
         [Fact]
         public void AddBasic_TBasicUserValidationService_allows_chaining_with_configureOptions()
         {
             var authenticationBuilder = new ServiceCollection().AddAuthentication();
-            Assert.Same(authenticationBuilder, authenticationBuilder.AddBasic<MockUserValidationService>(_ => { }));
+            Assert.Same(authenticationBuilder, authenticationBuilder.AddBasic<MockUserAuthenticationService>(_ => { }));
         }
 
         [Fact]
         public void AddBasic_TBasicUserValidationService_allows_chaining_with_scheme_and_configureOptions()
         {
             var authenticationBuilder = new ServiceCollection().AddAuthentication();
-            Assert.Same(authenticationBuilder, authenticationBuilder.AddBasic<MockUserValidationService>(string.Empty, _ => { }));
+            Assert.Same(authenticationBuilder, authenticationBuilder.AddBasic<MockUserAuthenticationService>(string.Empty, _ => { }));
         }
 
         [Fact]
         public void AddBasic_TBasicUserValidationService_allows_chaining_with_scheme_displayName_and_configureOptions()
         {
             var authenticationBuilder = new ServiceCollection().AddAuthentication();
-            Assert.Same(authenticationBuilder, authenticationBuilder.AddBasic<MockUserValidationService>(string.Empty, string.Empty, _ => { }));
+            Assert.Same(authenticationBuilder, authenticationBuilder.AddBasic<MockUserAuthenticationService>(string.Empty, string.Empty, _ => { }));
         }
 
         #endregion // Allows chaining
@@ -312,17 +312,17 @@ namespace AspNetCore.Authentication.Basic.Tests
             return schemeProvider.GetSchemeAsync(schemeName);
         }
 
-        private class MockUserValidationService : IBasicUserValidationService
+        private class MockUserAuthenticationService : IBasicUserAuthenticationService
         {
-            public Task<bool> IsValidAsync(string username, string password)
+            public Task<IBasicUser> AuthenticateAsync(string username, string password)
             {
                 throw new NotImplementedException();
             }
         }
 
-        private class MockUserValidationService2 : IBasicUserValidationService
+        private class MockUserAuthenticationService2 : IBasicUserAuthenticationService
         {
-            public Task<bool> IsValidAsync(string username, string password)
+            public Task<IBasicUser> AuthenticateAsync(string username, string password)
             {
                 throw new NotImplementedException();
             }

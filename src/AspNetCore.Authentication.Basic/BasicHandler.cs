@@ -15,9 +15,6 @@ using System.Threading.Tasks;
 
 namespace AspNetCore.Authentication.Basic
 {
-	using System.Collections.Generic;
-	using System.Security.Claims;
-
 	/// <summary>
 	/// Inherited from <see cref="AuthenticationHandler{TOptions}"/> for basic authentication.
 	/// </summary>
@@ -49,7 +46,7 @@ namespace AspNetCore.Authentication.Basic
 		protected override Task<object> CreateEventsAsync() => Task.FromResult<object>(new BasicEvents());
 
 		/// <summary>
-		/// Searches the 'Authorization' header for 'Basic' scheme with base64 encoded username:password string value of which is validated using implementation of <see cref="IBasicUserValidationService"/> passed as type parameter when setting up basic authentication in the Startup.cs 
+		/// Searches the 'Authorization' header for 'Basic' scheme with base64 encoded username:password string value of which is validated using implementation of <see cref="IBasicUserAuthenticationService"/> passed as type parameter when setting up basic authentication in the Startup.cs 
 		/// </summary>
 		/// <returns><see cref="AuthenticateResult"/></returns>
 		protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -87,7 +84,6 @@ namespace AspNetCore.Authentication.Basic
 			{
 				Logger.LogError(exception, "Error decoding credentials from header value.");
 				return AuthenticateResult.Fail("Error decoding credentials from header value." + Environment.NewLine + exception.Message);
-
 			}
 
 			try
@@ -100,10 +96,14 @@ namespace AspNetCore.Authentication.Basic
 				}
 
 				// Validate using the implementation of IBasicUserValidationService.
-				var hasValidationSucceeded = await ValidateUsingBasicUserValidationServiceAsync(credentials.Username, credentials.Password).ConfigureAwait(false);
-				return hasValidationSucceeded
-					? await RaiseAndHandleAuthenticationSucceededAsync(credentials).ConfigureAwait(false)
-					: AuthenticateResult.Fail("Invalid username or password.");
+				var validatedBasicUser = await ValidateUsingBasicUserValidationServiceAsync(credentials.Username, credentials.Password).ConfigureAwait(false);
+				if(validatedBasicUser == null)
+				{
+					Logger.LogError($"Invalid user provided by {nameof(IBasicUserAuthenticationService)}.");
+					return AuthenticateResult.Fail("Invalid username or password.");
+				}
+
+				return await RaiseAndHandleAuthenticationSucceededAsync(validatedBasicUser).ConfigureAwait(false);
 			}
 			catch (Exception exception)
 			{
@@ -179,10 +179,10 @@ namespace AspNetCore.Authentication.Basic
 			return null;
 		}
 
-		private async Task<AuthenticateResult> RaiseAndHandleAuthenticationSucceededAsync(BasicCredentials credentials)
+		private async Task<AuthenticateResult> RaiseAndHandleAuthenticationSucceededAsync(IBasicUser basicUser)
 		{
 			// ..create claims principal.
-			var principal = BasicUtils.BuildClaimsPrincipal(credentials.Username, Scheme.Name, ClaimsIssuer, new List<Claim>() /*TODO*/);
+			var principal = BasicUtils.BuildClaimsPrincipal(basicUser.UserName, Scheme.Name, ClaimsIssuer, basicUser.Claims);
 
 			// Raise authentication succeeded event.
 			var authenticationSucceededContext = new BasicAuthenticationSucceededContext(Context, Scheme, Options, principal);
@@ -214,33 +214,33 @@ namespace AspNetCore.Authentication.Basic
 #endif
 		}
 
-		private async Task<bool> ValidateUsingBasicUserValidationServiceAsync(string username, string password)
+		private async Task<IBasicUser> ValidateUsingBasicUserValidationServiceAsync(string username, string password)
 		{
-			IBasicUserValidationService basicUserValidationService = null;
+			IBasicUserAuthenticationService basicUserAuthenticationService = null;
 
 			// Try to get an instance of the IBasicUserValidationServiceFactory.
-			var basicUserValidationServiceFactory = this.Context.RequestServices.GetService<IBasicUserValidationServiceFactory>();
+			var basicUserValidationServiceFactory = this.Context.RequestServices.GetService<IBasicUserAuthenticationServiceFactory>();
 
 			// Try to get a IBasicUserValidationService instance from the factory.
-			basicUserValidationService = basicUserValidationServiceFactory?.CreateBasicUserValidationService(Options.AuthenticationSchemeName);
+			basicUserAuthenticationService = basicUserValidationServiceFactory?.CreateBasicUserValidationService(Options.AuthenticationSchemeName);
 
-			if (basicUserValidationService == null && Options.BasicUserValidationServiceType != null)
+			if (basicUserAuthenticationService == null && Options.BasicUserValidationServiceType != null)
 			{
-				basicUserValidationService = ActivatorUtilities.GetServiceOrCreateInstance(Context.RequestServices, Options.BasicUserValidationServiceType) as IBasicUserValidationService;
+				basicUserAuthenticationService = ActivatorUtilities.GetServiceOrCreateInstance(Context.RequestServices, Options.BasicUserValidationServiceType) as IBasicUserAuthenticationService;
 			}
 
-			if (basicUserValidationService == null)
+			if (basicUserAuthenticationService == null)
 			{
-				throw new InvalidOperationException($"Either {nameof(Options.Events.OnValidateCredentials)} delegate on configure options {nameof(Options.Events)} should be set or use an extension method with type parameter of type {nameof(IBasicUserValidationService)} or register an implementation of type {nameof(IBasicUserValidationServiceFactory)} in the service collection.");
+				throw new InvalidOperationException($"Either {nameof(Options.Events.OnValidateCredentials)} delegate on configure options {nameof(Options.Events)} should be set or use an extension method with type parameter of type {nameof(IBasicUserAuthenticationService)} or register an implementation of type {nameof(IBasicUserAuthenticationServiceFactory)} in the service collection.");
 			}
 
 			try
 			{
-				return await basicUserValidationService.IsValidAsync(username, password).ConfigureAwait(false);
+				return await basicUserAuthenticationService.AuthenticateAsync(username, password).ConfigureAwait(false);
 			}
 			finally
 			{
-				if (basicUserValidationService is IDisposable disposableBasicUserValidationService)
+				if (basicUserAuthenticationService is IDisposable disposableBasicUserValidationService)
 				{
 					disposableBasicUserValidationService.Dispose();
 				}

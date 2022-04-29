@@ -17,7 +17,7 @@ namespace SampleWebApi.Services
 			_userRepository = userRepository;
 		}
 
-		public async Task<IBasicUser> IsValidAsync(string username, string password)
+		public async Task<IBasicUser> AuthenticateAsync(string username, string password)
 		{
 			try
 			{

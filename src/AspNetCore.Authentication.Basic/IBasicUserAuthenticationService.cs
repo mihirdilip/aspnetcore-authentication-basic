@@ -1,4 +1,4 @@
-﻿// Copyright (c) Mihir Dilip. All rights reserved.
+﻿// Copyright (c) Mihir Dilip, Matthias Gernand. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
@@ -8,14 +8,14 @@ namespace AspNetCore.Authentication.Basic
 	/// <summary>
 	/// Implementation of this interface will be used by the 'Basic' authentication handler to validated the username and password.
 	/// </summary>
-	public interface IBasicUserValidationService
+	public interface IBasicUserAuthenticationService
 	{
 		/// <summary>
-		/// Implementation of the username &amp; password validation logic.
+		/// Authenticates the username &amp; password  and returns an instance of <see cref="IBasicUser"/> if successful.
 		/// </summary>
 		/// <param name="username"></param>
 		/// <param name="password"></param>
 		/// <returns></returns>
-		Task<bool> IsValidAsync(string username, string password);
+		Task<IBasicUser> AuthenticateAsync(string username, string password);
 	}
 }

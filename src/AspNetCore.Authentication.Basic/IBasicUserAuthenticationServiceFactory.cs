@@ -4,15 +4,15 @@
 namespace AspNetCore.Authentication.Basic
 {
 	/// <summary>
-	/// Implementation of this interface will be used by the 'Basic' authentication handler to get a schema specific <see cref="IBasicUserValidationService"/>.
+	/// Implementation of this interface will be used by the 'Basic' authentication handler to get a schema specific <see cref="IBasicUserAuthenticationService"/>.
 	/// </summary>
-	public interface IBasicUserValidationServiceFactory
+	public interface IBasicUserAuthenticationServiceFactory
 	{
 		/// <summary>
 		/// Implementation of the service creation logic.
 		/// </summary>
 		/// <param name="authenticationSchemaName"></param>
 		/// <returns></returns>
-		IBasicUserValidationService CreateBasicUserValidationService(string authenticationSchemaName);
+		IBasicUserAuthenticationService CreateBasicUserValidationService(string authenticationSchemaName);
 	}
 }

@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace AspNetCore.Authentication.Basic.Tests.Infrastructure
 {
-    class FakeBasicUserValidationService : IBasicUserValidationService
+    class FakeBasicUserAuthenticationService : IBasicUserAuthenticationService
     {
-        public Task<bool> IsValidAsync(string username, string password)
+        public Task<IBasicUser> AuthenticateAsync(string username, string password)
         {
             var user = FakeUsers.Users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase) && u.Password.Equals(password, StringComparison.OrdinalIgnoreCase));
             if (user != null)
@@ -29,9 +29,9 @@ namespace AspNetCore.Authentication.Basic.Tests.Infrastructure
                 }
 #endif
 
-                return Task.FromResult(true);
+                return Task.FromResult((IBasicUser)new FakeBasicUser(username));
             }
-            return Task.FromResult(false);
+            return Task.FromResult((IBasicUser)null);
         }
     }
 
@@ -52,6 +52,18 @@ namespace AspNetCore.Authentication.Basic.Tests.Infrastructure
             return new AuthenticationHeaderValue(BasicDefaults.AuthenticationScheme, Convert.ToBase64String(Encoding.UTF8.GetBytes($"{Username}:{Password}")));
         }
     }
+
+	class FakeBasicUser : IBasicUser
+	{
+		public FakeBasicUser(string userName)
+		{
+			this.UserName = userName;
+		}
+
+		public string UserName { get; set; }
+
+		public IReadOnlyCollection<Claim> Claims { get; }
+	}
 
     class FakeUsers
     {
@@ -79,12 +91,12 @@ namespace AspNetCore.Authentication.Basic.Tests.Infrastructure
         };
     }
 
-    class FakeBasicUserValidationServiceFactory : IBasicUserValidationServiceFactory
+    class FakeBasicUserAuthenticationServiceFactory : IBasicUserAuthenticationServiceFactory
 	{
 		/// <inheritdoc />
-		public IBasicUserValidationService CreateBasicUserValidationService(string authenticationSchemaName)
+		public IBasicUserAuthenticationService CreateBasicUserValidationService(string authenticationSchemaName)
 		{
-			return new FakeBasicUserValidationService();
+			return new FakeBasicUserAuthenticationService();
 		}
 	}
 }

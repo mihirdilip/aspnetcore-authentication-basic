@@ -41,7 +41,7 @@ namespace AspNetCore.Authentication.Basic.Tests.Infrastructure
                 services =>
                 {
                     var authBuilder = services.AddAuthentication(BasicDefaults.AuthenticationScheme)
-                        .AddBasic<FakeBasicUserValidationService>(configureOptions ?? DefaultBasicOptions());
+                        .AddBasic<FakeBasicUserAuthenticationService>(configureOptions ?? DefaultBasicOptions());
                 }
             );
         }
@@ -51,7 +51,7 @@ namespace AspNetCore.Authentication.Basic.Tests.Infrastructure
 			return BuildTestServer(
 				services =>
 				{
-					services.AddTransient<IBasicUserValidationServiceFactory, FakeBasicUserValidationServiceFactory>();
+					services.AddTransient<IBasicUserAuthenticationServiceFactory, FakeBasicUserAuthenticationServiceFactory>();
 					var authBuilder = services.AddAuthentication(BasicDefaults.AuthenticationScheme)
 						.AddBasic(configureOptions ?? DefaultBasicOptions());
 				}

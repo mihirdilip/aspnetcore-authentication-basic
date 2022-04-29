@@ -1,7 +1,7 @@
 # AspNetCore.Authentication.Basic
 Easy to use and very light weight Microsoft style Basic Scheme Authentication Implementation for ASP.NET Core.
 
-[View On GitHub](https://github.com/mihirdilip/aspnetcore-authentication-basic)
+[View On GitHub](https://github.com/mgernand/AspNetCore.Authentication.Basic)
 
 <br/>
 
@@ -14,14 +14,13 @@ Multi targeted: net6.0; net5.0; netcoreapp3.1; netcoreapp3.0; netstandard2.0; ne
 ## Installing
 This library is published on NuGet. So the NuGet package can be installed directly to your project if you wish to use it without making any custom changes to the code.
 
-Download directly from below link. Please consider downloading the new package as the old one has been made obsolete.  
-New Package link - [AspNetCore.Authentication.Basic](https://www.nuget.org/packages/AspNetCore.Authentication.Basic).  
-Old Package link - [Mihir.AspNetCore.Authentication.Basic](https://www.nuget.org/packages/Mihir.AspNetCore.Authentication.Basic).  
+Download directly from below link.
+Package link - [MadEyeMatt.AspNetCore.Authentication.Basic](https://www.nuget.org/packages/MadEyeMatt.AspNetCore.Authentication.Basic). 
 
 Or by running the below command on your project.
 
 ```
-PM> Install-Package AspNetCore.Authentication.Basic
+PM> Install-Package MadEyeMatt.AspNetCore.Authentication.Basic
 ```
 
 <br/> 
@@ -33,14 +32,14 @@ Samples are available under [samples directory](samples).
 Setting it up is quite simple. You will need basic working knowledge of ASP.NET Core 2.0 or newer to get started using this library.
 
 There are 3 different ways of using this library to do it's job. All ways can be mixed if required.  
-1. Using the implementation of *IBasicUserValidationService*  
+1. Using the implementation of *IBasicUserAuthenticationService*  
 2. Using *BasicOptions.Events* (OnValidateCredentials delegate) which is same approach you will find on Microsoft's authentication libraries
-3. Using an implementation of *IApiKeyProviderFactory* that is registered in the *IServiceCollection*
+3. Using an implementation of *IBasicUserAuthenticationServiceFactory* that is registered in the *IServiceCollection*
 
 Notes:
 - It requires Realm to be set in the options if SuppressWWWAuthenticateHeader is not set.
-- If an implementation of IBasicUserValidationService interface is used as well as BasicOptions.Events.OnValidateCredentials delegate is also set then this delegate will be used first.
-- If an implementation of IBasicUserValidationServiceFactory interface is registered in the IServiceCollection the IBasicUserValidationService instances are tried to be created using the factory, 
+- If an implementation of IBasicUserAuthenticationService interface is used as well as BasicOptions.Events.OnValidateCredentials delegate is also set then this delegate will be used first.
+- If an implementation of IBasicUserAuthenticationServiceFactory interface is registered in the IServiceCollection the IBasicUserValidationService instances are tried to be created using the factory, 
   but if no instance is returned by the factory the fallback is to use the configured IApiKeyProvider implementation type.
 
 **Always use HTTPS (SSL Certificate) protocol in production when using basic authentication.**
@@ -49,20 +48,21 @@ Notes:
 
 ```C#
 using AspNetCore.Authentication.Basic;
+
 public class Startup
 {
 	public void ConfigureServices(IServiceCollection services)
 	{
 		// It requires Realm to be set in the options if SuppressWWWAuthenticateHeader is not set.
-		// If an implementation of IBasicUserValidationService interface is used as well as options.Events.OnValidateCredentials delegate is also set then this delegate will be used first.
+		// If an implementation of IBasicUserAuthenticationService interface is used as well as options.Events.OnValidateCredentials delegate is also set then this delegate will be used first.
 		
 		services.AddAuthentication(BasicDefaults.AuthenticationScheme)
 
 			// The below AddBasic without type parameter will require options.Events.OnValidateCredentials delegete to be set.
 			//.AddBasic(options => { options.Realm = "My App"; });
 
-			// The below AddBasic with type parameter will add the BasicUserValidationService to the dependency container. 
-			.AddBasic<BasicUserValidationService>(options => { options.Realm = "My App"; });
+			// The below AddBasic with type parameter will add the BasicUserAuthenticationService to the dependency container. 
+			.AddBasic<BasicUserAuthenticationService>(options => { options.Realm = "My App"; });
 
 		services.AddControllers();
 
@@ -96,20 +96,21 @@ public class Startup
 
 ```C#
 using AspNetCore.Authentication.Basic;
+
 public class Startup
 {
 	public void ConfigureServices(IServiceCollection services)
 	{
 		// It requires Realm to be set in the options if SuppressWWWAuthenticateHeader is not set.
-		// If an implementation of IBasicUserValidationService interface is used as well as options.Events.OnValidateCredentials delegate is also set then this delegate will be used first.
+		// If an implementation of IBasicUserAuthenticationService interface is used as well as options.Events.OnValidateCredentials delegate is also set then this delegate will be used first.
 
 		services.AddAuthentication(BasicDefaults.AuthenticationScheme)
 
 			// The below AddBasic without type parameter will require options.Events.OnValidateCredentials delegete to be set.
 			//.AddBasic(options => { options.Realm = "My App"; });
 
-			// The below AddBasic with type parameter will add the BasicUserValidationService to the dependency container. 
-			.AddBasic<BasicUserValidationService>(options => { options.Realm = "My App"; });
+			// The below AddBasic with type parameter will add the BasicUserAuthenticationService to the dependency container. 
+			.AddBasic<BasicUserAuthenticationService>(options => { options.Realm = "My App"; });
 
 		services.AddMvc();
 
@@ -129,29 +130,30 @@ public class Startup
 }
 ```
 
-#### BasicUserValidationService.cs
+#### BasicUserAuthenticationService.cs
 ```C#
 using AspNetCore.Authentication.Basic;
-public class BasicUserValidationService : IBasicUserValidationService
+
+public class BasicUserAuthenticationService : IBasicUserAuthenticationService
 {
-	private readonly ILogger<BasicUserValidationService> _logger;
+	private readonly ILogger<BasicUserAuthenticationService> _logger;
 	private readonly IUserRepository _userRepository;
 
-	public BasicUserValidationService(ILogger<BasicUserValidationService> logger, IUserRepository userRepository)
+	public BasicUserAuthenticationService(ILogger<BasicUserAuthenticationService> logger, IUserRepository userRepository)
 	{
 		_logger = logger;
 		_userRepository = userRepository;
 	}
 
-	public async Task<bool> IsValidAsync(string username, string password)
+	public async Task<IBasicUser> AuthenticateAsync(string username, string password)
 	{
 		try
 		{
 			// NOTE: DO NOT USE THIS IMPLEMENTATION. THIS IS FOR DEMO PURPOSE ONLY
-			// Write your implementation here and return true or false depending on the validation..
+			// Write your implementation here and return true or false depending on the validation.
 			var user = await _userRepository.GetUserByUsername(username);
 			var isValid = user != null && user.Password == password;
-			return isValid;
+			return isValid ? new BasicUser(username) : null;
 		}
 		catch (Exception e)
 		{
@@ -159,6 +161,23 @@ public class BasicUserValidationService : IBasicUserValidationService
 			throw;
 		}
 	}
+}
+```
+
+#### BasicUser
+```C#
+using AspNetCore.Authentication.Basic;
+
+public class BasicUser : IBasicUser 
+{
+	public BasicUser(string userName, List<Claim> claims = null)
+	{
+		UserName = userName;
+		Claims = claims ?? new List<Claim>();
+	}
+
+	public string UserName { get; }
+	public IReadOnlyCollection<Claim> Claims { get; }
 }
 ```
 
@@ -257,9 +276,9 @@ public void ConfigureServices(IServiceCollection services)
 		
 	services.AddAuthentication("Scheme1")
 
-		.AddBasic<BasicUserValidationService>("Scheme1", options => { options.Realm = "My App"; })
+		.AddBasic<BasicUserAuthenticationService>("Scheme1", options => { options.Realm = "My App"; })
 
-		.AddBasic<BasicUserValidationService_2>("Scheme2", options => { options.Realm = "My App"; })
+		.AddBasic<BasicUserAuthenticationService_2>("Scheme2", options => { options.Realm = "My App"; })
 		
 		.AddBasic("Scheme3", options => 
 		{ 
@@ -303,6 +322,8 @@ public void ConfigureServices(IServiceCollection services)
 ## Release Notes
 | Version | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Notes |
 |---------|-------|
+|6.2.0    | <ul><li>Renamed interfaces to be consistent with the ApiKey library.</li><li>Added ability to provide user claims on authentication using new interface IBasicUser.</li></ul>
+|6.1.0    | <ul><li>Added IBasicUserAuthenticationServiceFactory for creating IBasicUserAuthenticationService instances dynamically based on the scheme name.</li></ul> |
 |6.0.1    | <ul><li>net6.0 support added</li><li>Information log on handler is changed to Debug log when IgnoreAuthenticationIfAllowAnonymous is enabled [#9](https://github.com/mihirdilip/aspnetcore-authentication-basic/issues/9)</li><li>Sample project added</li><li>Readme updated</li><li>Copyright year updated on License</li></ul> |
 |5.1.0    | <ul><li>Visibility of the handler changed to public</li><li>Tests added</li><li>Readme updated</li><li>Copyright year updated on License</li></ul> |
 |5.0.0    | <ul><li>Net 5.0 target framework added</li><li>IgnoreAuthenticationIfAllowAnonymous added to the BasicOptions from netcoreapp3.0 onwards</li></ul> |
@@ -319,4 +340,4 @@ public void ConfigureServices(IServiceCollection services)
 - [aspnet/Security](https://github.com/dotnet/aspnetcore/tree/master/src/Security)
 
 ## License
-[MIT License](https://github.com/mihirdilip/aspnetcore-authentication-basic/blob/master/LICENSE.txt)
+[MIT License](https://github.com/mgernand/AspNetCore.Authentication.Basic/blob/master/LICENSE.txt)

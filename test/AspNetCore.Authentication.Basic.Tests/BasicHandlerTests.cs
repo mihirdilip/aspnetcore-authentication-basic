@@ -73,7 +73,7 @@ namespace AspNetCore.Authentication.Basic.Tests
 			Assert.NotNull(options.Events?.OnValidateCredentials);
 			Assert.Null(options.BasicUserValidationServiceType);
 
-			var apiKeyProvider = services.GetService<IBasicUserValidationService>();
+			var apiKeyProvider = services.GetService<IBasicUserAuthenticationService>();
 			Assert.Null(apiKeyProvider);
 		}
 
@@ -93,11 +93,11 @@ namespace AspNetCore.Authentication.Basic.Tests
 			Assert.NotNull(options);
 			Assert.Null(options.Events?.OnValidateCredentials);
 			Assert.NotNull(options.BasicUserValidationServiceType);
-			Assert.Equal(typeof(FakeBasicUserValidationService), options.BasicUserValidationServiceType);
+			Assert.Equal(typeof(FakeBasicUserAuthenticationService), options.BasicUserValidationServiceType);
 
-			var apiKeyProvider = services.GetService<IBasicUserValidationService>();
+			var apiKeyProvider = services.GetService<IBasicUserAuthenticationService>();
 			Assert.NotNull(apiKeyProvider);
-			Assert.Equal(typeof(FakeBasicUserValidationService), apiKeyProvider.GetType());
+			Assert.Equal(typeof(FakeBasicUserAuthenticationService), apiKeyProvider.GetType());
 		}
 
 		[Fact]
@@ -117,7 +117,7 @@ namespace AspNetCore.Authentication.Basic.Tests
 			Assert.Null(options.Events?.OnValidateCredentials);
 			Assert.Null(options.BasicUserValidationServiceType);
 
-			var basicUserValidationServiceFactory = services.GetService<IBasicUserValidationServiceFactory>();
+			var basicUserValidationServiceFactory = services.GetService<IBasicUserAuthenticationServiceFactory>();
 			Assert.NotNull(basicUserValidationServiceFactory);
 		}
 
@@ -448,7 +448,7 @@ namespace AspNetCore.Authentication.Basic.Tests
 		[Fact]
 		public async Task HandleAuthenticate_OnValidateCredentials_result_null_without_provider_and_OnAuthenticationFailed_throws()
 		{
-			var expectedExceptionMessage = $"Either {nameof(BasicEvents.OnValidateCredentials)} delegate on configure options {nameof(BasicOptions.Events)} should be set or use an extension method with type parameter of type {nameof(IBasicUserValidationService)} or register an implementation of type {nameof(IBasicUserValidationServiceFactory)} in the service collection.";
+			var expectedExceptionMessage = $"Either {nameof(BasicEvents.OnValidateCredentials)} delegate on configure options {nameof(BasicOptions.Events)} should be set or use an extension method with type parameter of type {nameof(IBasicUserAuthenticationService)} or register an implementation of type {nameof(IBasicUserAuthenticationServiceFactory)} in the service collection.";
 
 			using var server = TestServerBuilder.BuildTestServer(options =>
 			{
@@ -487,7 +487,7 @@ namespace AspNetCore.Authentication.Basic.Tests
 		[Fact]
 		public async Task HandleAuthenticate_OnValidateCredentials_result_null_without_provider_and_OnAuthenticationFailed_does_not_throw()
 		{
-			var expectedExceptionMessage = $"Either {nameof(BasicEvents.OnValidateCredentials)} delegate on configure options {nameof(BasicOptions.Events)} should be set or use an extension method with type parameter of type {nameof(IBasicUserValidationService)} or register an implementation of type {nameof(IBasicUserValidationServiceFactory)} in the service collection.";
+			var expectedExceptionMessage = $"Either {nameof(BasicEvents.OnValidateCredentials)} delegate on configure options {nameof(BasicOptions.Events)} should be set or use an extension method with type parameter of type {nameof(IBasicUserAuthenticationService)} or register an implementation of type {nameof(IBasicUserAuthenticationServiceFactory)} in the service collection.";
 
 			using var server = TestServerBuilder.BuildTestServer(options =>
 			{
@@ -625,7 +625,7 @@ namespace AspNetCore.Authentication.Basic.Tests
                             return Task.CompletedTask;
                         };
                     })
-                    .AddBasic<FakeBasicUserValidationServiceLocal_1>("Scheme2", options =>
+                    .AddBasic<FakeBasicUserAuthenticationServiceLocal1>("Scheme2", options =>
                     {
                         options.Realm = TestServerBuilder.Realm;
                     });
@@ -664,19 +664,19 @@ namespace AspNetCore.Authentication.Basic.Tests
 			return JsonSerializer.Deserialize<ClaimsPrincipalDto>(await response.Content.ReadAsStringAsync());
 		}
 
-        private class FakeBasicUserValidationServiceLocal_1 : IBasicUserValidationService
+        private class FakeBasicUserAuthenticationServiceLocal1 : IBasicUserAuthenticationService
         {
-            public Task<bool> IsValidAsync(string username, string password)
+            public Task<IBasicUser> AuthenticateAsync(string username, string password)
             {
-				return Task.FromResult(true);
+				return Task.FromResult((IBasicUser)new FakeBasicUser(username));
             }
         }
 
-		private class FakeBasicUserValidationServiceLocal_2 : IBasicUserValidationService
+		private class FakeBasicUserAuthenticationServiceLocal2 : IBasicUserAuthenticationService
 		{
-            public Task<bool> IsValidAsync(string username, string password)
+            public Task<IBasicUser> AuthenticateAsync(string username, string password)
             {
-				return Task.FromResult(true);
+				return Task.FromResult((IBasicUser)new FakeBasicUser(username));
 			}
 		}
 	}

@@ -84,52 +84,52 @@ namespace AspNetCore.Authentication.Basic
 
 
 		/// <summary>
-		/// Adds basic authentication scheme to the project. It takes a implementation of <see cref="IBasicUserValidationService"/> as type parameter.
-		/// If <see cref="BasicEvents.OnValidateCredentials"/> delegate is set on the <see cref="BasicOptions.Events"/> then it will be used instead of implementation of <see cref="IBasicUserValidationService"/>.
+		/// Adds basic authentication scheme to the project. It takes a implementation of <see cref="IBasicUserAuthenticationService"/> as type parameter.
+		/// If <see cref="BasicEvents.OnValidateCredentials"/> delegate is set on the <see cref="BasicOptions.Events"/> then it will be used instead of implementation of <see cref="IBasicUserAuthenticationService"/>.
 		/// </summary>
 		/// <typeparam name="TBasicUserValidationService"></typeparam>
 		/// <param name="builder"></param>
 		/// <returns>The instance of <see cref="AuthenticationBuilder"/></returns>
-		public static AuthenticationBuilder AddBasic<TBasicUserValidationService>(this AuthenticationBuilder builder) where TBasicUserValidationService : class, IBasicUserValidationService
+		public static AuthenticationBuilder AddBasic<TBasicUserValidationService>(this AuthenticationBuilder builder) where TBasicUserValidationService : class, IBasicUserAuthenticationService
 			=> builder.AddBasic<TBasicUserValidationService>(BasicDefaults.AuthenticationScheme);
 
 		/// <summary>
-		/// Adds basic authentication scheme to the project. It takes a implementation of <see cref="IBasicUserValidationService"/> as type parameter.
-		/// If <see cref="BasicEvents.OnValidateCredentials"/> delegate is set on the <see cref="BasicOptions.Events"/> then it will be used instead of implementation of <see cref="IBasicUserValidationService"/>.
+		/// Adds basic authentication scheme to the project. It takes a implementation of <see cref="IBasicUserAuthenticationService"/> as type parameter.
+		/// If <see cref="BasicEvents.OnValidateCredentials"/> delegate is set on the <see cref="BasicOptions.Events"/> then it will be used instead of implementation of <see cref="IBasicUserAuthenticationService"/>.
 		/// </summary>
 		/// <typeparam name="TBasicUserValidationService"></typeparam>
 		/// <param name="builder"></param>
 		/// <param name="authenticationScheme">The authentication scheme.</param>
 		/// <returns>The instance of <see cref="AuthenticationBuilder"/></returns>
-		public static AuthenticationBuilder AddBasic<TBasicUserValidationService>(this AuthenticationBuilder builder, string authenticationScheme) where TBasicUserValidationService : class, IBasicUserValidationService
+		public static AuthenticationBuilder AddBasic<TBasicUserValidationService>(this AuthenticationBuilder builder, string authenticationScheme) where TBasicUserValidationService : class, IBasicUserAuthenticationService
 			=> builder.AddBasic<TBasicUserValidationService>(authenticationScheme, configureOptions: null);
 
 		/// <summary>
-		/// Adds basic authentication scheme to the project. It takes a implementation of <see cref="IBasicUserValidationService"/> as type parameter.
-		/// If <see cref="BasicEvents.OnValidateCredentials"/> delegate is set on the Events property on <paramref name="configureOptions"/> then it will be used instead of implementation of <see cref="IBasicUserValidationService"/>.
+		/// Adds basic authentication scheme to the project. It takes a implementation of <see cref="IBasicUserAuthenticationService"/> as type parameter.
+		/// If <see cref="BasicEvents.OnValidateCredentials"/> delegate is set on the Events property on <paramref name="configureOptions"/> then it will be used instead of implementation of <see cref="IBasicUserAuthenticationService"/>.
 		/// </summary>
 		/// <typeparam name="TBasicUserValidationService"></typeparam>
 		/// <param name="builder"></param>
 		/// <param name="configureOptions">The <see cref="BasicOptions"/>.</param>
 		/// <returns>The instance of <see cref="AuthenticationBuilder"/></returns>
-		public static AuthenticationBuilder AddBasic<TBasicUserValidationService>(this AuthenticationBuilder builder, Action<BasicOptions> configureOptions) where TBasicUserValidationService : class, IBasicUserValidationService
+		public static AuthenticationBuilder AddBasic<TBasicUserValidationService>(this AuthenticationBuilder builder, Action<BasicOptions> configureOptions) where TBasicUserValidationService : class, IBasicUserAuthenticationService
 			=> builder.AddBasic<TBasicUserValidationService>(BasicDefaults.AuthenticationScheme, configureOptions);
 
 		/// <summary>
-		/// Adds basic authentication scheme to the project. It takes a implementation of <see cref="IBasicUserValidationService"/> as type parameter.
-		/// If <see cref="BasicEvents.OnValidateCredentials"/> delegate is set on the Events property on <paramref name="configureOptions"/> then it will be used instead of implementation of <see cref="IBasicUserValidationService"/>.
+		/// Adds basic authentication scheme to the project. It takes a implementation of <see cref="IBasicUserAuthenticationService"/> as type parameter.
+		/// If <see cref="BasicEvents.OnValidateCredentials"/> delegate is set on the Events property on <paramref name="configureOptions"/> then it will be used instead of implementation of <see cref="IBasicUserAuthenticationService"/>.
 		/// </summary>
 		/// <typeparam name="TBasicUserValidationService"></typeparam>
 		/// <param name="builder"></param>
 		/// <param name="authenticationScheme">The authentication scheme.</param>
 		/// <param name="configureOptions">The <see cref="BasicOptions"/>.</param>
 		/// <returns>The instance of <see cref="AuthenticationBuilder"/></returns>
-		public static AuthenticationBuilder AddBasic<TBasicUserValidationService>(this AuthenticationBuilder builder, string authenticationScheme, Action<BasicOptions> configureOptions) where TBasicUserValidationService : class, IBasicUserValidationService
+		public static AuthenticationBuilder AddBasic<TBasicUserValidationService>(this AuthenticationBuilder builder, string authenticationScheme, Action<BasicOptions> configureOptions) where TBasicUserValidationService : class, IBasicUserAuthenticationService
 			=> builder.AddBasic<TBasicUserValidationService>(authenticationScheme, displayName: null, configureOptions: configureOptions);
 
 		/// <summary>
-		/// Adds basic authentication scheme to the project. It takes a implementation of <see cref="IBasicUserValidationService"/> as type parameter.
-		/// If <see cref="BasicEvents.OnValidateCredentials"/> delegate is set on the Events property on <paramref name="configureOptions"/> then it will be used instead of implementation of <see cref="IBasicUserValidationService"/>.
+		/// Adds basic authentication scheme to the project. It takes a implementation of <see cref="IBasicUserAuthenticationService"/> as type parameter.
+		/// If <see cref="BasicEvents.OnValidateCredentials"/> delegate is set on the Events property on <paramref name="configureOptions"/> then it will be used instead of implementation of <see cref="IBasicUserAuthenticationService"/>.
 		/// </summary>
 		/// <typeparam name="TBasicUserValidationService"></typeparam>
 		/// <param name="builder"></param>
@@ -138,10 +138,10 @@ namespace AspNetCore.Authentication.Basic
 		/// <param name="configureOptions">The <see cref="BasicOptions"/>.</param>
 		/// <returns>The instance of <see cref="AuthenticationBuilder"/></returns>
 		public static AuthenticationBuilder AddBasic<TBasicUserValidationService>(this AuthenticationBuilder builder, string authenticationScheme, string displayName, Action<BasicOptions> configureOptions)
-			where TBasicUserValidationService : class, IBasicUserValidationService
+			where TBasicUserValidationService : class, IBasicUserAuthenticationService
 		{
 			// Adds implementation of IBasicUserValidationService to the dependency container.
-			builder.Services.AddTransient<IBasicUserValidationService, TBasicUserValidationService>();
+			builder.Services.AddTransient<IBasicUserAuthenticationService, TBasicUserValidationService>();
 
 			// Add the authentication scheme name for the specific options.
 			builder.Services.Configure<BasicOptions>(

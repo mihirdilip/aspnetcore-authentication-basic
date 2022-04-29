@@ -87,7 +87,7 @@ namespace AspNetCore.Authentication.Basic.Tests
             Assert.NotNull(apiKeyOptions);
             Assert.Null(apiKeyOptions.BasicUserValidationServiceType);
 
-            var apiKeyProvider = services.GetService<IBasicUserValidationService>();
+            var apiKeyProvider = services.GetService<IBasicUserAuthenticationService>();
             Assert.Null(apiKeyProvider);
         }
 
@@ -101,11 +101,11 @@ namespace AspNetCore.Authentication.Basic.Tests
             var apiKeyOptions = apiKeyOptionsSnapshot.Get(BasicDefaults.AuthenticationScheme);
             Assert.NotNull(apiKeyOptions);
             Assert.NotNull(apiKeyOptions.BasicUserValidationServiceType);
-            Assert.Equal(typeof(FakeBasicUserValidationService), apiKeyOptions.BasicUserValidationServiceType);
+            Assert.Equal(typeof(FakeBasicUserAuthenticationService), apiKeyOptions.BasicUserValidationServiceType);
 
-            var apiKeyProvider = services.GetService<IBasicUserValidationService>();
+            var apiKeyProvider = services.GetService<IBasicUserAuthenticationService>();
             Assert.NotNull(apiKeyProvider);
-            Assert.Equal(typeof(FakeBasicUserValidationService), apiKeyProvider.GetType());
+            Assert.Equal(typeof(FakeBasicUserAuthenticationService), apiKeyProvider.GetType());
         }
 
 #if !(NET461 || NETSTANDARD2_0 || NETCOREAPP2_1)
