@@ -2,15 +2,14 @@
 
   <PropertyGroup>
     <TargetFrameworks>net6.0;net5.0;netcoreapp3.1;netcoreapp3.0;netstandard2.0;net461</TargetFrameworks>
-    <Version>6.2.0</Version>
-    <RepositoryUrl>https://github.com/mihirdilip/aspnetcore-authentication-basic/tree/$(Version)</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/mihirdilip/aspnetcore-authentication-basic/tree/$(Version)</PackageProjectUrl>
+    <Version>6.2.1</Version>
+    <RepositoryUrl>https://github.com/mgernand/AspNetCore.Authentication.Basic</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/mgernand/AspNetCore.Authentication.Basic</PackageProjectUrl>
     <PackageTags>aspnetcore, security, authentication, microsoft, microsoft.aspnetcore.authentication, microsoft-aspnetcore-authentication, microsoft.aspnetcore.authentication.basic, microsoft-aspnetcore-authentication-basic, asp-net-core, netstandard, netstandard20, basic-authentication, basicauthentication, dotnetcore, dotnetcore3.1, net5, net5.0, net6, net6.0, asp-net-core-basic-authentication, aspnetcore-basic-authentication, net5-basic-authentication, asp-net-core-authentication, aspnetcore-authentication, net5-authentication, asp, aspnet, basic, authentication-scheme</PackageTags>
-    <PackageReleaseNotes>- Added IBasicUserValidationServiceFactory to acquire IBasicUserValidationService instances by scheme name.</PackageReleaseNotes>
+    <PackageReleaseNotes></PackageReleaseNotes>
     <Description>Easy to use and very light weight Microsoft style Basic Scheme Authentication implementation for ASP.NET Core.</Description>
     <Authors>Mihir Dilip, Matthias Gernand</Authors>
-    <Company>Mihir Dilip</Company>
-    <Copyright>Copyright (c) 2022 Mihir Dilip</Copyright>    
+	  <Copyright>Copyright (c) 2022 Mihir Dilip, Matthias Gernand</Copyright>    
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Title>$(AssemblyName)</Title>
     <RepositoryType>git</RepositoryType>
