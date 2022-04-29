@@ -17,7 +17,7 @@ namespace SampleWebApi.Services
 		}
 
 		/// <inheritdoc />
-		public IBasicUserAuthenticationService CreateBasicUserValidationService(string authenticationSchemaName)
+		public IBasicUserAuthenticationService CreateBasicUserAuthenticationService(string authenticationSchemaName)
 		{
 			Debug.WriteLine(authenticationSchemaName);
 			return new BasicUserAuthenticationService(this.loggerFactory.CreateLogger<BasicUserAuthenticationService>(), this.userRepository);

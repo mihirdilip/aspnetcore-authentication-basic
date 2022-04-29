@@ -13,6 +13,6 @@ namespace AspNetCore.Authentication.Basic
 		/// </summary>
 		/// <param name="authenticationSchemaName"></param>
 		/// <returns></returns>
-		IBasicUserAuthenticationService CreateBasicUserValidationService(string authenticationSchemaName);
+		IBasicUserAuthenticationService CreateBasicUserAuthenticationService(string authenticationSchemaName);
 	}
 }

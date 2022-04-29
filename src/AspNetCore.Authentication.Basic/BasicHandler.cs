@@ -222,7 +222,7 @@ namespace AspNetCore.Authentication.Basic
 			var basicUserValidationServiceFactory = this.Context.RequestServices.GetService<IBasicUserAuthenticationServiceFactory>();
 
 			// Try to get a IBasicUserValidationService instance from the factory.
-			basicUserAuthenticationService = basicUserValidationServiceFactory?.CreateBasicUserValidationService(Options.AuthenticationSchemeName);
+			basicUserAuthenticationService = basicUserValidationServiceFactory?.CreateBasicUserAuthenticationService(Options.AuthenticationSchemeName);
 
 			if (basicUserAuthenticationService == null && Options.BasicUserValidationServiceType != null)
 			{

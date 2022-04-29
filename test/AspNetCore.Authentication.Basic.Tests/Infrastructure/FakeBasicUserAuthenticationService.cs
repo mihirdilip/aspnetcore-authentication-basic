@@ -94,7 +94,7 @@ namespace AspNetCore.Authentication.Basic.Tests.Infrastructure
     class FakeBasicUserAuthenticationServiceFactory : IBasicUserAuthenticationServiceFactory
 	{
 		/// <inheritdoc />
-		public IBasicUserAuthenticationService CreateBasicUserValidationService(string authenticationSchemaName)
+		public IBasicUserAuthenticationService CreateBasicUserAuthenticationService(string authenticationSchemaName)
 		{
 			return new FakeBasicUserAuthenticationService();
 		}
