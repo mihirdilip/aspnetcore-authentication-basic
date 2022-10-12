@@ -3,12 +3,6 @@ Easy to use and very light weight Microsoft style Basic Scheme Authentication Im
 
 [View On GitHub](https://github.com/mgernand/AspNetCore.Authentication.Basic)
 
-<br/>
-
-## .NET (Core) Frameworks Supported  
-.NET Framework 4.6.1 and/or NetStandard 2.0 onwards  
-Multi targeted: net6.0; net5.0; netcoreapp3.1; netcoreapp3.0; netstandard2.0; net461
-
 <br/> 
 
 ## Installing
@@ -44,7 +38,7 @@ Notes:
 
 **Always use HTTPS (SSL Certificate) protocol in production when using basic authentication.**
 
-#### Startup.cs (ASP.NET Core 3.0 onwards)
+#### Configuration
 
 ```C#
 using AspNetCore.Authentication.Basic;
@@ -88,44 +82,6 @@ public class Startup
 		{
 			endpoints.MapControllers();
 		});
-	}
-}
-```
-
-#### Startup.cs (ASP.NET Core 2.0 onwards)
-
-```C#
-using AspNetCore.Authentication.Basic;
-
-public class Startup
-{
-	public void ConfigureServices(IServiceCollection services)
-	{
-		// It requires Realm to be set in the options if SuppressWWWAuthenticateHeader is not set.
-		// If an implementation of IBasicUserAuthenticationService interface is used as well as options.Events.OnValidateCredentials delegate is also set then this delegate will be used first.
-
-		services.AddAuthentication(BasicDefaults.AuthenticationScheme)
-
-			// The below AddBasic without type parameter will require options.Events.OnValidateCredentials delegete to be set.
-			//.AddBasic(options => { options.Realm = "My App"; });
-
-			// The below AddBasic with type parameter will add the BasicUserAuthenticationService to the dependency container. 
-			.AddBasic<BasicUserAuthenticationService>(options => { options.Realm = "My App"; });
-
-		services.AddMvc();
-
-		//// By default, authentication is not challenged for every request which is ASP.NET Core's default intended behaviour.
-		//// So to challenge authentication for every requests please use below option instead of above services.AddMvc().
-		//services.AddMvc(options => 
-		//{
-		//	options.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build()));
-		//});
-	}
-
-	public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-	{
-		app.UseAuthentication();
-		app.UseMvc();
 	}
 }
 ```
@@ -236,25 +192,17 @@ With ASP.NET Core, all the requests are not challenged for authentication by def
 However, if you want all the requests to challenge authentication by default, depending on what you are using, you can add the below options line to *ConfigureServices* method on *Startup* class.
 
 ```C#
-// On ASP.NET Core 3.0 onwards
+// On ASP.NET Core 6.0 onwards
 services.AddAuthorization(options =>
 {
 	options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-});
-
-// OR
-
-// On ASP.NET Core 2.0 onwards
-services.AddMvc(options => 
-{
-	options.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build()));
 });
 ```
   
 If you are not using MVC but, using Endpoints on ASP.NET Core 3.0 or newer, you can add a chain method `.RequireAuthorization()` to the endpoint map under *Configure* method on *Startup* class as shown below.
 
 ```C#
-// ASP.NET Core 3.0 onwards
+// ASP.NET Core 6.0 onwards
 app.UseEndpoints(endpoints =>
 {
 	endpoints.MapGet("/", async context =>
@@ -319,25 +267,7 @@ public void ConfigureServices(IServiceCollection services)
 <br/>
 <br/>
 
-## Release Notes
-| Version | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Notes |
-|---------|-------|
-|6.2.1    | <ul><li>Renamed interfaces to be consistent with the ApiKey library.</li><li>Added ability to provide user claims on authentication using new interface IBasicUser.</li></ul>
-|6.1.0    | <ul><li>Added IBasicUserAuthenticationServiceFactory for creating IBasicUserAuthenticationService instances dynamically based on the scheme name.</li></ul> |
-|6.0.1    | <ul><li>net6.0 support added</li><li>Information log on handler is changed to Debug log when IgnoreAuthenticationIfAllowAnonymous is enabled [#9](https://github.com/mihirdilip/aspnetcore-authentication-basic/issues/9)</li><li>Sample project added</li><li>Readme updated</li><li>Copyright year updated on License</li></ul> |
-|5.1.0    | <ul><li>Visibility of the handler changed to public</li><li>Tests added</li><li>Readme updated</li><li>Copyright year updated on License</li></ul> |
-|5.0.0    | <ul><li>Net 5.0 target framework added</li><li>IgnoreAuthenticationIfAllowAnonymous added to the BasicOptions from netcoreapp3.0 onwards</li></ul> |
-|3.1.1    | <ul><li>Fixed issue with resolving of IBasicUserValidationService implementation when using multiple schemes</li></ul> |
-|3.1.0    | <ul><li>Multitarget framework support added</li><li>Strong Name Key support added</li><li>Source Link support added</li><li>SuppressWWWAuthenticateHeader added to configure options</li><li>Events added to configure options</li></ul> |
-|2.2.0    | <ul><li>Basic Authentication Implementation for ASP.NET Core</li></ul> |
-
-<br/>
-<br/>
-
 ## References
 - [RFC 7617: Technical spec for HTTP Basic](https://tools.ietf.org/html/rfc7617)
 - [ASP.NET Core Security documentation](https://docs.microsoft.com/en-us/aspnet/core/security)
 - [aspnet/Security](https://github.com/dotnet/aspnetcore/tree/master/src/Security)
-
-## License
-[MIT License](https://github.com/mgernand/AspNetCore.Authentication.Basic/blob/master/LICENSE.txt)

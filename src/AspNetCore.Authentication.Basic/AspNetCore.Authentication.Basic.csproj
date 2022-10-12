@@ -1,72 +1,50 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>net6.0;net5.0;netcoreapp3.1;netcoreapp3.0;netstandard2.0;net461</TargetFrameworks>
-    <Version>6.2.1</Version>
-    <RepositoryUrl>https://github.com/mgernand/AspNetCore.Authentication.Basic</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/mgernand/AspNetCore.Authentication.Basic</PackageProjectUrl>
-    <PackageTags>aspnetcore, security, authentication, microsoft, microsoft.aspnetcore.authentication, microsoft-aspnetcore-authentication, microsoft.aspnetcore.authentication.basic, microsoft-aspnetcore-authentication-basic, asp-net-core, netstandard, netstandard20, basic-authentication, basicauthentication, dotnetcore, dotnetcore3.1, net5, net5.0, net6, net6.0, asp-net-core-basic-authentication, aspnetcore-basic-authentication, net5-basic-authentication, asp-net-core-authentication, aspnetcore-authentication, net5-authentication, asp, aspnet, basic, authentication-scheme</PackageTags>
-    <PackageReleaseNotes></PackageReleaseNotes>
-    <Description>Easy to use and very light weight Microsoft style Basic Scheme Authentication implementation for ASP.NET Core.</Description>
-    <Authors>Mihir Dilip, Matthias Gernand</Authors>
-	  <Copyright>Copyright (c) 2022 Mihir Dilip, Matthias Gernand</Copyright>    
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Title>$(AssemblyName)</Title>
-    <RepositoryType>git</RepositoryType>
-    <PackageIconUrl />
-    <NeutralLanguage />
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<Nullable>disable</Nullable>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <!-- Strong Name Key -->
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(SolutionDir)key.snk</AssemblyOriginatorKeyFile>
-    <DelaySign>false</DelaySign>
-  </PropertyGroup>
+	<PropertyGroup>
+		<PackageId>MadEyeMatt.$(AssemblyName)</PackageId>
+		<IncludeSymbols>false</IncludeSymbols>
+		<Copyright>Copyright © 2022 Mihir Dilip, Matthias Gernand. All rights reserved.</Copyright>
+		<Version>6.3.0</Version>
+		<AssemblyVersion>6.3.0</AssemblyVersion>
+		<FileVersion>6.3.0</FileVersion>
+		<Authors>Mihir Dilip, Matthias Gernand</Authors>
+		<Description>An easy to use and light weight Microsoft style Basic scheme authentication implementation for ASP.NET Core.</Description>
+		<NeutralLanguage>en</NeutralLanguage>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<RepositoryUrl>https://github.com/mgernand/AspNetCore.Authentication.Basic</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/mgernand/AspNetCore.Authentication.Basic</PackageProjectUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>aspnetcore;security;authentication;basic;aspnetcore;aspnet;scheme</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageIcon>icon.png</PackageIcon>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <!-- Source Link - https://github.com/dotnet/sourcelink -->
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-    <PackageId>MadEyeMatt.$(AssemblyName)</PackageId>
-  </PropertyGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="AspNetCore.Authentication.Basic.Tests" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <!-- Source Link - https://github.com/dotnet/sourcelink -->
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-  </ItemGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <!-- Unit Testing - To make internal visible to tests -->
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-      <_Parameter1>
-        $(MSBuildProjectName).Tests, PublicKey=0024000004800000940000000602000000240000525341310004000001000100196de3cf1767e4651bd29928a1dfdc149897770adb2439fd0f42a480f0f0c955606d6e6cae87cbdcdfbd1686ec7775789b82fa869387c31dcc740991f3d3d2db407b0a28d772fe343cdf8f1b12ee53bb625aee854f56e0be93f11c307c0dbc54aad277111fc04db0eed2513a20d5663c50412afd34e8c8fb98459d8f4d90e5b6</_Parameter1>
-    </AssemblyAttribute>
-  </ItemGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\$(TargetFramework)\AspNetCore.Authentication.Basic.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'net461'">
-    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0' Or '$(TargetFramework)' == 'netcoreapp3.1' Or '$(TargetFramework)' == 'net5.0' Or '$(TargetFramework)' == 'net6.0'">
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\..\LICENSE.txt">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\icon.png" Link="Properties\icon.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\..\README.md" Link="Properties\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
 
 </Project>

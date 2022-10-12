@@ -3,6 +3,7 @@ using System.Text;
 
 namespace SampleWebApi_6_0.Controllers
 {
+	using System.Collections.Generic;
 	using Microsoft.AspNetCore.Authorization;
 
 	[Route("api/[controller]")]

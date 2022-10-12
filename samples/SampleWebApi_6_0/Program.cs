@@ -1,5 +1,7 @@
 using AspNetCore.Authentication.Basic;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using SampleWebApi.Repositories;
 using SampleWebApi.Services;
 
