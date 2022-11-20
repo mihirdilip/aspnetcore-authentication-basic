@@ -1,16 +1,16 @@
 ﻿// Copyright (c) Mihir Dilip. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AspNetCore.Authentication.Basic.Tests.Infrastructure
+namespace MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net.Http.Headers;
+    using System.Security.Claims;
+    using System.Text;
+    using System.Threading.Tasks;
+
     class FakeBasicUserAuthenticationService : IBasicUserAuthenticationService
     {
         public Task<IBasicUser> AuthenticateAsync(string username, string password)

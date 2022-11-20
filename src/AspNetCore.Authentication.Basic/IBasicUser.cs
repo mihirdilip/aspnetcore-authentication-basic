@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Matthias Gernand. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for license information.
 
-namespace AspNetCore.Authentication.Basic
+namespace MadEyeMatt.AspNetCore.Authentication.Basic
 {
-	using System.Collections.Generic;
-	using System.Security.Claims;
+    using System.Collections.Generic;
+    using System.Security.Claims;
 
-	/// <summary>
+    /// <summary>
 	/// Basic user details.
 	/// </summary>
 	public interface IBasicUser

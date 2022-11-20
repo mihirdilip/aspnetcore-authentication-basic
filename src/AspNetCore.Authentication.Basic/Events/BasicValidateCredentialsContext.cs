@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Mihir Dilip. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-
-namespace AspNetCore.Authentication.Basic
+namespace MadEyeMatt.AspNetCore.Authentication.Basic.Events
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Security.Claims;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Http;
+
     /// <summary>
     /// Context used for validating credentials.
     /// </summary>

@@ -1,13 +1,12 @@
 ﻿// Copyright (c) Mihir Dilip. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-using AspNetCore.Authentication.Basic.Tests.Infrastructure;
-using System;
-using System.Threading.Tasks;
-using Xunit;
-
-namespace AspNetCore.Authentication.Basic.Tests
+namespace MadEyeMatt.AspNetCore.Authentication.Basic.Tests
 {
+    using System;
+    using System.Threading.Tasks;
+    using Xunit;
+
     public class BasicPostConfigureOptionsTests
     {
 		[Fact]
@@ -87,20 +86,20 @@ namespace AspNetCore.Authentication.Basic.Tests
 
 		private async Task RunAuthInitAsync(Action<BasicOptions> configureOptions)
 		{
-			var server = TestServerBuilder.BuildTestServer(configureOptions);
-			await server.CreateClient().GetAsync(TestServerBuilder.BaseUrl);
+			var server = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BuildTestServer(configureOptions);
+			await server.CreateClient().GetAsync(MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BaseUrl);
 		}
 
 		private async Task RunAuthInitWithServiceAsync(Action<BasicOptions> configureOptions)
 		{
-			var server = TestServerBuilder.BuildTestServerWithService(configureOptions);
-			await server.CreateClient().GetAsync(TestServerBuilder.BaseUrl);
+			var server = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BuildTestServerWithService(configureOptions);
+			await server.CreateClient().GetAsync(MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BaseUrl);
 		}
 
 		private async Task RunAuthInitWithServiceFactoryAsync(Action<BasicOptions> configureOptions)
 		{
-			var server = TestServerBuilder.BuildTestServerWithServiceFactory(configureOptions);
-			await server.CreateClient().GetAsync(TestServerBuilder.BaseUrl);
+			var server = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BuildTestServerWithServiceFactory(configureOptions);
+			await server.CreateClient().GetAsync(MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BaseUrl);
 		}
 	}
 }

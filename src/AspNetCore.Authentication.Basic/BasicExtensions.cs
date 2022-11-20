@@ -1,22 +1,22 @@
 ﻿// Copyright (c) Mihir Dilip. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Options;
-using System;
-
-namespace AspNetCore.Authentication.Basic
+namespace MadEyeMatt.AspNetCore.Authentication.Basic
 {
-	/// <summary>
+    using System;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.DependencyInjection.Extensions;
+    using Microsoft.Extensions.Options;
+
+    /// <summary>
 	/// Extension methods for basic authentication.
 	/// </summary>
 	public static class BasicExtensions
 	{
 		/// <summary>
 		/// Adds basic authentication scheme to the project. 
-		/// <see cref="BasicEvents.OnValidateCredentials"/> delegate must be set on the <see cref="BasicOptions.Events"/>.
+		/// <see cref="Events.BasicEvents.OnValidateCredentials"/> delegate must be set on the <see cref="BasicOptions.Events"/>.
 		/// </summary>
 		/// <param name="builder"></param>
 		/// <returns>The instance of <see cref="AuthenticationBuilder"/></returns>
@@ -25,7 +25,7 @@ namespace AspNetCore.Authentication.Basic
 
 		/// <summary>
 		/// Adds basic authentication scheme to the project. 
-		/// <see cref="BasicEvents.OnValidateCredentials"/> delegate must be set on the <see cref="BasicOptions.Events"/>.
+		/// <see cref="Events.BasicEvents.OnValidateCredentials"/> delegate must be set on the <see cref="BasicOptions.Events"/>.
 		/// </summary>
 		/// <param name="builder"></param>
 		/// <param name="authenticationScheme">The authentication scheme.</param>
@@ -35,7 +35,7 @@ namespace AspNetCore.Authentication.Basic
 
 		/// <summary>
 		/// Adds basic authentication scheme to the project. 
-		/// <see cref="BasicEvents.OnValidateCredentials"/> delegate must be set on the Events property on <paramref name="configureOptions"/>.
+		/// <see cref="Events.BasicEvents.OnValidateCredentials"/> delegate must be set on the Events property on <paramref name="configureOptions"/>.
 		/// </summary>
 		/// <param name="builder"></param>
 		/// <param name="configureOptions">The configure options.</param>
@@ -45,7 +45,7 @@ namespace AspNetCore.Authentication.Basic
 
 		/// <summary>
 		/// Adds basic authentication scheme to the project. 
-		/// <see cref="BasicEvents.OnValidateCredentials"/> delegate must be set on the Events property on <paramref name="configureOptions"/>.
+		/// <see cref="Events.BasicEvents.OnValidateCredentials"/> delegate must be set on the Events property on <paramref name="configureOptions"/>.
 		/// </summary>
 		/// <param name="builder"></param>
 		/// <param name="authenticationScheme">The authentication scheme.</param>
@@ -56,7 +56,7 @@ namespace AspNetCore.Authentication.Basic
 
 		/// <summary>
 		/// Adds basic authentication scheme to the project. 
-		/// <see cref="BasicEvents.OnValidateCredentials"/> delegate must be set on the Events property on <paramref name="configureOptions"/>.
+		/// <see cref="Events.BasicEvents.OnValidateCredentials"/> delegate must be set on the Events property on <paramref name="configureOptions"/>.
 		/// </summary>
 		/// <param name="builder"></param>
 		/// <param name="authenticationScheme">The authentication scheme.</param>
@@ -85,7 +85,7 @@ namespace AspNetCore.Authentication.Basic
 
 		/// <summary>
 		/// Adds basic authentication scheme to the project. It takes a implementation of <see cref="IBasicUserAuthenticationService"/> as type parameter.
-		/// If <see cref="BasicEvents.OnValidateCredentials"/> delegate is set on the <see cref="BasicOptions.Events"/> then it will be used instead of implementation of <see cref="IBasicUserAuthenticationService"/>.
+		/// If <see cref="Events.BasicEvents.OnValidateCredentials"/> delegate is set on the <see cref="BasicOptions.Events"/> then it will be used instead of implementation of <see cref="IBasicUserAuthenticationService"/>.
 		/// </summary>
 		/// <typeparam name="TBasicUserValidationService"></typeparam>
 		/// <param name="builder"></param>
@@ -95,7 +95,7 @@ namespace AspNetCore.Authentication.Basic
 
 		/// <summary>
 		/// Adds basic authentication scheme to the project. It takes a implementation of <see cref="IBasicUserAuthenticationService"/> as type parameter.
-		/// If <see cref="BasicEvents.OnValidateCredentials"/> delegate is set on the <see cref="BasicOptions.Events"/> then it will be used instead of implementation of <see cref="IBasicUserAuthenticationService"/>.
+		/// If <see cref="Events.BasicEvents.OnValidateCredentials"/> delegate is set on the <see cref="BasicOptions.Events"/> then it will be used instead of implementation of <see cref="IBasicUserAuthenticationService"/>.
 		/// </summary>
 		/// <typeparam name="TBasicUserValidationService"></typeparam>
 		/// <param name="builder"></param>
@@ -106,7 +106,7 @@ namespace AspNetCore.Authentication.Basic
 
 		/// <summary>
 		/// Adds basic authentication scheme to the project. It takes a implementation of <see cref="IBasicUserAuthenticationService"/> as type parameter.
-		/// If <see cref="BasicEvents.OnValidateCredentials"/> delegate is set on the Events property on <paramref name="configureOptions"/> then it will be used instead of implementation of <see cref="IBasicUserAuthenticationService"/>.
+		/// If <see cref="Events.BasicEvents.OnValidateCredentials"/> delegate is set on the Events property on <paramref name="configureOptions"/> then it will be used instead of implementation of <see cref="IBasicUserAuthenticationService"/>.
 		/// </summary>
 		/// <typeparam name="TBasicUserValidationService"></typeparam>
 		/// <param name="builder"></param>
@@ -117,7 +117,7 @@ namespace AspNetCore.Authentication.Basic
 
 		/// <summary>
 		/// Adds basic authentication scheme to the project. It takes a implementation of <see cref="IBasicUserAuthenticationService"/> as type parameter.
-		/// If <see cref="BasicEvents.OnValidateCredentials"/> delegate is set on the Events property on <paramref name="configureOptions"/> then it will be used instead of implementation of <see cref="IBasicUserAuthenticationService"/>.
+		/// If <see cref="Events.BasicEvents.OnValidateCredentials"/> delegate is set on the Events property on <paramref name="configureOptions"/> then it will be used instead of implementation of <see cref="IBasicUserAuthenticationService"/>.
 		/// </summary>
 		/// <typeparam name="TBasicUserValidationService"></typeparam>
 		/// <param name="builder"></param>
@@ -129,7 +129,7 @@ namespace AspNetCore.Authentication.Basic
 
 		/// <summary>
 		/// Adds basic authentication scheme to the project. It takes a implementation of <see cref="IBasicUserAuthenticationService"/> as type parameter.
-		/// If <see cref="BasicEvents.OnValidateCredentials"/> delegate is set on the Events property on <paramref name="configureOptions"/> then it will be used instead of implementation of <see cref="IBasicUserAuthenticationService"/>.
+		/// If <see cref="Events.BasicEvents.OnValidateCredentials"/> delegate is set on the Events property on <paramref name="configureOptions"/> then it will be used instead of implementation of <see cref="IBasicUserAuthenticationService"/>.
 		/// </summary>
 		/// <typeparam name="TBasicUserValidationService"></typeparam>
 		/// <param name="builder"></param>

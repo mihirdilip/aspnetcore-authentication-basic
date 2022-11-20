@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Mihir Dilip. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-using System;
-using System.Threading.Tasks;
-
-namespace AspNetCore.Authentication.Basic
+namespace MadEyeMatt.AspNetCore.Authentication.Basic.Events
 {
+    using System;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Basic Events.
     /// </summary>

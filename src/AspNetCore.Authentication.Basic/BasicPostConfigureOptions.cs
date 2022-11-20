@@ -1,14 +1,13 @@
 ﻿// Copyright (c) Mihir Dilip. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-using Microsoft.Extensions.Options;
-using System;
-
-namespace AspNetCore.Authentication.Basic
+namespace MadEyeMatt.AspNetCore.Authentication.Basic
 {
-	using Microsoft.Extensions.DependencyInjection;
+    using System;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Options;
 
-	/// <summary>
+    /// <summary>
 	/// This post configure options checks whether the required option property <see cref="BasicOptions.Realm" /> is set or not on <see cref="BasicOptions"/>.
 	/// </summary>
 	internal class BasicPostConfigureOptions : IPostConfigureOptions<BasicOptions>

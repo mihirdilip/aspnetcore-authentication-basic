@@ -1,12 +1,11 @@
-﻿using AspNetCore.Authentication.Basic;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using SampleWebApi.Repositories;
 using System;
 using System.Threading.Tasks;
 
 namespace SampleWebApi.Services
 {
-	internal class BasicUserAuthenticationService : IBasicUserAuthenticationService
+	internal class BasicUserAuthenticationService : MadEyeMatt.AspNetCore.Authentication.Basic.IBasicUserAuthenticationService
 	{
 		private readonly ILogger<BasicUserAuthenticationService> _logger;
 		private readonly IUserRepository _userRepository;
@@ -17,7 +16,7 @@ namespace SampleWebApi.Services
 			_userRepository = userRepository;
 		}
 
-		public async Task<IBasicUser> AuthenticateAsync(string username, string password)
+		public async Task<MadEyeMatt.AspNetCore.Authentication.Basic.IBasicUser> AuthenticateAsync(string username, string password)
 		{
 			try
 			{

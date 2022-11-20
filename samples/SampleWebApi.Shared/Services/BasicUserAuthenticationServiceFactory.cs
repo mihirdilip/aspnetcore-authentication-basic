@@ -1,11 +1,10 @@
 ﻿using System.Diagnostics;
-using AspNetCore.Authentication.Basic;
 using Microsoft.Extensions.Logging;
 using SampleWebApi.Repositories;
 
 namespace SampleWebApi.Services
 {
-	internal class BasicUserAuthenticationServiceFactory : IBasicUserAuthenticationServiceFactory
+	internal class BasicUserAuthenticationServiceFactory : MadEyeMatt.AspNetCore.Authentication.Basic.IBasicUserAuthenticationServiceFactory
 	{
 		private readonly ILoggerFactory loggerFactory;
 		private readonly IUserRepository userRepository;
@@ -17,7 +16,7 @@ namespace SampleWebApi.Services
 		}
 
 		/// <inheritdoc />
-		public IBasicUserAuthenticationService CreateBasicUserAuthenticationService(string authenticationSchemaName)
+		public MadEyeMatt.AspNetCore.Authentication.Basic.IBasicUserAuthenticationService CreateBasicUserAuthenticationService(string authenticationSchemaName)
 		{
 			Debug.WriteLine(authenticationSchemaName);
 			return new BasicUserAuthenticationService(this.loggerFactory.CreateLogger<BasicUserAuthenticationService>(), this.userRepository);

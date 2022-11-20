@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Text;
-
-namespace SampleWebApi_6_0.Controllers
+﻿namespace SampleWebApi.Controllers
 {
-	using System.Collections.Generic;
-	using Microsoft.AspNetCore.Authorization;
+    using System.Collections.Generic;
+    using System.Text;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
 
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class ValuesController : ControllerBase
 	{

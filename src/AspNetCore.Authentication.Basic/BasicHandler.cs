@@ -1,21 +1,21 @@
 ﻿// Copyright (c) Mihir Dilip. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Microsoft.Net.Http.Headers;
-using System;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-
-namespace AspNetCore.Authentication.Basic
+namespace MadEyeMatt.AspNetCore.Authentication.Basic
 {
-	/// <summary>
+    using System;
+    using System.Net.Http.Headers;
+    using System.Text;
+    using System.Text.Encodings.Web;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Options;
+    using Microsoft.Net.Http.Headers;
+
+    /// <summary>
 	/// Inherited from <see cref="AuthenticationHandler{TOptions}"/> for basic authentication.
 	/// </summary>
 	public class BasicHandler : AuthenticationHandler<BasicOptions>
@@ -35,15 +35,15 @@ namespace AspNetCore.Authentication.Basic
 		private string Challenge => $"{BasicDefaults.AuthenticationScheme} realm=\"{Options.Realm}\", charset=\"UTF-8\"";
 
 		/// <summary>
-		/// Get or set <see cref="BasicEvents"/>.
+		/// Get or set <see cref="Basic.Events.BasicEvents"/>.
 		/// </summary>
-		protected new BasicEvents Events { get => (BasicEvents)base.Events; set => base.Events = value; }
+		protected new MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicEvents Events { get => (MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicEvents)base.Events; set => base.Events = value; }
 
 		/// <summary>
-		/// Create an instance of <see cref="BasicEvents"/>.
+		/// Create an instance of <see cref="Basic.Events.BasicEvents"/>.
 		/// </summary>
 		/// <returns></returns>
-		protected override Task<object> CreateEventsAsync() => Task.FromResult<object>(new BasicEvents());
+		protected override Task<object> CreateEventsAsync() => Task.FromResult<object>(new MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicEvents());
 
 		/// <summary>
 		/// Searches the 'Authorization' header for 'Basic' scheme with base64 encoded username:password string value of which is validated using implementation of <see cref="IBasicUserAuthenticationService"/> passed as type parameter when setting up basic authentication in the Startup.cs 
@@ -107,7 +107,7 @@ namespace AspNetCore.Authentication.Basic
 			}
 			catch (Exception exception)
 			{
-				var authenticationFailedContext = new BasicAuthenticationFailedContext(Context, Scheme, Options, exception);
+				var authenticationFailedContext = new MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicAuthenticationFailedContext(Context, Scheme, Options, exception);
 				await Events.AuthenticationFailedAsync(authenticationFailedContext).ConfigureAwait(false);
 
 				if (authenticationFailedContext.Result != null)
@@ -123,7 +123,7 @@ namespace AspNetCore.Authentication.Basic
 		protected override async Task HandleForbiddenAsync(AuthenticationProperties properties)
 		{
 			// Raise handle forbidden event.
-			var handleForbiddenContext = new BasicHandleForbiddenContext(Context, Scheme, Options, properties);
+			var handleForbiddenContext = new MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicHandleForbiddenContext(Context, Scheme, Options, properties);
 			await Events.HandleForbiddenAsync(handleForbiddenContext).ConfigureAwait(false);
 			if (handleForbiddenContext.IsHandled)
 			{
@@ -145,7 +145,7 @@ namespace AspNetCore.Authentication.Basic
 		protected override async Task HandleChallengeAsync(AuthenticationProperties properties)
 		{
 			// Raise handle challenge event.
-			var handleChallengeContext = new BasicHandleChallengeContext(Context, Scheme, Options, properties);
+			var handleChallengeContext = new MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicHandleChallengeContext(Context, Scheme, Options, properties);
 			await Events.HandleChallengeAsync(handleChallengeContext).ConfigureAwait(false);
 			if (handleChallengeContext.IsHandled)
 			{
@@ -161,7 +161,7 @@ namespace AspNetCore.Authentication.Basic
 
 		private async Task<AuthenticateResult> RaiseAndHandleEventValidateCredentialsAsync(BasicCredentials credentials)
 		{
-			var validateCredentialsContext = new BasicValidateCredentialsContext(Context, Scheme, Options, credentials.Username, credentials.Password);
+			var validateCredentialsContext = new MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicValidateCredentialsContext(Context, Scheme, Options, credentials.Username, credentials.Password);
 			await Events.ValidateCredentialsAsync(validateCredentialsContext).ConfigureAwait(false);
 
 			if (validateCredentialsContext.Result != null)
@@ -185,7 +185,7 @@ namespace AspNetCore.Authentication.Basic
 			var principal = BasicUtils.BuildClaimsPrincipal(basicUser.UserName, Scheme.Name, ClaimsIssuer, basicUser.Claims);
 
 			// Raise authentication succeeded event.
-			var authenticationSucceededContext = new BasicAuthenticationSucceededContext(Context, Scheme, Options, principal);
+			var authenticationSucceededContext = new MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicAuthenticationSucceededContext(Context, Scheme, Options, principal);
 			await Events.AuthenticationSucceededAsync(authenticationSucceededContext).ConfigureAwait(false);
 
 			if (authenticationSucceededContext.Result != null)

@@ -1,18 +1,17 @@
 // Copyright (c) Mihir Dilip. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-using AspNetCore.Authentication.Basic.Tests.Infrastructure;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.TestHost;
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Xunit;
-
-namespace AspNetCore.Authentication.Basic.Tests.Events
+namespace MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Events
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.TestHost;
+    using Xunit;
+
     public class BasicHandleForbiddenContextTests : IDisposable
     {
         private readonly List<TestServer> _serversToDispose = new List<TestServer>();
@@ -39,8 +38,8 @@ namespace AspNetCore.Authentication.Basic.Tests.Events
                 }
             );
 
-            using var request = new HttpRequestMessage(HttpMethod.Get, TestServerBuilder.ForbiddenUrl);
-            request.Headers.Authorization = FakeUsers.FakeUser.ToAuthenticationHeaderValue();
+            using var request = new HttpRequestMessage(HttpMethod.Get, MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.ForbiddenUrl);
+            request.Headers.Authorization = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.FakeUsers.FakeUser.ToAuthenticationHeaderValue();
             using var response = await client.SendAsync(request);
             
             Assert.False(response.IsSuccessStatusCode);
@@ -61,8 +60,8 @@ namespace AspNetCore.Authentication.Basic.Tests.Events
                 }
             );
 
-            using var request = new HttpRequestMessage(HttpMethod.Get, TestServerBuilder.ForbiddenUrl);
-            request.Headers.Authorization = FakeUsers.FakeUser.ToAuthenticationHeaderValue();
+            using var request = new HttpRequestMessage(HttpMethod.Get, MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.ForbiddenUrl);
+            request.Headers.Authorization = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.FakeUsers.FakeUser.ToAuthenticationHeaderValue();
             using var response = await client.SendAsync(request);
 
             Assert.False(response.IsSuccessStatusCode);
@@ -71,11 +70,11 @@ namespace AspNetCore.Authentication.Basic.Tests.Events
 
 
 
-        private HttpClient BuildClient(Func<BasicHandleForbiddenContext, Task> onHandleForbidden)
+        private HttpClient BuildClient(Func<MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicHandleForbiddenContext, Task> onHandleForbidden)
         {
-            var server = TestServerBuilder.BuildTestServerWithService(options =>
+            var server = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BuildTestServerWithService(options =>
             {
-                options.Realm = TestServerBuilder.Realm;
+                options.Realm = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.Realm;
                 options.Events.OnHandleForbidden = onHandleForbidden;
             });
 

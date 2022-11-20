@@ -1,27 +1,17 @@
-using AspNetCore.Authentication.Basic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using SampleWebApi.Repositories;
-using SampleWebApi.Services;
+using BasicExtensions = MadEyeMatt.AspNetCore.Authentication.Basic.BasicExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add User repository to the dependency container.
-builder.Services.AddTransient<IUserRepository, InMemoryUserRepository>();
+builder.Services.AddTransient<SampleWebApi.Repositories.IUserRepository, SampleWebApi.Repositories.InMemoryUserRepository>();
 
 // Add the Basic scheme authentication here..
 // It requires Realm to be set in the options if SuppressWWWAuthenticateHeader is not set.
 // If an implementation of IBasicUserValidationService interface is registered in the dependency register as well as OnValidateCredentials delegete on options.Events is also set then this delegate will be used instead of an implementation of IBasicUserValidationService.
-builder.Services.AddAuthentication(BasicDefaults.AuthenticationScheme)
-
-    // The below AddBasic without type parameter will require OnValidateCredentials delegete on options.Events to be set unless an implementation of IBasicUserValidationService interface is registered in the dependency register.
-    // Please note if both the delgate and validation server are set then the delegate will be used instead of BasicUserValidationService.
-    //.AddBasic(options =>
-
-    // The below AddBasic with type parameter will add the BasicUserValidationService to the dependency register. 
-    // Please note if OnValidateCredentials delegete on options.Events is also set then this delegate will be used instead of BasicUserValidationService.
-    .AddBasic<BasicUserAuthenticationService>(options =>
+BasicExtensions.AddBasic<SampleWebApi.Services.BasicUserAuthenticationService>(builder.Services.AddAuthentication(MadEyeMatt.AspNetCore.Authentication.Basic.BasicDefaults.AuthenticationScheme), options =>
     {
         options.Realm = "Sample Web API";
 
@@ -33,7 +23,7 @@ builder.Services.AddAuthentication(BasicDefaults.AuthenticationScheme)
 
         //// Optional events to override the basic original logic with custom logic.
         //// Only use this if you know what you are doing at your own risk. Any of the events can be assigned. 
-        options.Events = new BasicEvents
+        options.Events = new MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicEvents
         {
 
             //// A delegate assigned to this property will be invoked just before validating credentials. 

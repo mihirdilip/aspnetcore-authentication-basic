@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Mihir Dilip. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-using Microsoft.AspNetCore.Authentication;
-using System;
-
-namespace AspNetCore.Authentication.Basic
+namespace MadEyeMatt.AspNetCore.Authentication.Basic
 {
+    using System;
+    using Microsoft.AspNetCore.Authentication;
+
     /// <summary>
     /// Options used to configure basic authentication.
     /// </summary>
@@ -16,7 +16,7 @@ namespace AspNetCore.Authentication.Basic
         /// </summary>
         public BasicOptions()
         {
-            Events = new BasicEvents();
+            Events = new MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicEvents();
         }
 
         /// <summary>
@@ -40,9 +40,9 @@ namespace AspNetCore.Authentication.Basic
         /// The application may implement the interface fully, or it may create an instance of BasicEvents
         /// and assign delegates only to the events it wants to process.
         /// </summary>
-        public new BasicEvents Events
+        public new MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicEvents Events
         {
-            get => (BasicEvents)base.Events;
+            get => (MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicEvents)base.Events;
             set => base.Events = value;
         }
 

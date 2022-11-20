@@ -1,17 +1,16 @@
 ﻿// Copyright (c) Mihir Dilip. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-using AspNetCore.Authentication.Basic.Tests.Infrastructure;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Xunit;
-
-namespace AspNetCore.Authentication.Basic.Tests
+namespace MadEyeMatt.AspNetCore.Authentication.Basic.Tests
 {
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Options;
+    using Xunit;
+
     public class BasicOptionsTests
     {
         [Fact]
@@ -31,15 +30,15 @@ namespace AspNetCore.Authentication.Basic.Tests
         [Fact]
         public async Task SuppressWWWAuthenticateHeader_verify_false()
         {
-            var realm = TestServerBuilder.Realm;
-            using var server = TestServerBuilder.BuildTestServerWithService(options =>
+            var realm = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.Realm;
+            using var server = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BuildTestServerWithService(options =>
             {
                 options.Realm = realm;
                 options.SuppressWWWAuthenticateHeader = false;
             });
 
             using var client = server.CreateClient();
-            using var response = await client.GetAsync(TestServerBuilder.BaseUrl);
+            using var response = await client.GetAsync(MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BaseUrl);
             
             Assert.False(response.IsSuccessStatusCode);
 
@@ -55,15 +54,15 @@ namespace AspNetCore.Authentication.Basic.Tests
         [Fact]
         public async Task SuppressWWWAuthenticateHeader_verify_true()
         {
-            var realm = TestServerBuilder.Realm;
-            using var server = TestServerBuilder.BuildTestServerWithService(options =>
+            var realm = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.Realm;
+            using var server = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BuildTestServerWithService(options =>
             {
                 options.Realm = realm;
                 options.SuppressWWWAuthenticateHeader = true;
             });
 
             using var client = server.CreateClient();
-            using var response = await client.GetAsync(TestServerBuilder.BaseUrl);
+            using var response = await client.GetAsync(MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BaseUrl);
 
             Assert.False(response.IsSuccessStatusCode);
             Assert.Empty(response.Headers.WwwAuthenticate);
@@ -79,7 +78,7 @@ namespace AspNetCore.Authentication.Basic.Tests
         [Fact]
         public void BasicUserValidationServiceType_verify_null()
         {
-            using var server = TestServerBuilder.BuildTestServer();
+            using var server = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BuildTestServer();
             var services = server.Host.Services;
             
             var apiKeyOptionsSnapshot = services.GetService<IOptionsSnapshot<BasicOptions>>();
@@ -94,18 +93,18 @@ namespace AspNetCore.Authentication.Basic.Tests
         [Fact]
         public void BasicUserValidationServiceType_verify_not_null()
         {
-            using var server = TestServerBuilder.BuildTestServerWithService();
+            using var server = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BuildTestServerWithService();
             var services = server.Host.Services;
 
             var apiKeyOptionsSnapshot = services.GetService<IOptionsSnapshot<BasicOptions>>();
             var apiKeyOptions = apiKeyOptionsSnapshot.Get(BasicDefaults.AuthenticationScheme);
             Assert.NotNull(apiKeyOptions);
             Assert.NotNull(apiKeyOptions.BasicUserValidationServiceType);
-            Assert.Equal(typeof(FakeBasicUserAuthenticationService), apiKeyOptions.BasicUserValidationServiceType);
+            Assert.Equal(typeof(MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.FakeBasicUserAuthenticationService), apiKeyOptions.BasicUserValidationServiceType);
 
             var apiKeyProvider = services.GetService<IBasicUserAuthenticationService>();
             Assert.NotNull(apiKeyProvider);
-            Assert.Equal(typeof(FakeBasicUserAuthenticationService), apiKeyProvider.GetType());
+            Assert.Equal(typeof(MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.FakeBasicUserAuthenticationService), apiKeyProvider.GetType());
         }
 
 #if !(NET461 || NETSTANDARD2_0 || NETCOREAPP2_1)
@@ -120,16 +119,16 @@ namespace AspNetCore.Authentication.Basic.Tests
         [Fact]
         public async Task IgnoreAuthenticationIfAllowAnonymous_verify_false()
         {
-            var realm = TestServerBuilder.Realm;
-            using var server = TestServerBuilder.BuildTestServerWithService(options =>
+            var realm = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.Realm;
+            using var server = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BuildTestServerWithService(options =>
             {
                 options.Realm = realm;
                 options.IgnoreAuthenticationIfAllowAnonymous = false;
             });
 
             using var client = server.CreateClient();
-            using var request = new HttpRequestMessage(HttpMethod.Get, TestServerBuilder.AnonymousUrl);
-            request.Headers.Authorization = FakeUsers.FakeUserIgnoreAuthenticationIfAllowAnonymous.ToAuthenticationHeaderValue();
+            using var request = new HttpRequestMessage(HttpMethod.Get, MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.AnonymousUrl);
+            request.Headers.Authorization = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.FakeUsers.FakeUserIgnoreAuthenticationIfAllowAnonymous.ToAuthenticationHeaderValue();
 
             var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => client.SendAsync(request));
 
@@ -139,16 +138,16 @@ namespace AspNetCore.Authentication.Basic.Tests
         [Fact]
         public async Task IgnoreAuthenticationIfAllowAnonymous_verify_true()
         {
-            var realm = TestServerBuilder.Realm;
-            using var server = TestServerBuilder.BuildTestServerWithService(options =>
+            var realm = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.Realm;
+            using var server = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BuildTestServerWithService(options =>
             {
                 options.Realm = realm;
                 options.IgnoreAuthenticationIfAllowAnonymous = true;
             });
 
             using var client = server.CreateClient();
-            using var request = new HttpRequestMessage(HttpMethod.Get, TestServerBuilder.AnonymousUrl);
-            request.Headers.Authorization = FakeUsers.FakeUserIgnoreAuthenticationIfAllowAnonymous.ToAuthenticationHeaderValue();
+            using var request = new HttpRequestMessage(HttpMethod.Get, MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.AnonymousUrl);
+            request.Headers.Authorization = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.FakeUsers.FakeUserIgnoreAuthenticationIfAllowAnonymous.ToAuthenticationHeaderValue();
             using var response = await client.SendAsync(request);
 
             Assert.True(response.IsSuccessStatusCode);

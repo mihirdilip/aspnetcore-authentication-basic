@@ -1,18 +1,17 @@
 // Copyright (c) Mihir Dilip. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-using AspNetCore.Authentication.Basic.Tests.Infrastructure;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.TestHost;
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Xunit;
-
-namespace AspNetCore.Authentication.Basic.Tests.Events
+namespace MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Events
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.TestHost;
+    using Xunit;
+
     public class BasicHandleChallengeContextTests : IDisposable
     {
         private readonly List<TestServer> _serversToDispose = new List<TestServer>();
@@ -39,7 +38,7 @@ namespace AspNetCore.Authentication.Basic.Tests.Events
                 }
             );
             
-            using var response = await client.GetAsync(TestServerBuilder.BaseUrl);
+            using var response = await client.GetAsync(MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BaseUrl);
             
             Assert.False(response.IsSuccessStatusCode);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -59,7 +58,7 @@ namespace AspNetCore.Authentication.Basic.Tests.Events
                 }
             );
 
-            using var response = await client.GetAsync(TestServerBuilder.BaseUrl);
+            using var response = await client.GetAsync(MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BaseUrl);
 
             Assert.False(response.IsSuccessStatusCode);
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
@@ -67,11 +66,11 @@ namespace AspNetCore.Authentication.Basic.Tests.Events
 
 
 
-        private HttpClient BuildClient(Func<BasicHandleChallengeContext, Task> onHandleChallenge)
+        private HttpClient BuildClient(Func<MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicHandleChallengeContext, Task> onHandleChallenge)
         {
-            var server = TestServerBuilder.BuildTestServerWithService(options =>
+            var server = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BuildTestServerWithService(options =>
             {
-                options.Realm = TestServerBuilder.Realm;
+                options.Realm = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.Realm;
                 options.Events.OnHandleChallenge = onHandleChallenge;
             });
 

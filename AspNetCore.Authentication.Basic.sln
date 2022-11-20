@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore.Authentication.B
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SampleWebApi.Shared", "samples\SampleWebApi.Shared\SampleWebApi.Shared.shproj", "{E544FB20-29F3-41F5-A78E-6164F9C43B3C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleWebApi_6_0", "samples\SampleWebApi_6_0\SampleWebApi_6_0.csproj", "{87EC71A4-D81B-4E66-B4AF-112CEFA1CB61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleWebApi", "samples\SampleWebApi\SampleWebApi.csproj", "{82A48D83-1445-4111-A818-344C6A2E5F68}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +41,10 @@ Global
 		{17586E1B-4E44-406B-8FA3-6CF8486704DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17586E1B-4E44-406B-8FA3-6CF8486704DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17586E1B-4E44-406B-8FA3-6CF8486704DF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{87EC71A4-D81B-4E66-B4AF-112CEFA1CB61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{87EC71A4-D81B-4E66-B4AF-112CEFA1CB61}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{87EC71A4-D81B-4E66-B4AF-112CEFA1CB61}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{87EC71A4-D81B-4E66-B4AF-112CEFA1CB61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82A48D83-1445-4111-A818-344C6A2E5F68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82A48D83-1445-4111-A818-344C6A2E5F68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82A48D83-1445-4111-A818-344C6A2E5F68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82A48D83-1445-4111-A818-344C6A2E5F68}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,13 +53,13 @@ Global
 		{E22A7E69-C03B-4EA3-A792-4AE772A47F9E} = {8D8E6E00-C6F6-43D2-8F6E-2923C05BF17D}
 		{17586E1B-4E44-406B-8FA3-6CF8486704DF} = {F7494366-ED1D-4342-AE5D-DD6BE67C63DF}
 		{E544FB20-29F3-41F5-A78E-6164F9C43B3C} = {CF13271D-BF3F-4167-BEBA-DD02D33992F2}
-		{87EC71A4-D81B-4E66-B4AF-112CEFA1CB61} = {CF13271D-BF3F-4167-BEBA-DD02D33992F2}
+		{82A48D83-1445-4111-A818-344C6A2E5F68} = {CF13271D-BF3F-4167-BEBA-DD02D33992F2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70815049-1680-480A-BF5A-00536D6C9C20}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		samples\SampleWebApi.Shared\SampleWebApi.Shared.projitems*{87ec71a4-d81b-4e66-b4af-112cefa1cb61}*SharedItemsImports = 5
+		samples\SampleWebApi.Shared\SampleWebApi.Shared.projitems*{82a48d83-1445-4111-a818-344c6a2e5f68}*SharedItemsImports = 5
 		samples\SampleWebApi.Shared\SampleWebApi.Shared.projitems*{e544fb20-29f3-41f5-a78e-6164f9c43b3c}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

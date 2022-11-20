@@ -1,20 +1,19 @@
 // Copyright (c) Mihir Dilip. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-using AspNetCore.Authentication.Basic.Tests.Infrastructure;
-using Microsoft.AspNetCore.TestHost;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Security.Claims;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Xunit;
-
-namespace AspNetCore.Authentication.Basic.Tests.Events
+namespace MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Events
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Security.Claims;
+    using System.Text.Json;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.TestHost;
+    using Xunit;
+
     public class BasicValidateCredentialsContextTests : IDisposable
     {
         private readonly List<TestServer> _serversToDispose = new List<TestServer>();
@@ -34,7 +33,7 @@ namespace AspNetCore.Authentication.Basic.Tests.Events
                     Assert.Null(context.Result);
                     Assert.False(string.IsNullOrWhiteSpace(context.Username));
 
-                    var user = FakeUsers.Users.FirstOrDefault(u => u.Username.Equals(context.Username, StringComparison.OrdinalIgnoreCase) && u.Password.Equals(context.Password, StringComparison.OrdinalIgnoreCase));
+                    var user = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.FakeUsers.Users.FirstOrDefault(u => u.Username.Equals(context.Username, StringComparison.OrdinalIgnoreCase) && u.Password.Equals(context.Password, StringComparison.OrdinalIgnoreCase));
                     if (user != null)
                     {
                         context.Principal = new ClaimsPrincipal(new ClaimsIdentity(context.Scheme.Name));
@@ -71,7 +70,7 @@ namespace AspNetCore.Authentication.Basic.Tests.Events
             using var client = BuildClient(
                 context =>
                 {
-                    var user = FakeUsers.Users.FirstOrDefault(u => u.Username.Equals(context.Username, StringComparison.OrdinalIgnoreCase) && u.Password.Equals(context.Password, StringComparison.OrdinalIgnoreCase));
+                    var user = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.FakeUsers.Users.FirstOrDefault(u => u.Username.Equals(context.Username, StringComparison.OrdinalIgnoreCase) && u.Password.Equals(context.Password, StringComparison.OrdinalIgnoreCase));
                     if (user != null)
                     {
                         context.ValidationSucceeded();
@@ -104,8 +103,8 @@ namespace AspNetCore.Authentication.Basic.Tests.Events
         {
             var claimsSource = new List<Claim>
             {
-                FakeUsers.FakeNameClaim,
-                FakeUsers.FakeRoleClaim
+                MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.FakeUsers.FakeNameClaim,
+                MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.FakeUsers.FakeRoleClaim
             };
 
             using var client = BuildClient(
@@ -126,8 +125,8 @@ namespace AspNetCore.Authentication.Basic.Tests.Events
             Assert.NotEmpty(principal.Claims);
 
             Assert.Equal(claimsSource.Count + 1, principal.Claims.Count());
-            Assert.Contains(new ClaimDto(FakeUsers.FakeNameClaim), principal.Claims);
-            Assert.Contains(new ClaimDto(FakeUsers.FakeRoleClaim), principal.Claims);
+            Assert.Contains(new MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.ClaimDto(MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.FakeUsers.FakeNameClaim), principal.Claims);
+            Assert.Contains(new MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.ClaimDto(MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.FakeUsers.FakeRoleClaim), principal.Claims);
         }
 
         [Fact]
@@ -178,11 +177,11 @@ namespace AspNetCore.Authentication.Basic.Tests.Events
 
 
 
-        private HttpClient BuildClient(Func<BasicValidateCredentialsContext, Task> onValidateCredentials)
+        private HttpClient BuildClient(Func<MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicValidateCredentialsContext, Task> onValidateCredentials)
         {
-            var server = TestServerBuilder.BuildTestServer(options =>
+            var server = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BuildTestServer(options =>
             {
-                options.Realm = TestServerBuilder.Realm;
+                options.Realm = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.Realm;
                 options.Events.OnValidateCredentials = onValidateCredentials;
             });
 
@@ -192,22 +191,22 @@ namespace AspNetCore.Authentication.Basic.Tests.Events
 
         private async Task RunUnauthorizedTests(HttpClient client)
         {
-            using var response_unauthorized = await client.GetAsync(TestServerBuilder.ClaimsPrincipalUrl);
+            using var response_unauthorized = await client.GetAsync(MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.ClaimsPrincipalUrl);
             Assert.False(response_unauthorized.IsSuccessStatusCode);
             Assert.Equal(HttpStatusCode.Unauthorized, response_unauthorized.StatusCode);
         }
 
-        private async Task<ClaimsPrincipalDto> RunSuccessTests(HttpClient client)
+        private async Task<MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.ClaimsPrincipalDto> RunSuccessTests(HttpClient client)
         {
-            using var request = new HttpRequestMessage(HttpMethod.Get, TestServerBuilder.ClaimsPrincipalUrl);
-            request.Headers.Authorization = FakeUsers.FakeUser.ToAuthenticationHeaderValue();
+            using var request = new HttpRequestMessage(HttpMethod.Get, MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.ClaimsPrincipalUrl);
+            request.Headers.Authorization = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.FakeUsers.FakeUser.ToAuthenticationHeaderValue();
             using var response_ok = await client.SendAsync(request);
             Assert.True(response_ok.IsSuccessStatusCode);
             Assert.Equal(HttpStatusCode.OK, response_ok.StatusCode);
 
             var content = await response_ok.Content.ReadAsStringAsync();
             Assert.False(string.IsNullOrWhiteSpace(content));
-            return JsonSerializer.Deserialize<ClaimsPrincipalDto>(content);
+            return JsonSerializer.Deserialize<MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.ClaimsPrincipalDto>(content);
         }
     }
 }

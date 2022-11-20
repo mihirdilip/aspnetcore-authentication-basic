@@ -2,9 +2,8 @@
 {
 	using System.Collections.Generic;
 	using System.Security.Claims;
-	using AspNetCore.Authentication.Basic;
 
-	internal class BasicUser : IBasicUser
+    internal class BasicUser : MadEyeMatt.AspNetCore.Authentication.Basic.IBasicUser
 	{
 		public BasicUser(string userName, List<Claim> claims = null)
 		{
