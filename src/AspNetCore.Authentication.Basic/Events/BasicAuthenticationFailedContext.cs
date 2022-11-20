@@ -3,31 +3,31 @@
 
 namespace MadEyeMatt.AspNetCore.Authentication.Basic.Events
 {
-    using System;
-    using Microsoft.AspNetCore.Authentication;
-    using Microsoft.AspNetCore.Http;
+	using System;
+	using Microsoft.AspNetCore.Authentication;
+	using Microsoft.AspNetCore.Http;
 
-    /// <summary>
-    /// Context used when authentication is failed.
-    /// </summary>
-    public class BasicAuthenticationFailedContext : ResultContext<BasicOptions>
-    {
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="scheme"></param>
-        /// <param name="options"></param>
-        /// <param name="exception"></param>
-        public BasicAuthenticationFailedContext(HttpContext context, AuthenticationScheme scheme, BasicOptions options, Exception exception)
-            : base(context, scheme, options)
-        {
-            Exception = exception;
-        }
+	/// <summary>
+	///     Context used when authentication is failed.
+	/// </summary>
+	public class BasicAuthenticationFailedContext : ResultContext<BasicOptions>
+	{
+		/// <summary>
+		///     Constructor.
+		/// </summary>
+		/// <param name="context"></param>
+		/// <param name="scheme"></param>
+		/// <param name="options"></param>
+		/// <param name="exception"></param>
+		public BasicAuthenticationFailedContext(HttpContext context, AuthenticationScheme scheme, BasicOptions options, Exception exception)
+			: base(context, scheme, options)
+		{
+			this.Exception = exception;
+		}
 
-        /// <summary>
-        /// The Exception thrown when authenticating.
-        /// </summary>
-        public Exception Exception { get; }
-    }
+		/// <summary>
+		///     The Exception thrown when authenticating.
+		/// </summary>
+		public Exception Exception { get; }
+	}
 }

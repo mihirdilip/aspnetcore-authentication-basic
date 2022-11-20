@@ -3,21 +3,21 @@
 
 namespace MadEyeMatt.AspNetCore.Authentication.Basic
 {
-    using System.Collections.Generic;
-    using System.Security.Claims;
+	using System.Collections.Generic;
+	using System.Security.Claims;
 
-    /// <summary>
-	/// Basic user details.
+	/// <summary>
+	///     Basic user details.
 	/// </summary>
 	public interface IBasicUser
 	{
 		/// <summary>
-		/// The user name of the basic login.
+		///     The user name of the basic login.
 		/// </summary>
 		string UserName { get; }
 
 		/// <summary>
-		/// Optional list of claims to be sent back with the authentication request.
+		///     Optional list of claims to be sent back with the authentication request.
 		/// </summary>
 		IReadOnlyCollection<Claim> Claims { get; }
 	}

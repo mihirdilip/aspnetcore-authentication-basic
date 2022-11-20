@@ -1,11 +1,12 @@
 ﻿namespace SampleWebApi.Controllers
 {
-    using System.Collections.Generic;
-    using System.Text;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
+	using System.Collections.Generic;
+	using System.Security.Claims;
+	using System.Text;
+	using Microsoft.AspNetCore.Authorization;
+	using Microsoft.AspNetCore.Mvc;
 
-    [Route("api/[controller]")]
+	[Route("api/[controller]")]
 	[ApiController]
 	public class ValuesController : ControllerBase
 	{
@@ -35,11 +36,12 @@
 		[HttpGet("claims")]
 		public ActionResult<string> Claims()
 		{
-			var sb = new StringBuilder();
-			foreach (var claim in User.Claims)
+			StringBuilder sb = new StringBuilder();
+			foreach(Claim claim in this.User.Claims)
 			{
 				sb.AppendLine($"{claim.Type}: {claim.Value}");
 			}
+
 			return sb.ToString();
 		}
 

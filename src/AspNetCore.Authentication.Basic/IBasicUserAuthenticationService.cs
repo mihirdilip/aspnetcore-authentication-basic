@@ -3,15 +3,16 @@
 
 namespace MadEyeMatt.AspNetCore.Authentication.Basic
 {
-    using System.Threading.Tasks;
+	using System.Threading.Tasks;
 
-    /// <summary>
-	/// Implementation of this interface will be used by the 'Basic' authentication handler to validated the username and password.
+	/// <summary>
+	///     Implementation of this interface will be used by the 'Basic' authentication handler to validated the username and
+	///     password.
 	/// </summary>
 	public interface IBasicUserAuthenticationService
 	{
 		/// <summary>
-		/// Authenticates the username &amp; password  and returns an instance of <see cref="IBasicUser"/> if successful.
+		///     Authenticates the username &amp; password  and returns an instance of <see cref="IBasicUser" /> if successful.
 		/// </summary>
 		/// <param name="username"></param>
 		/// <param name="password"></param>

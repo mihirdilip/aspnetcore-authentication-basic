@@ -3,12 +3,13 @@
 
 namespace MadEyeMatt.AspNetCore.Authentication.Basic
 {
-    using System;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Options;
+	using System;
+	using Microsoft.Extensions.DependencyInjection;
+	using Microsoft.Extensions.Options;
 
-    /// <summary>
-	/// This post configure options checks whether the required option property <see cref="BasicOptions.Realm" /> is set or not on <see cref="BasicOptions"/>.
+	/// <summary>
+	///     This post configure options checks whether the required option property <see cref="BasicOptions.Realm" /> is set or
+	///     not on <see cref="BasicOptions" />.
 	/// </summary>
 	internal class BasicPostConfigureOptions : IPostConfigureOptions<BasicOptions>
 	{
@@ -21,13 +22,13 @@ namespace MadEyeMatt.AspNetCore.Authentication.Basic
 
 		public void PostConfigure(string name, BasicOptions options)
 		{
-			if (!options.SuppressWWWAuthenticateHeader && string.IsNullOrWhiteSpace(options.Realm))
+			if(!options.SuppressWWWAuthenticateHeader && string.IsNullOrWhiteSpace(options.Realm))
 			{
 				throw new InvalidOperationException($"{nameof(BasicOptions.Realm)} must be set in {nameof(BasicOptions)} when setting up the authentication.");
 			}
 
 			IBasicUserAuthenticationServiceFactory basicUserAuthenticationServiceFactory = this.serviceProvider.GetService<IBasicUserAuthenticationServiceFactory>();
-			if (options.Events?.OnValidateCredentials == null && options.EventsType == null && options.BasicUserValidationServiceType == null && basicUserAuthenticationServiceFactory == null)
+			if(options.Events?.OnValidateCredentials == null && options.EventsType == null && options.BasicUserValidationServiceType == null && basicUserAuthenticationServiceFactory == null)
 			{
 				throw new InvalidOperationException($"Either {nameof(BasicOptions.Events.OnValidateCredentials)} delegate on configure options {nameof(BasicOptions.Events)} should be set or use an extension method with type parameter of type {nameof(IBasicUserAuthenticationService)} or register an implementation of type {nameof(IBasicUserAuthenticationServiceFactory)} in the service collection.");
 			}

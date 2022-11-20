@@ -3,14 +3,14 @@
 
 namespace MadEyeMatt.AspNetCore.Authentication.Basic.Tests
 {
-    using Xunit;
+	using Xunit;
 
-    public class BasicDefaultsTests
-    {
-        [Fact]
-        public void AuthenticationSchemeValueTest()
-        {
-            Assert.Equal("Basic", BasicDefaults.AuthenticationScheme);
-        }
-    }
+	public class BasicDefaultsTests
+	{
+		[Fact]
+		public void AuthenticationSchemeValueTest()
+		{
+			Assert.Equal("Basic", BasicDefaults.AuthenticationScheme);
+		}
+	}
 }

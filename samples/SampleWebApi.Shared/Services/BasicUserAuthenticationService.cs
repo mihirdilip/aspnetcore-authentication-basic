@@ -1,19 +1,21 @@
-﻿using Microsoft.Extensions.Logging;
-using SampleWebApi.Repositories;
-using System;
-using System.Threading.Tasks;
-
-namespace SampleWebApi.Services
+﻿namespace SampleWebApi.Services
 {
-	internal class BasicUserAuthenticationService : MadEyeMatt.AspNetCore.Authentication.Basic.IBasicUserAuthenticationService
+	using System;
+	using System.Threading.Tasks;
+	using MadEyeMatt.AspNetCore.Authentication.Basic;
+	using Microsoft.Extensions.Logging;
+	using SampleWebApi.Models;
+	using SampleWebApi.Repositories;
+
+	internal class BasicUserAuthenticationService : IBasicUserAuthenticationService
 	{
-		private readonly ILogger<BasicUserAuthenticationService> _logger;
-		private readonly IUserRepository _userRepository;
+		private readonly ILogger<BasicUserAuthenticationService> logger;
+		private readonly IUserRepository userRepository;
 
 		public BasicUserAuthenticationService(ILogger<BasicUserAuthenticationService> logger, IUserRepository userRepository)
 		{
-			_logger = logger;
-			_userRepository = userRepository;
+			this.logger = logger;
+			this.userRepository = userRepository;
 		}
 
 		public async Task<MadEyeMatt.AspNetCore.Authentication.Basic.IBasicUser> AuthenticateAsync(string username, string password)
@@ -22,13 +24,13 @@ namespace SampleWebApi.Services
 			{
 				// NOTE: DO NOT USE THIS IMPLEMENTATION. THIS IS FOR DEMO PURPOSE ONLY
 				// Write your implementation here and return true or false depending on the validation..
-				var user = await _userRepository.GetUserByUsername(username);
-				var isValid = user != null && user.Password == password;
+				User user = await this.userRepository.GetUserByUsername(username);
+				bool isValid = user != null && user.Password == password;
 				return isValid ? new BasicUser(username) : null;
 			}
-			catch (Exception e)
+			catch(Exception e)
 			{
-				_logger.LogError(e, e.Message);
+				this.logger.LogError(e, e.Message);
 				throw;
 			}
 		}

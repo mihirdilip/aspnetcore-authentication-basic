@@ -3,35 +3,38 @@
 
 namespace MadEyeMatt.AspNetCore.Authentication.Basic.Events
 {
-    using Microsoft.AspNetCore.Authentication;
-    using Microsoft.AspNetCore.Http;
+	using Microsoft.AspNetCore.Authentication;
+	using Microsoft.AspNetCore.Http;
 
-    /// <summary>
-    /// Context used when handling forbidden response.
-    /// </summary>
-    public class BasicHandleForbiddenContext : PropertiesContext<BasicOptions>
-    {
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="scheme"></param>
-        /// <param name="options"></param>
-        /// <param name="properties"></param>
-        public BasicHandleForbiddenContext(HttpContext context, AuthenticationScheme scheme, BasicOptions options, AuthenticationProperties properties)
-            : base(context, scheme, options, properties)
-        {
-        }
+	/// <summary>
+	///     Context used when handling forbidden response.
+	/// </summary>
+	public class BasicHandleForbiddenContext : PropertiesContext<BasicOptions>
+	{
+		/// <summary>
+		///     Constructor.
+		/// </summary>
+		/// <param name="context"></param>
+		/// <param name="scheme"></param>
+		/// <param name="options"></param>
+		/// <param name="properties"></param>
+		public BasicHandleForbiddenContext(HttpContext context, AuthenticationScheme scheme, BasicOptions options, AuthenticationProperties properties)
+			: base(context, scheme, options, properties)
+		{
+		}
 
-        /// <summary>
-        /// Gets IsHandled property. 
-        /// True means response is handled and any default logic will be skipped.
-        /// </summary>
-        public bool IsHandled { get; private set; }
+		/// <summary>
+		///     Gets IsHandled property.
+		///     True means response is handled and any default logic will be skipped.
+		/// </summary>
+		public bool IsHandled { get; private set; }
 
-        /// <summary>
-        /// Marks as response handled and any default logic will be skipped.
-        /// </summary>
-        public void Handled() => IsHandled = true;
-    }
+		/// <summary>
+		///     Marks as response handled and any default logic will be skipped.
+		/// </summary>
+		public void Handled()
+		{
+			this.IsHandled = true;
+		}
+	}
 }

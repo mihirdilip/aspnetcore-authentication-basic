@@ -3,25 +3,28 @@
 
 namespace MadEyeMatt.AspNetCore.Authentication.Basic
 {
-    using System;
-    using System.Net.Http.Headers;
-    using System.Text;
-    using System.Text.Encodings.Web;
-    using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Authentication;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Options;
-    using Microsoft.Net.Http.Headers;
+	using System;
+	using System.Net.Http.Headers;
+	using System.Security.Claims;
+	using System.Text;
+	using System.Text.Encodings.Web;
+	using System.Threading.Tasks;
+	using MadEyeMatt.AspNetCore.Authentication.Basic.Events;
+	using Microsoft.AspNetCore.Authentication;
+	using Microsoft.AspNetCore.Authorization;
+	using Microsoft.AspNetCore.Http;
+	using Microsoft.Extensions.DependencyInjection;
+	using Microsoft.Extensions.Logging;
+	using Microsoft.Extensions.Options;
+	using Microsoft.Net.Http.Headers;
 
-    /// <summary>
-	/// Inherited from <see cref="AuthenticationHandler{TOptions}"/> for basic authentication.
+	/// <summary>
+	///     Inherited from <see cref="AuthenticationHandler{TOptions}" /> for basic authentication.
 	/// </summary>
 	public class BasicHandler : AuthenticationHandler<BasicOptions>
 	{
 		/// <summary>
-		/// Basic Handler Constructor.
+		///     Basic Handler Constructor.
 		/// </summary>
 		/// <param name="options"></param>
 		/// <param name="logger"></param>
@@ -32,85 +35,96 @@ namespace MadEyeMatt.AspNetCore.Authentication.Basic
 		{
 		}
 
-		private string Challenge => $"{BasicDefaults.AuthenticationScheme} realm=\"{Options.Realm}\", charset=\"UTF-8\"";
+		private string Challenge => $"{BasicDefaults.AuthenticationScheme} realm=\"{this.Options.Realm}\", charset=\"UTF-8\"";
 
 		/// <summary>
-		/// Get or set <see cref="Basic.Events.BasicEvents"/>.
+		///     Get or set <see cref="BasicEvents" />.
 		/// </summary>
-		protected new MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicEvents Events { get => (MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicEvents)base.Events; set => base.Events = value; }
+		protected new BasicEvents Events
+		{
+			get => (BasicEvents)base.Events;
+			set => base.Events = value;
+		}
 
 		/// <summary>
-		/// Create an instance of <see cref="Basic.Events.BasicEvents"/>.
+		///     Create an instance of <see cref="BasicEvents" />.
 		/// </summary>
 		/// <returns></returns>
-		protected override Task<object> CreateEventsAsync() => Task.FromResult<object>(new MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicEvents());
+		protected override Task<object> CreateEventsAsync()
+		{
+			return Task.FromResult<object>(new BasicEvents());
+		}
 
 		/// <summary>
-		/// Searches the 'Authorization' header for 'Basic' scheme with base64 encoded username:password string value of which is validated using implementation of <see cref="IBasicUserAuthenticationService"/> passed as type parameter when setting up basic authentication in the Startup.cs 
+		///     Searches the 'Authorization' header for 'Basic' scheme with base64 encoded username:password string value of which
+		///     is validated using implementation of <see cref="IBasicUserAuthenticationService" /> passed as type parameter when
+		///     setting up basic authentication in the Startup.cs
 		/// </summary>
-		/// <returns><see cref="AuthenticateResult"/></returns>
+		/// <returns>
+		///     <see cref="AuthenticateResult" />
+		/// </returns>
 		protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
 		{
-			if (IgnoreAuthenticationIfAllowAnonymous())
+			if(this.IgnoreAuthenticationIfAllowAnonymous())
 			{
-				Logger.LogDebug("AllowAnonymous found on the endpoint so request was not authenticated.");
+				this.Logger.LogDebug("AllowAnonymous found on the endpoint so request was not authenticated.");
 				return AuthenticateResult.NoResult();
 			}
 
-			if (!Request.Headers.ContainsKey(HeaderNames.Authorization))
+			if(!this.Request.Headers.ContainsKey(HeaderNames.Authorization))
 			{
-				Logger.LogInformation("No 'Authorization' header found in the request.");
+				this.Logger.LogInformation("No 'Authorization' header found in the request.");
 				return AuthenticateResult.NoResult();
 			}
 
-			if (!AuthenticationHeaderValue.TryParse(Request.Headers[HeaderNames.Authorization], out var headerValue))
+			if(!AuthenticationHeaderValue.TryParse(this.Request.Headers[HeaderNames.Authorization], out AuthenticationHeaderValue headerValue))
 			{
-				Logger.LogInformation("No valid 'Authorization' header found in the request.");
+				this.Logger.LogInformation("No valid 'Authorization' header found in the request.");
 				return AuthenticateResult.NoResult();
 			}
 
-			if (!headerValue.Scheme.Equals(BasicDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase))
+			if(!headerValue.Scheme.Equals(BasicDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase))
 			{
-				Logger.LogInformation($"'Authorization' header found but the scheme is not a '{BasicDefaults.AuthenticationScheme}' scheme.");
+				this.Logger.LogInformation($"'Authorization' header found but the scheme is not a '{BasicDefaults.AuthenticationScheme}' scheme.");
 				return AuthenticateResult.NoResult();
 			}
 
 			BasicCredentials credentials;
 			try
 			{
-				credentials = DecodeBasicCredentials(headerValue.Parameter);
+				credentials = this.DecodeBasicCredentials(headerValue.Parameter);
 			}
-			catch (Exception exception)
+			catch(Exception exception)
 			{
-				Logger.LogError(exception, "Error decoding credentials from header value.");
+				this.Logger.LogError(exception, "Error decoding credentials from header value.");
 				return AuthenticateResult.Fail("Error decoding credentials from header value." + Environment.NewLine + exception.Message);
 			}
 
 			try
 			{
-				var validateCredentialsResult = await RaiseAndHandleEventValidateCredentialsAsync(credentials).ConfigureAwait(false);
-				if (validateCredentialsResult != null)
+				AuthenticateResult validateCredentialsResult = await this.RaiseAndHandleEventValidateCredentialsAsync(credentials).ConfigureAwait(false);
+				if(validateCredentialsResult != null)
 				{
 					// If result is set then return it.
 					return validateCredentialsResult;
 				}
 
 				// Validate using the implementation of IBasicUserValidationService.
-				var validatedBasicUser = await ValidateUsingBasicUserValidationServiceAsync(credentials.Username, credentials.Password).ConfigureAwait(false);
+				IBasicUser validatedBasicUser = await this.ValidateUsingBasicUserValidationServiceAsync(credentials.Username, credentials.Password).ConfigureAwait(false);
 				if(validatedBasicUser == null)
 				{
-					Logger.LogError($"Invalid user provided by {nameof(IBasicUserAuthenticationService)}.");
+					this.Logger.LogError($"Invalid user provided by {nameof(IBasicUserAuthenticationService)}.");
 					return AuthenticateResult.Fail("Invalid username or password.");
 				}
 
-				return await RaiseAndHandleAuthenticationSucceededAsync(validatedBasicUser).ConfigureAwait(false);
+				return await this.RaiseAndHandleAuthenticationSucceededAsync(validatedBasicUser).ConfigureAwait(false);
 			}
-			catch (Exception exception)
+			catch(Exception exception)
 			{
-				var authenticationFailedContext = new MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicAuthenticationFailedContext(Context, Scheme, Options, exception);
-				await Events.AuthenticationFailedAsync(authenticationFailedContext).ConfigureAwait(false);
+				BasicAuthenticationFailedContext authenticationFailedContext = new MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicAuthenticationFailedContext(this.Context, this.Scheme, this.Options, exception);
+				await this.Events.AuthenticationFailedAsync(authenticationFailedContext).ConfigureAwait(false);
 
-				if (authenticationFailedContext.Result != null)
+				if(authenticationFailedContext.Result != null)
 				{
 					return authenticationFailedContext.Result;
 				}
@@ -119,13 +133,13 @@ namespace MadEyeMatt.AspNetCore.Authentication.Basic
 			}
 		}
 
-		/// <inheritdoc/>
+		/// <inheritdoc />
 		protected override async Task HandleForbiddenAsync(AuthenticationProperties properties)
 		{
 			// Raise handle forbidden event.
-			var handleForbiddenContext = new MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicHandleForbiddenContext(Context, Scheme, Options, properties);
-			await Events.HandleForbiddenAsync(handleForbiddenContext).ConfigureAwait(false);
-			if (handleForbiddenContext.IsHandled)
+			BasicHandleForbiddenContext handleForbiddenContext = new BasicHandleForbiddenContext(this.Context, this.Scheme, this.Options, properties);
+			await this.Events.HandleForbiddenAsync(handleForbiddenContext).ConfigureAwait(false);
+			if(handleForbiddenContext.IsHandled)
 			{
 				return;
 			}
@@ -134,42 +148,45 @@ namespace MadEyeMatt.AspNetCore.Authentication.Basic
 		}
 
 		/// <summary>
-		/// Handles the un-authenticated requests. 
-		/// Returns 401 status code in response.
-		/// If <see cref="BasicOptions.SuppressWWWAuthenticateHeader"/> is not set then,
-		/// adds 'WWW-Authenticate' response header with 'Basic' authentication scheme and 'Realm' 
-		/// to let the client know that 'Basic' authentication scheme is being used by the system.
+		///     Handles the un-authenticated requests.
+		///     Returns 401 status code in response.
+		///     If <see cref="BasicOptions.SuppressWWWAuthenticateHeader" /> is not set then,
+		///     adds 'WWW-Authenticate' response header with 'Basic' authentication scheme and 'Realm'
+		///     to let the client know that 'Basic' authentication scheme is being used by the system.
 		/// </summary>
-		/// <param name="properties"><see cref="AuthenticationProperties"/></param>
+		/// <param name="properties">
+		///     <see cref="AuthenticationProperties" />
+		/// </param>
 		/// <returns>A Task.</returns>
 		protected override async Task HandleChallengeAsync(AuthenticationProperties properties)
 		{
 			// Raise handle challenge event.
-			var handleChallengeContext = new MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicHandleChallengeContext(Context, Scheme, Options, properties);
-			await Events.HandleChallengeAsync(handleChallengeContext).ConfigureAwait(false);
-			if (handleChallengeContext.IsHandled)
+			BasicHandleChallengeContext handleChallengeContext = new BasicHandleChallengeContext(this.Context, this.Scheme, this.Options, properties);
+			await this.Events.HandleChallengeAsync(handleChallengeContext).ConfigureAwait(false);
+			if(handleChallengeContext.IsHandled)
 			{
 				return;
 			}
 
-			if (!Options.SuppressWWWAuthenticateHeader)
+			if(!this.Options.SuppressWWWAuthenticateHeader)
 			{
-				Response.Headers[HeaderNames.WWWAuthenticate] = Challenge;
+				this.Response.Headers[HeaderNames.WWWAuthenticate] = this.Challenge;
 			}
+
 			await base.HandleChallengeAsync(properties);
 		}
 
 		private async Task<AuthenticateResult> RaiseAndHandleEventValidateCredentialsAsync(BasicCredentials credentials)
 		{
-			var validateCredentialsContext = new MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicValidateCredentialsContext(Context, Scheme, Options, credentials.Username, credentials.Password);
-			await Events.ValidateCredentialsAsync(validateCredentialsContext).ConfigureAwait(false);
+			BasicValidateCredentialsContext validateCredentialsContext = new BasicValidateCredentialsContext(this.Context, this.Scheme, this.Options, credentials.Username, credentials.Password);
+			await this.Events.ValidateCredentialsAsync(validateCredentialsContext).ConfigureAwait(false);
 
-			if (validateCredentialsContext.Result != null)
+			if(validateCredentialsContext.Result != null)
 			{
 				return validateCredentialsContext.Result;
 			}
 
-			if (validateCredentialsContext.Principal?.Identity != null && validateCredentialsContext.Principal.Identity.IsAuthenticated)
+			if(validateCredentialsContext.Principal?.Identity != null && validateCredentialsContext.Principal.Identity.IsAuthenticated)
 			{
 				// If claims principal is set and is authenticated then build a ticket by calling and return success.
 				validateCredentialsContext.Success();
@@ -182,36 +199,32 @@ namespace MadEyeMatt.AspNetCore.Authentication.Basic
 		private async Task<AuthenticateResult> RaiseAndHandleAuthenticationSucceededAsync(IBasicUser basicUser)
 		{
 			// ..create claims principal.
-			var principal = BasicUtils.BuildClaimsPrincipal(basicUser.UserName, Scheme.Name, ClaimsIssuer, basicUser.Claims);
+			ClaimsPrincipal principal = BasicUtils.BuildClaimsPrincipal(basicUser.UserName, this.Scheme.Name, this.ClaimsIssuer, basicUser.Claims);
 
 			// Raise authentication succeeded event.
-			var authenticationSucceededContext = new MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicAuthenticationSucceededContext(Context, Scheme, Options, principal);
-			await Events.AuthenticationSucceededAsync(authenticationSucceededContext).ConfigureAwait(false);
+			BasicAuthenticationSucceededContext authenticationSucceededContext = new MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicAuthenticationSucceededContext(this.Context, this.Scheme, this.Options, principal);
+			await this.Events.AuthenticationSucceededAsync(authenticationSucceededContext).ConfigureAwait(false);
 
-			if (authenticationSucceededContext.Result != null)
+			if(authenticationSucceededContext.Result != null)
 			{
 				return authenticationSucceededContext.Result;
 			}
 
-			if (authenticationSucceededContext.Principal?.Identity != null && authenticationSucceededContext.Principal.Identity.IsAuthenticated)
+			if(authenticationSucceededContext.Principal?.Identity != null && authenticationSucceededContext.Principal.Identity.IsAuthenticated)
 			{
 				// If claims principal is set and is authenticated then build a ticket by calling and return success.
 				authenticationSucceededContext.Success();
 				return authenticationSucceededContext.Result;
 			}
 
-			Logger.LogError("No authenticated principal set.");
+			this.Logger.LogError("No authenticated principal set.");
 			return AuthenticateResult.Fail("No authenticated principal set.");
 		}
 
 		private bool IgnoreAuthenticationIfAllowAnonymous()
 		{
-#if (NET461 || NETSTANDARD2_0)
-			return false;
-#else
-			return Options.IgnoreAuthenticationIfAllowAnonymous
-				&& Context.GetEndpoint()?.Metadata?.GetMetadata<Microsoft.AspNetCore.Authorization.IAllowAnonymous>() != null;
-#endif
+			return this.Options.IgnoreAuthenticationIfAllowAnonymous
+				&& this.Context.GetEndpoint()?.Metadata?.GetMetadata<IAllowAnonymous>() != null;
 		}
 
 		private async Task<IBasicUser> ValidateUsingBasicUserValidationServiceAsync(string username, string password)
@@ -219,19 +232,19 @@ namespace MadEyeMatt.AspNetCore.Authentication.Basic
 			IBasicUserAuthenticationService basicUserAuthenticationService = null;
 
 			// Try to get an instance of the IBasicUserValidationServiceFactory.
-			var basicUserValidationServiceFactory = this.Context.RequestServices.GetService<IBasicUserAuthenticationServiceFactory>();
+			IBasicUserAuthenticationServiceFactory basicUserValidationServiceFactory = this.Context.RequestServices.GetService<IBasicUserAuthenticationServiceFactory>();
 
 			// Try to get a IBasicUserValidationService instance from the factory.
-			basicUserAuthenticationService = basicUserValidationServiceFactory?.CreateBasicUserAuthenticationService(Options.AuthenticationSchemeName);
+			basicUserAuthenticationService = basicUserValidationServiceFactory?.CreateBasicUserAuthenticationService(this.Options.AuthenticationSchemeName);
 
-			if (basicUserAuthenticationService == null && Options.BasicUserValidationServiceType != null)
+			if(basicUserAuthenticationService == null && this.Options.BasicUserValidationServiceType != null)
 			{
-				basicUserAuthenticationService = ActivatorUtilities.GetServiceOrCreateInstance(Context.RequestServices, Options.BasicUserValidationServiceType) as IBasicUserAuthenticationService;
+				basicUserAuthenticationService = ActivatorUtilities.GetServiceOrCreateInstance(this.Context.RequestServices, this.Options.BasicUserValidationServiceType) as IBasicUserAuthenticationService;
 			}
 
-			if (basicUserAuthenticationService == null)
+			if(basicUserAuthenticationService == null)
 			{
-				throw new InvalidOperationException($"Either {nameof(Options.Events.OnValidateCredentials)} delegate on configure options {nameof(Options.Events)} should be set or use an extension method with type parameter of type {nameof(IBasicUserAuthenticationService)} or register an implementation of type {nameof(IBasicUserAuthenticationServiceFactory)} in the service collection.");
+				throw new InvalidOperationException($"Either {nameof(this.Options.Events.OnValidateCredentials)} delegate on configure options {nameof(this.Options.Events)} should be set or use an extension method with type parameter of type {nameof(IBasicUserAuthenticationService)} or register an implementation of type {nameof(IBasicUserAuthenticationServiceFactory)} in the service collection.");
 			}
 
 			try
@@ -240,7 +253,7 @@ namespace MadEyeMatt.AspNetCore.Authentication.Basic
 			}
 			finally
 			{
-				if (basicUserAuthenticationService is IDisposable disposableBasicUserValidationService)
+				if(basicUserAuthenticationService is IDisposable disposableBasicUserValidationService)
 				{
 					disposableBasicUserValidationService.Dispose();
 				}
@@ -254,26 +267,27 @@ namespace MadEyeMatt.AspNetCore.Authentication.Basic
 			try
 			{
 				// Convert the base64 encoded 'username:password' to normal string and parse username and password from colon(:) separated string.
-				var usernameAndPassword = Encoding.UTF8.GetString(Convert.FromBase64String(credentials));
-				var usernameAndPasswordSplit = usernameAndPassword.Split(':');
-				if (usernameAndPasswordSplit.Length != 2)
+				string usernameAndPassword = Encoding.UTF8.GetString(Convert.FromBase64String(credentials));
+				string[] usernameAndPasswordSplit = usernameAndPassword.Split(':');
+				if(usernameAndPasswordSplit.Length != 2)
 				{
 					throw new Exception("Invalid Basic authentication header.");
 				}
+
 				username = usernameAndPasswordSplit[0];
 				password = usernameAndPasswordSplit[1];
 			}
-			catch (Exception e)
+			catch(Exception e)
 			{
 				throw new Exception($"Problem decoding '{BasicDefaults.AuthenticationScheme}' scheme credentials.", e);
 			}
 
-			if (string.IsNullOrWhiteSpace(username))
+			if(string.IsNullOrWhiteSpace(username))
 			{
 				throw new Exception("Username cannot be empty.");
 			}
 
-			if (password == null)
+			if(password == null)
 			{
 				password = string.Empty;
 			}
@@ -285,8 +299,8 @@ namespace MadEyeMatt.AspNetCore.Authentication.Basic
 		{
 			public BasicCredentials(string username, string password)
 			{
-				Username = username;
-				Password = password;
+				this.Username = username;
+				this.Password = password;
 			}
 
 			public string Username { get; }

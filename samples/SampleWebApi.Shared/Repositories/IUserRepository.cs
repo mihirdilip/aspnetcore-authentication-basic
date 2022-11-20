@@ -1,11 +1,11 @@
-﻿using SampleWebApi.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace SampleWebApi.Repositories
+﻿namespace SampleWebApi.Repositories
 {
+	using System.Collections.Generic;
+	using System.Threading.Tasks;
+	using SampleWebApi.Models;
+
 	/// <summary>
-	/// NOTE: DO NOT USE THIS IMPLEMENTATION. THIS IS FOR DEMO PURPOSE ONLY
+	///     NOTE: DO NOT USE THIS IMPLEMENTATION. THIS IS FOR DEMO PURPOSE ONLY
 	/// </summary>
 	public interface IUserRepository
 	{

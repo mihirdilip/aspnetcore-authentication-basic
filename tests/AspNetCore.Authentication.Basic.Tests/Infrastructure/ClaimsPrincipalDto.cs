@@ -3,56 +3,56 @@
 
 namespace MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Security.Claims;
-    using System.Security.Principal;
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Security.Claims;
+	using System.Security.Principal;
 
-    [Serializable]
-    struct ClaimsPrincipalDto
-    {
-        public ClaimsPrincipalDto(ClaimsPrincipal user)
-        {
-            Identity = new ClaimsIdentityDto(user.Identity);
-            Identities = user.Identities.Select(i => new ClaimsIdentityDto(i));
-            Claims = user.Claims.Select(c => new ClaimDto(c));
-        }
+	[Serializable]
+	internal struct ClaimsPrincipalDto
+	{
+		public ClaimsPrincipalDto(ClaimsPrincipal user)
+		{
+			this.Identity = new ClaimsIdentityDto(user.Identity);
+			this.Identities = user.Identities.Select(i => new ClaimsIdentityDto(i));
+			this.Claims = user.Claims.Select(c => new ClaimDto(c));
+		}
 
-        public ClaimsIdentityDto Identity { get; set; }
-        public IEnumerable<ClaimsIdentityDto> Identities { get; private set; }
-        public IEnumerable<ClaimDto> Claims { get; set; }
-    }
+		public ClaimsIdentityDto Identity { get; set; }
+		public IEnumerable<ClaimsIdentityDto> Identities { get; private set; }
+		public IEnumerable<ClaimDto> Claims { get; set; }
+	}
 
-    [Serializable]
-    struct ClaimsIdentityDto
-    {
-        public ClaimsIdentityDto(IIdentity identity)
-        {
-            Name = identity.Name;
-            IsAuthenticated = identity.IsAuthenticated;
-            AuthenticationType = identity.AuthenticationType;
-        }
+	[Serializable]
+	internal struct ClaimsIdentityDto
+	{
+		public ClaimsIdentityDto(IIdentity identity)
+		{
+			this.Name = identity.Name;
+			this.IsAuthenticated = identity.IsAuthenticated;
+			this.AuthenticationType = identity.AuthenticationType;
+		}
 
-        public string Name { get; set; }
-        public bool IsAuthenticated { get; set; }
-        public string AuthenticationType { get; set; }
-    }
+		public string Name { get; set; }
+		public bool IsAuthenticated { get; set; }
+		public string AuthenticationType { get; set; }
+	}
 
-    [Serializable]
-    struct ClaimDto
-    {
-        public ClaimDto(Claim claim)
-        {
-            Type = claim.Type;
-            Value = claim.Value;
-            Issuer = claim.Issuer;
-            OriginalIssuer = claim.OriginalIssuer;
-        }
+	[Serializable]
+	internal struct ClaimDto
+	{
+		public ClaimDto(Claim claim)
+		{
+			this.Type = claim.Type;
+			this.Value = claim.Value;
+			this.Issuer = claim.Issuer;
+			this.OriginalIssuer = claim.OriginalIssuer;
+		}
 
-        public string Type { get; set; }
-        public string Value { get; set; }
-        public string Issuer { get; set; }
-        public string OriginalIssuer { get; set; }
-    }
+		public string Type { get; set; }
+		public string Value { get; set; }
+		public string Issuer { get; set; }
+		public string OriginalIssuer { get; set; }
+	}
 }

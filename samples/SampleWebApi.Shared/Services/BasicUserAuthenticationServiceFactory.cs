@@ -1,10 +1,11 @@
-﻿using System.Diagnostics;
-using Microsoft.Extensions.Logging;
-using SampleWebApi.Repositories;
-
-namespace SampleWebApi.Services
+﻿namespace SampleWebApi.Services
 {
-	internal class BasicUserAuthenticationServiceFactory : MadEyeMatt.AspNetCore.Authentication.Basic.IBasicUserAuthenticationServiceFactory
+	using System.Diagnostics;
+	using MadEyeMatt.AspNetCore.Authentication.Basic;
+	using Microsoft.Extensions.Logging;
+	using SampleWebApi.Repositories;
+
+	internal class BasicUserAuthenticationServiceFactory : IBasicUserAuthenticationServiceFactory
 	{
 		private readonly ILoggerFactory loggerFactory;
 		private readonly IUserRepository userRepository;
@@ -16,7 +17,7 @@ namespace SampleWebApi.Services
 		}
 
 		/// <inheritdoc />
-		public MadEyeMatt.AspNetCore.Authentication.Basic.IBasicUserAuthenticationService CreateBasicUserAuthenticationService(string authenticationSchemaName)
+		public IBasicUserAuthenticationService CreateBasicUserAuthenticationService(string authenticationSchemaName)
 		{
 			Debug.WriteLine(authenticationSchemaName);
 			return new BasicUserAuthenticationService(this.loggerFactory.CreateLogger<BasicUserAuthenticationService>(), this.userRepository);

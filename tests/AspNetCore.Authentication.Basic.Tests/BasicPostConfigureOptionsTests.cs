@@ -3,51 +3,53 @@
 
 namespace MadEyeMatt.AspNetCore.Authentication.Basic.Tests
 {
-    using System;
-    using System.Threading.Tasks;
-    using Xunit;
+	using System;
+	using System.Threading.Tasks;
+	using Microsoft.AspNetCore.TestHost;
+	using Xunit;
 
-    public class BasicPostConfigureOptionsTests
-    {
-		[Fact]
-		public async Task PostConfigure_no_option_set_throws_exception()
+	public class BasicPostConfigureOptionsTests
+	{
+		private async Task RunAuthInitAsync(Action<BasicOptions> configureOptions)
 		{
-			await Assert.ThrowsAsync<InvalidOperationException>(() => RunAuthInitAsync(_ => { }));
+			TestServer server = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BuildTestServer(configureOptions);
+			await server.CreateClient().GetAsync(MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BaseUrl);
+		}
+
+		private async Task RunAuthInitWithServiceAsync(Action<BasicOptions> configureOptions)
+		{
+			TestServer server = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BuildTestServerWithService(configureOptions);
+			await server.CreateClient().GetAsync(MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BaseUrl);
+		}
+
+		private async Task RunAuthInitWithServiceFactoryAsync(Action<BasicOptions> configureOptions)
+		{
+			TestServer server = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BuildTestServerWithServiceFactory(configureOptions);
+			await server.CreateClient().GetAsync(MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BaseUrl);
 		}
 
 		[Fact]
-		public async Task PostConfigure_Realm_or_SuppressWWWAuthenticateHeader_not_set_throws_exception()
+		public async Task PostConfigure_Events_OnValidateKey_not_set_and_IBasicUserValidationService_not_set_but_IBasicUserValidationServiceFactory_registered_no_exception_thrown()
 		{
-			var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
-				RunAuthInitWithServiceAsync(_ => { })
-			);
-
-			Assert.Contains($"{nameof(BasicOptions.Realm)} must be set in {nameof(BasicOptions)} when setting up the authentication.", exception.Message);
-		}
-
-		[Fact]
-		public async Task PostConfigure_Realm_not_set_but_SuppressWWWAuthenticateHeader_set_no_exception_thrown()
-		{
-			await RunAuthInitWithServiceAsync(options =>
+			await this.RunAuthInitWithServiceFactoryAsync(options =>
 			{
 				options.SuppressWWWAuthenticateHeader = true;
 			});
 		}
 
 		[Fact]
-		public async Task PostConfigure_Realm_set_but_SuppressWWWAuthenticateHeader_not_set_no_exception_thrown()
+		public async Task PostConfigure_Events_OnValidateKey_not_set_but_IBasicUserValidationService_set_no_exception_thrown()
 		{
-			await RunAuthInitWithServiceAsync(options =>
+			await this.RunAuthInitWithServiceAsync(options =>
 			{
-				options.Realm = "Test";
+				options.SuppressWWWAuthenticateHeader = true;
 			});
 		}
 
 		[Fact]
 		public async Task PostConfigure_Events_OnValidateKey_or_IBasicUserValidationService_or_IBasicUserValidationServiceFactory_not_set_throws_exception()
 		{
-			var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
-				RunAuthInitAsync(options =>
+			InvalidOperationException exception = await Assert.ThrowsAsync<InvalidOperationException>(() => this.RunAuthInitAsync(options =>
 				{
 					options.SuppressWWWAuthenticateHeader = true;
 				})
@@ -59,7 +61,7 @@ namespace MadEyeMatt.AspNetCore.Authentication.Basic.Tests
 		[Fact]
 		public async Task PostConfigure_Events_OnValidateKey_set_but_IBasicUserValidationService_not_set_no_exception_thrown()
 		{
-			await RunAuthInitAsync(options =>
+			await this.RunAuthInitAsync(options =>
 			{
 				options.Events.OnValidateCredentials = _ => Task.CompletedTask;
 				options.SuppressWWWAuthenticateHeader = true;
@@ -67,39 +69,40 @@ namespace MadEyeMatt.AspNetCore.Authentication.Basic.Tests
 		}
 
 		[Fact]
-		public async Task PostConfigure_Events_OnValidateKey_not_set_but_IBasicUserValidationService_set_no_exception_thrown()
+		public async Task PostConfigure_no_option_set_throws_exception()
 		{
-			await RunAuthInitWithServiceAsync(options =>
+			await Assert.ThrowsAsync<InvalidOperationException>(() => this.RunAuthInitAsync(_ =>
+			{
+			}));
+		}
+
+		[Fact]
+		public async Task PostConfigure_Realm_not_set_but_SuppressWWWAuthenticateHeader_set_no_exception_thrown()
+		{
+			await this.RunAuthInitWithServiceAsync(options =>
 			{
 				options.SuppressWWWAuthenticateHeader = true;
 			});
 		}
 
 		[Fact]
-		public async Task PostConfigure_Events_OnValidateKey_not_set_and_IBasicUserValidationService_not_set_but_IBasicUserValidationServiceFactory_registered_no_exception_thrown()
+		public async Task PostConfigure_Realm_or_SuppressWWWAuthenticateHeader_not_set_throws_exception()
 		{
-			await RunAuthInitWithServiceFactoryAsync(options =>
+			InvalidOperationException exception = await Assert.ThrowsAsync<InvalidOperationException>(() => this.RunAuthInitWithServiceAsync(_ =>
+				{
+				})
+			);
+
+			Assert.Contains($"{nameof(BasicOptions.Realm)} must be set in {nameof(BasicOptions)} when setting up the authentication.", exception.Message);
+		}
+
+		[Fact]
+		public async Task PostConfigure_Realm_set_but_SuppressWWWAuthenticateHeader_not_set_no_exception_thrown()
+		{
+			await this.RunAuthInitWithServiceAsync(options =>
 			{
-				options.SuppressWWWAuthenticateHeader = true;
+				options.Realm = "Test";
 			});
-		}
-
-		private async Task RunAuthInitAsync(Action<BasicOptions> configureOptions)
-		{
-			var server = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BuildTestServer(configureOptions);
-			await server.CreateClient().GetAsync(MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BaseUrl);
-		}
-
-		private async Task RunAuthInitWithServiceAsync(Action<BasicOptions> configureOptions)
-		{
-			var server = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BuildTestServerWithService(configureOptions);
-			await server.CreateClient().GetAsync(MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BaseUrl);
-		}
-
-		private async Task RunAuthInitWithServiceFactoryAsync(Action<BasicOptions> configureOptions)
-		{
-			var server = MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BuildTestServerWithServiceFactory(configureOptions);
-			await server.CreateClient().GetAsync(MadEyeMatt.AspNetCore.Authentication.Basic.Tests.Infrastructure.TestServerBuilder.BaseUrl);
 		}
 	}
 }
