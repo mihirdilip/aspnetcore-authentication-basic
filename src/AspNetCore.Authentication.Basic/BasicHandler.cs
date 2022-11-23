@@ -59,7 +59,7 @@ namespace AspNetCore.Authentication.Basic
 
 			if (!Request.Headers.ContainsKey(HeaderNames.Authorization))
 			{
-				Logger.LogInformation("No 'Authorization' header found in the request.");
+				Logger.LogDebug("No 'Authorization' header found in the request.");
 				return AuthenticateResult.NoResult();
 			}
 

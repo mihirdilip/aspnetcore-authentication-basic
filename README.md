@@ -7,7 +7,7 @@ Easy to use and very light weight Microsoft style Basic Scheme Authentication Im
 
 ## .NET (Core) Frameworks Supported  
 .NET Framework 4.6.1 and/or NetStandard 2.0 onwards  
-Multi targeted: net6.0; net5.0; netcoreapp3.1; netcoreapp3.0; netstandard2.0; net461
+Multi targeted: net7.0; net6.0; net5.0; netcoreapp3.1; netcoreapp3.0; netstandard2.0; net461
 
 <br/> 
 
@@ -300,6 +300,7 @@ public void ConfigureServices(IServiceCollection services)
 ## Release Notes
 | Version | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Notes |
 |---------|-------|
+|7.0.0    | <ul><li>net7.0 support added</li><li>Information log on handler is changed to Debug log when Authorization header is not found on the request</li><li>Added package validations</li><li>Sample project for net7.0 added</li><li>Readme updated</li><li>Readme added to package</li></ul> |
 |6.0.1    | <ul><li>net6.0 support added</li><li>Information log on handler is changed to Debug log when IgnoreAuthenticationIfAllowAnonymous is enabled [#9](https://github.com/mihirdilip/aspnetcore-authentication-basic/issues/9)</li><li>Sample project added</li><li>Readme updated</li><li>Copyright year updated on License</li></ul> |
 |5.1.0    | <ul><li>Visibility of the handler changed to public</li><li>Tests added</li><li>Readme updated</li><li>Copyright year updated on License</li></ul> |
 |5.0.0    | <ul><li>Net 5.0 target framework added</li><li>IgnoreAuthenticationIfAllowAnonymous added to the BasicOptions from netcoreapp3.0 onwards</li></ul> |
