@@ -5,6 +5,7 @@ namespace MadEyeMatt.AspNetCore.Authentication.Basic
 {
 	using System;
 	using System.Net.Http.Headers;
+	using System.Runtime.CompilerServices;
 	using System.Security.Claims;
 	using System.Text;
 	using System.Text.Encodings.Web;
@@ -121,7 +122,7 @@ namespace MadEyeMatt.AspNetCore.Authentication.Basic
 			}
 			catch(Exception exception)
 			{
-				BasicAuthenticationFailedContext authenticationFailedContext = new MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicAuthenticationFailedContext(this.Context, this.Scheme, this.Options, exception);
+				BasicAuthenticationFailedContext authenticationFailedContext = new BasicAuthenticationFailedContext(this.Context, this.Scheme, this.Options, exception);
 				await this.Events.AuthenticationFailedAsync(authenticationFailedContext).ConfigureAwait(false);
 
 				if(authenticationFailedContext.Result != null)
@@ -202,7 +203,7 @@ namespace MadEyeMatt.AspNetCore.Authentication.Basic
 			ClaimsPrincipal principal = BasicUtils.BuildClaimsPrincipal(basicUser.UserName, this.Scheme.Name, this.ClaimsIssuer, basicUser.Claims);
 
 			// Raise authentication succeeded event.
-			BasicAuthenticationSucceededContext authenticationSucceededContext = new MadEyeMatt.AspNetCore.Authentication.Basic.Events.BasicAuthenticationSucceededContext(this.Context, this.Scheme, this.Options, principal);
+			BasicAuthenticationSucceededContext authenticationSucceededContext = new BasicAuthenticationSucceededContext(this.Context, this.Scheme, this.Options, principal);
 			await this.Events.AuthenticationSucceededAsync(authenticationSucceededContext).ConfigureAwait(false);
 
 			if(authenticationSucceededContext.Result != null)
@@ -287,11 +288,6 @@ namespace MadEyeMatt.AspNetCore.Authentication.Basic
 				throw new Exception("Username cannot be empty.");
 			}
 
-			if(password == null)
-			{
-				password = string.Empty;
-			}
-
 			return new BasicCredentials(username, password);
 		}
 
@@ -300,7 +296,7 @@ namespace MadEyeMatt.AspNetCore.Authentication.Basic
 			public BasicCredentials(string username, string password)
 			{
 				this.Username = username;
-				this.Password = password;
+				this.Password = password ?? string.Empty;
 			}
 
 			public string Username { get; }

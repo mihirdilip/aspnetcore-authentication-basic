@@ -13,7 +13,7 @@ namespace MadEyeMatt.AspNetCore.Authentication.Basic.Events
 	public class BasicAuthenticationFailedContext : ResultContext<BasicOptions>
 	{
 		/// <summary>
-		///     Constructor.
+		///     Initializes a new instance of the <see cref="BasicAuthenticationFailedContext"/> type.
 		/// </summary>
 		/// <param name="context"></param>
 		/// <param name="scheme"></param>

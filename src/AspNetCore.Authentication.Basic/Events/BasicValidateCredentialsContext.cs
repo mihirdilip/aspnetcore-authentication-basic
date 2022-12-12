@@ -15,7 +15,7 @@ namespace MadEyeMatt.AspNetCore.Authentication.Basic.Events
 	public class BasicValidateCredentialsContext : ResultContext<BasicOptions>
 	{
 		/// <summary>
-		///     Constructor.
+		///      Initializes a new instance of the <see cref="BasicValidateCredentialsContext"/> type.
 		/// </summary>
 		/// <param name="context"></param>
 		/// <param name="scheme"></param>

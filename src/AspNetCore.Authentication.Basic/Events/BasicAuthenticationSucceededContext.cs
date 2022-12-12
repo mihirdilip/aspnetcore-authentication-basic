@@ -64,7 +64,7 @@ namespace MadEyeMatt.AspNetCore.Authentication.Basic.Events
 				throw new ArgumentNullException(nameof(claim));
 			}
 
-			(this.Principal?.Identity as ClaimsIdentity).AddClaim(claim);
+			(this.Principal?.Identity as ClaimsIdentity)?.AddClaim(claim);
 		}
 
 		/// <summary>
@@ -79,7 +79,7 @@ namespace MadEyeMatt.AspNetCore.Authentication.Basic.Events
 				throw new ArgumentNullException(nameof(claims));
 			}
 
-			(this.Principal?.Identity as ClaimsIdentity).AddClaims(claims);
+			(this.Principal?.Identity as ClaimsIdentity)?.AddClaims(claims);
 		}
 	}
 }

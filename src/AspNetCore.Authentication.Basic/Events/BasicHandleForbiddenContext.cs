@@ -12,7 +12,7 @@ namespace MadEyeMatt.AspNetCore.Authentication.Basic.Events
 	public class BasicHandleForbiddenContext : PropertiesContext<BasicOptions>
 	{
 		/// <summary>
-		///     Constructor.
+		///     Initializes a new instance of the <see cref="BasicHandleForbiddenContext"/> type.
 		/// </summary>
 		/// <param name="context"></param>
 		/// <param name="scheme"></param>
