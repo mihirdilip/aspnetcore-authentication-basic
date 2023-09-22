@@ -7,13 +7,14 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AspNetCore.Authentication.Basic.Tests.Infrastructure
 {
     class FakeBasicUserValidationService : IBasicUserValidationService
     {
-        public Task<bool> IsValidAsync(string username, string password)
+        public Task<bool> IsValidAsync(string username, string password, CancellationToken cancellationToken)
         {
             var user = FakeUsers.Users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase) && u.Password.Equals(password, StringComparison.OrdinalIgnoreCase));
             if (user != null)

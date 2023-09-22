@@ -11,6 +11,7 @@ using System;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Encodings.Web;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AspNetCore.Authentication.Basic
@@ -97,7 +98,8 @@ namespace AspNetCore.Authentication.Basic
 				}
 
 				// Validate using the implementation of IBasicUserValidationService.
-				var hasValidationSucceeded = await ValidateUsingBasicUserValidationServiceAsync(credentials.Username, credentials.Password).ConfigureAwait(false);
+				var cancellationToken = Context.RequestAborted;
+                var hasValidationSucceeded = await ValidateUsingBasicUserValidationServiceAsync(credentials.Username, credentials.Password, cancellationToken).ConfigureAwait(false);
 				return hasValidationSucceeded
 					? await RaiseAndHandleAuthenticationSucceededAsync(credentials).ConfigureAwait(false)
 					: AuthenticateResult.Fail("Invalid username or password.");
@@ -211,7 +213,7 @@ namespace AspNetCore.Authentication.Basic
 #endif
 		}
 
-		private async Task<bool> ValidateUsingBasicUserValidationServiceAsync(string username, string password)
+		private async Task<bool> ValidateUsingBasicUserValidationServiceAsync(string username, string password, CancellationToken cancellationToken)
 		{
 			IBasicUserValidationService basicUserValidationService = null;
 			if (Options.BasicUserValidationServiceType != null)
@@ -226,7 +228,7 @@ namespace AspNetCore.Authentication.Basic
 
 			try
 			{
-				return await basicUserValidationService.IsValidAsync(username, password).ConfigureAwait(false);
+				return await basicUserValidationService.IsValidAsync(username, password, cancellationToken).ConfigureAwait(false);
 			}
 			finally
 			{

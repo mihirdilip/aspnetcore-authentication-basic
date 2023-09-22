@@ -15,6 +15,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -598,7 +599,7 @@ namespace AspNetCore.Authentication.Basic.Tests
 
         private class FakeBasicUserValidationServiceLocal_1 : IBasicUserValidationService
         {
-            public Task<bool> IsValidAsync(string username, string password)
+            public Task<bool> IsValidAsync(string username, string password, CancellationToken cancellationToken)
             {
 				return Task.FromResult(true);
             }
@@ -606,7 +607,7 @@ namespace AspNetCore.Authentication.Basic.Tests
 
 		private class FakeBasicUserValidationServiceLocal_2 : IBasicUserValidationService
 		{
-            public Task<bool> IsValidAsync(string username, string password)
+            public Task<bool> IsValidAsync(string username, string password, CancellationToken cancellationToken)
             {
 				return Task.FromResult(true);
 			}

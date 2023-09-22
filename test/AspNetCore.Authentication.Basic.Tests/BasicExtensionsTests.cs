@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -314,7 +315,7 @@ namespace AspNetCore.Authentication.Basic.Tests
 
         private class MockUserValidationService : IBasicUserValidationService
         {
-            public Task<bool> IsValidAsync(string username, string password)
+            public Task<bool> IsValidAsync(string username, string password, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }
@@ -322,7 +323,7 @@ namespace AspNetCore.Authentication.Basic.Tests
 
         private class MockUserValidationService2 : IBasicUserValidationService
         {
-            public Task<bool> IsValidAsync(string username, string password)
+            public Task<bool> IsValidAsync(string username, string password, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Mihir Dilip. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AspNetCore.Authentication.Basic
@@ -15,7 +16,8 @@ namespace AspNetCore.Authentication.Basic
 		/// </summary>
 		/// <param name="username"></param>
 		/// <param name="password"></param>
+		/// <param name="cancellationToken"></param>
 		/// <returns></returns>
-		Task<bool> IsValidAsync(string username, string password);
+		Task<bool> IsValidAsync(string username, string password, CancellationToken cancellationToken);
 	}
 }
