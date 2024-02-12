@@ -1,5 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- https://learn.microsoft.com/en-us/dotnet/fundamentals/package-validation/diagnostic-ids -->
 <Suppressions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:AspNetCore.Authentication.Basic.BasicHandler.#ctor(Microsoft.Extensions.Options.IOptionsMonitor{AspNetCore.Authentication.Basic.BasicOptions},Microsoft.Extensions.Logging.ILoggerFactory,System.Text.Encodings.Web.UrlEncoder)</Target>
+    <Left>lib/net7.0/AspNetCore.Authentication.Basic.dll</Left>
+    <Right>lib/net8.0/AspNetCore.Authentication.Basic.dll</Right>
+  </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:AspNetCore.Authentication.Basic.BasicOptions.get_IgnoreAuthenticationIfAllowAnonymous</Target>

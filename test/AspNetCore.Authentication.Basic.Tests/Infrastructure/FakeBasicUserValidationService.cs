@@ -35,17 +35,11 @@ namespace AspNetCore.Authentication.Basic.Tests.Infrastructure
         }
     }
 
-    class User
+    class User(string username, string password, IReadOnlyCollection<Claim>? claims = null)
     {
-        public User(string username, string password, IReadOnlyCollection<Claim> claims = null)
-        {
-            Username = username;
-            Password = password;
-            Claims = claims;
-        }
-        public string Username { get; }
-        public string Password { get; }
-        public IReadOnlyCollection<Claim> Claims { get; }
+        public string Username { get; } = username;
+        public string Password { get; } = password;
+        public IReadOnlyCollection<Claim>? Claims { get; } = claims;
 
         public AuthenticationHeaderValue ToAuthenticationHeaderValue()
         {
@@ -61,16 +55,16 @@ namespace AspNetCore.Authentication.Basic.Tests.Infrastructure
         internal static string FakePasswordThrowsNotImplemented = "myrandomfakepassowrd-not-implemented";
         internal static string FakePasswordIgnoreAuthenticationIfAllowAnonymous = "IgnoreAuthenticationIfAllowAnonymous";
         internal static string FakeUserOwner = "Fake Owner";
-        internal static Claim FakeNameClaim = new Claim(ClaimTypes.Name, FakeUserName, ClaimValueTypes.String);
-        internal static Claim FakeNameIdentifierClaim = new Claim(ClaimTypes.NameIdentifier, FakeUserName, ClaimValueTypes.String);
-        internal static Claim FakeRoleClaim = new Claim(ClaimTypes.Role, "FakeRoleClaim", ClaimValueTypes.String);
+        internal static Claim FakeNameClaim = new(ClaimTypes.Name, FakeUserName, ClaimValueTypes.String);
+        internal static Claim FakeNameIdentifierClaim = new(ClaimTypes.NameIdentifier, FakeUserName, ClaimValueTypes.String);
+        internal static Claim FakeRoleClaim = new(ClaimTypes.Role, "FakeRoleClaim", ClaimValueTypes.String);
 
-        internal static User FakeUser => new User(FakeUserName, FakePassword, new List<Claim> { FakeNameClaim, FakeNameIdentifierClaim, FakeRoleClaim });
-        internal static User FakeUserWithEmptyPassword => new User(FakeUserName, string.Empty, new List<Claim> { FakeNameClaim, FakeNameIdentifierClaim, FakeRoleClaim });
-        internal static User FakeUserThrowsNotImplemented => new User(FakeUserName, FakePasswordThrowsNotImplemented, new List<Claim> { FakeNameClaim, FakeNameIdentifierClaim, FakeRoleClaim });
-        internal static User FakeUserIgnoreAuthenticationIfAllowAnonymous => new User(FakeUserName, FakePasswordIgnoreAuthenticationIfAllowAnonymous, new List<Claim> { FakeNameClaim, FakeNameIdentifierClaim, FakeRoleClaim });
+        internal static User FakeUser => new(FakeUserName, FakePassword, new List<Claim> { FakeNameClaim, FakeNameIdentifierClaim, FakeRoleClaim });
+        internal static User FakeUserWithEmptyPassword => new(FakeUserName, string.Empty, new List<Claim> { FakeNameClaim, FakeNameIdentifierClaim, FakeRoleClaim });
+        internal static User FakeUserThrowsNotImplemented => new(FakeUserName, FakePasswordThrowsNotImplemented, new List<Claim> { FakeNameClaim, FakeNameIdentifierClaim, FakeRoleClaim });
+        internal static User FakeUserIgnoreAuthenticationIfAllowAnonymous => new(FakeUserName, FakePasswordIgnoreAuthenticationIfAllowAnonymous, new List<Claim> { FakeNameClaim, FakeNameIdentifierClaim, FakeRoleClaim });
 
-        internal static List<User> Users => new List<User>
+        internal static List<User> Users => new()
         {
             FakeUser,
             FakeUserWithEmptyPassword,

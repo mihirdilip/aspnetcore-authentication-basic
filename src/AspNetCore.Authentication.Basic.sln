@@ -5,6 +5,7 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{CF13271D-BF3F-4167-BEBA-DD02D33992F2}"
 	ProjectSection(SolutionItems) = preProject
+		..\samples\BasicSamplesClient.http = ..\samples\BasicSamplesClient.http
 		..\samples\BasicSamplesClient.postman_collection.json = ..\samples\BasicSamplesClient.postman_collection.json
 	EndProjectSection
 EndProject
@@ -33,7 +34,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore.Authentication.B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleWebApi_6_0", "..\samples\SampleWebApi_6_0\SampleWebApi_6_0.csproj", "{9232DA41-CA69-4FE3-B0C9-D8D85FEC272A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebApi_7_0", "..\samples\SampleWebApi_7_0\SampleWebApi_7_0.csproj", "{D5C8BCC5-C997-475E-9E71-5BF807294BB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleWebApi_7_0", "..\samples\SampleWebApi_7_0\SampleWebApi_7_0.csproj", "{D5C8BCC5-C997-475E-9E71-5BF807294BB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWebApi_8_0", "..\samples\SampleWebApi_8_0\SampleWebApi_8_0.csproj", "{548DBE4A-0C06-4FB3-BEA6-6AB4A0386EEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +76,10 @@ Global
 		{D5C8BCC5-C997-475E-9E71-5BF807294BB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5C8BCC5-C997-475E-9E71-5BF807294BB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5C8BCC5-C997-475E-9E71-5BF807294BB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{548DBE4A-0C06-4FB3-BEA6-6AB4A0386EEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{548DBE4A-0C06-4FB3-BEA6-6AB4A0386EEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{548DBE4A-0C06-4FB3-BEA6-6AB4A0386EEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{548DBE4A-0C06-4FB3-BEA6-6AB4A0386EEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +93,7 @@ Global
 		{335B0D1F-A428-4D2E-AF87-269C75F5F138} = {F7494366-ED1D-4342-AE5D-DD6BE67C63DF}
 		{9232DA41-CA69-4FE3-B0C9-D8D85FEC272A} = {CF13271D-BF3F-4167-BEBA-DD02D33992F2}
 		{D5C8BCC5-C997-475E-9E71-5BF807294BB6} = {CF13271D-BF3F-4167-BEBA-DD02D33992F2}
+		{548DBE4A-0C06-4FB3-BEA6-6AB4A0386EEF} = {CF13271D-BF3F-4167-BEBA-DD02D33992F2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70815049-1680-480A-BF5A-00536D6C9C20}
@@ -93,6 +101,7 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\samples\SampleWebApi.Shared\SampleWebApi.Shared.projitems*{0801aed9-ea38-4e7e-af4d-26e9b67e5254}*SharedItemsImports = 5
 		..\samples\SampleWebApi.Shared\SampleWebApi.Shared.projitems*{2705db4c-3bce-4cfc-9a30-b4bfd1f28c56}*SharedItemsImports = 5
+		..\samples\SampleWebApi.Shared\SampleWebApi.Shared.projitems*{548dbe4a-0c06-4fb3-bea6-6ab4a0386eef}*SharedItemsImports = 5
 		..\samples\SampleWebApi.Shared\SampleWebApi.Shared.projitems*{897e5c9c-8c0a-4fb6-960c-4d11aafd4491}*SharedItemsImports = 5
 		..\samples\SampleWebApi.Shared\SampleWebApi.Shared.projitems*{9232da41-ca69-4fe3-b0c9-d8d85fec272a}*SharedItemsImports = 5
 		..\samples\SampleWebApi.Shared\SampleWebApi.Shared.projitems*{b82830a0-fdfc-469d-b2a8-d657cd216451}*SharedItemsImports = 5

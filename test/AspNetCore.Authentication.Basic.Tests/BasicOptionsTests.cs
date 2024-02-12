@@ -83,7 +83,7 @@ namespace AspNetCore.Authentication.Basic.Tests
             var services = server.Host.Services;
             
             var apiKeyOptionsSnapshot = services.GetService<IOptionsSnapshot<BasicOptions>>();
-            var apiKeyOptions = apiKeyOptionsSnapshot.Get(BasicDefaults.AuthenticationScheme);
+            var apiKeyOptions = apiKeyOptionsSnapshot?.Get(BasicDefaults.AuthenticationScheme);
             Assert.NotNull(apiKeyOptions);
             Assert.Null(apiKeyOptions.BasicUserValidationServiceType);
 
@@ -98,7 +98,7 @@ namespace AspNetCore.Authentication.Basic.Tests
             var services = server.Host.Services;
 
             var apiKeyOptionsSnapshot = services.GetService<IOptionsSnapshot<BasicOptions>>();
-            var apiKeyOptions = apiKeyOptionsSnapshot.Get(BasicDefaults.AuthenticationScheme);
+            var apiKeyOptions = apiKeyOptionsSnapshot?.Get(BasicDefaults.AuthenticationScheme);
             Assert.NotNull(apiKeyOptions);
             Assert.NotNull(apiKeyOptions.BasicUserValidationServiceType);
             Assert.Equal(typeof(FakeBasicUserValidationService), apiKeyOptions.BasicUserValidationServiceType);

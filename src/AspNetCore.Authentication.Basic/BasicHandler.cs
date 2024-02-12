@@ -20,6 +20,20 @@ namespace AspNetCore.Authentication.Basic
 	/// </summary>
 	public class BasicHandler : AuthenticationHandler<BasicOptions>
 	{
+#if NET8_0_OR_GREATER
+		/// <summary>
+		/// Basic Handler Constructor.
+		/// </summary>
+		/// <param name="options"></param>
+		/// <param name="logger"></param>
+		/// <param name="encoder"></param>
+		protected BasicHandler(IOptionsMonitor<BasicOptions> options, ILoggerFactory logger, UrlEncoder encoder)
+			: base(options, logger, encoder)
+		{
+		}
+
+		[Obsolete("ISystemClock is obsolete, use TimeProvider on AuthenticationSchemeOptions instead.")]
+#endif
 		/// <summary>
 		/// Basic Handler Constructor.
 		/// </summary>
@@ -57,13 +71,13 @@ namespace AspNetCore.Authentication.Basic
 				return AuthenticateResult.NoResult();
 			}
 
-			if (!Request.Headers.ContainsKey(HeaderNames.Authorization))
+			if (!Request.Headers.TryGetValue(HeaderNames.Authorization, out Microsoft.Extensions.Primitives.StringValues authHeaderValues))
 			{
 				Logger.LogDebug("No 'Authorization' header found in the request.");
 				return AuthenticateResult.NoResult();
 			}
 
-			if (!AuthenticationHeaderValue.TryParse(Request.Headers[HeaderNames.Authorization], out var headerValue))
+			if (!AuthenticationHeaderValue.TryParse(authHeaderValues, out var headerValue))
 			{
 				Logger.LogInformation("No valid 'Authorization' header found in the request.");
 				return AuthenticateResult.NoResult();
@@ -78,7 +92,7 @@ namespace AspNetCore.Authentication.Basic
 			BasicCredentials credentials;
 			try
 			{
-				credentials = DecodeBasicCredentials(headerValue.Parameter);
+				credentials = BasicHandler.DecodeBasicCredentials(headerValue.Parameter);
 			}
 			catch (Exception exception)
 			{
@@ -237,7 +251,7 @@ namespace AspNetCore.Authentication.Basic
 			}
 		}
 
-		private BasicCredentials DecodeBasicCredentials(string credentials)
+		private static BasicCredentials DecodeBasicCredentials(string credentials)
 		{
 			string username;
 			string password;
@@ -271,7 +285,7 @@ namespace AspNetCore.Authentication.Basic
 			return new BasicCredentials(username, password);
 		}
 
-		private struct BasicCredentials
+		private readonly struct BasicCredentials
 		{
 			public BasicCredentials(string username, string password)
 			{
