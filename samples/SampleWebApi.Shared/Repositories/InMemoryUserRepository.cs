@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SampleWebApi.Models;
@@ -10,7 +11,7 @@ namespace SampleWebApi.Repositories
 	/// </summary>
 	public class InMemoryUserRepository : IUserRepository
 	{
-		private List<User> _users = new List<User>
+		private readonly List<User> _users = new List<User>
 		{
 			new User { Username = "TestUser1", Password = "1234" },
 			new User { Username = "TestUser2", Password = "1234" },
@@ -30,3 +31,4 @@ namespace SampleWebApi.Repositories
 		}
 	}
 }
+#pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.

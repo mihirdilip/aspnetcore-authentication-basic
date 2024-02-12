@@ -303,7 +303,7 @@ namespace AspNetCore.Authentication.Basic.Tests
 
         #endregion // Allows chaining
 
-        private Task<AuthenticationScheme> GetSchemeAsync(Action<AuthenticationBuilder> authenticationBuilderAction, string schemeName = BasicDefaults.AuthenticationScheme)
+        private static Task<AuthenticationScheme?> GetSchemeAsync(Action<AuthenticationBuilder> authenticationBuilderAction, string schemeName = BasicDefaults.AuthenticationScheme)
         {
             var services = new ServiceCollection();
             authenticationBuilderAction(services.AddAuthentication());

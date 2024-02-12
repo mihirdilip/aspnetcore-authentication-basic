@@ -20,8 +20,8 @@ using Xunit;
 
 namespace AspNetCore.Authentication.Basic.Tests
 {
-    public class BasicHandlerTests : IDisposable
-    {
+	public class BasicHandlerTests : IDisposable
+	{
 		private const string HeaderFromEventsKey = nameof(HeaderFromEventsKey);
 		private const string HeaderFromEventsValue = nameof(HeaderFromEventsValue);
 
@@ -60,7 +60,7 @@ namespace AspNetCore.Authentication.Basic.Tests
 			Assert.Equal(typeof(BasicHandler), scheme.HandlerType);
 
 			var optionsSnapshot = services.GetService<IOptionsSnapshot<BasicOptions>>();
-			var options = optionsSnapshot.Get(scheme.Name);
+			var options = optionsSnapshot?.Get(scheme.Name);
 			Assert.NotNull(options);
 			Assert.NotNull(options.Events?.OnValidateCredentials);
 			Assert.Null(options.BasicUserValidationServiceType);
@@ -81,7 +81,7 @@ namespace AspNetCore.Authentication.Basic.Tests
 			Assert.Equal(typeof(BasicHandler), scheme.HandlerType);
 
 			var optionsSnapshot = services.GetService<IOptionsSnapshot<BasicOptions>>();
-			var options = optionsSnapshot.Get(scheme.Name);
+			var options = optionsSnapshot?.Get(scheme.Name);
 			Assert.NotNull(options);
 			Assert.Null(options.Events?.OnValidateCredentials);
 			Assert.NotNull(options.BasicUserValidationServiceType);
@@ -114,7 +114,7 @@ namespace AspNetCore.Authentication.Basic.Tests
 				options.Realm = TestServerBuilder.Realm;
 				options.Events.OnHandleForbidden = context =>
 				{
-					context.HttpContext.Response.Headers.Add(HeaderFromEventsKey, HeaderFromEventsValue);
+					context.HttpContext.Response.Headers[HeaderFromEventsKey] = HeaderFromEventsValue;
 					return Task.CompletedTask;
 				};
 			});
@@ -166,7 +166,7 @@ namespace AspNetCore.Authentication.Basic.Tests
 				options.Realm = TestServerBuilder.Realm;
 				options.Events.OnHandleChallenge = context =>
 				{
-					context.HttpContext.Response.Headers.Add(HeaderFromEventsKey, HeaderFromEventsValue);
+					context.HttpContext.Response.Headers[HeaderFromEventsKey] = HeaderFromEventsValue;
 					return Task.CompletedTask;
 				};
 			});
@@ -205,7 +205,7 @@ namespace AspNetCore.Authentication.Basic.Tests
 				options.SuppressWWWAuthenticateHeader = true;
 				options.Events.OnHandleChallenge = context =>
 				{
-					context.HttpContext.Response.Headers.Add(HeaderFromEventsKey, HeaderFromEventsValue);
+					context.HttpContext.Response.Headers[HeaderFromEventsKey] = HeaderFromEventsValue;
 					return Task.CompletedTask;
 				};
 			});
@@ -335,7 +335,7 @@ namespace AspNetCore.Authentication.Basic.Tests
 				options.Realm = TestServerBuilder.Realm;
 				options.Events.OnValidateCredentials = context =>
 				{
-					context.ValidationSucceeded(new List<Claim> { FakeUsers.FakeRoleClaim, new Claim(ClaimTypes.Name, "my_test") });
+					context.ValidationSucceeded(new List<Claim> { FakeUsers.FakeRoleClaim, new(ClaimTypes.Name, "my_test") });
 
 					Assert.NotNull(context.Result);
 
@@ -526,88 +526,88 @@ namespace AspNetCore.Authentication.Basic.Tests
 			Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
 		}
 
-        #endregion // HandleAuthenticate
+		#endregion // HandleAuthenticate
 
-        #region Multi-Scheme
+		#region Multi-Scheme
 
-        [Fact]
-        public async Task MultiScheme()
-        {
-            var claimRole = new ClaimDto(FakeUsers.FakeRoleClaim);
+		[Fact]
+		public async Task MultiScheme()
+		{
+			var claimRole = new ClaimDto(FakeUsers.FakeRoleClaim);
 			var schemes = new List<string> { "Scheme1", "Scheme2", };
 
 			using var server = TestServerBuilder.BuildTestServer(services =>
-            {
-                services.AddAuthentication("Scheme1")
-                    .AddBasic("Scheme1", options =>
-                    {
-                        options.Realm = TestServerBuilder.Realm;
-                        options.Events.OnValidateCredentials = context =>
-                        {
+			{
+				services.AddAuthentication("Scheme1")
+					.AddBasic("Scheme1", options =>
+					{
+						options.Realm = TestServerBuilder.Realm;
+						options.Events.OnValidateCredentials = context =>
+						{
 							var user = FakeUsers.Users.FirstOrDefault(u => u.Username.Equals(context.Username, StringComparison.OrdinalIgnoreCase) && u.Password.Equals(context.Password, StringComparison.OrdinalIgnoreCase));
 							if (user != null)
 							{
-								context.Response.Headers.Add("X-Custom", "Scheme1");
+								context.Response.Headers["X-Custom"] = "Scheme1";
 								context.ValidationSucceeded(new List<Claim> { FakeUsers.FakeRoleClaim });
 							}
-                            else
-                            {
+							else
+							{
 								context.ValidationFailed();
 							}
-                            return Task.CompletedTask;
-                        };
-                    })
-                    .AddBasic<FakeBasicUserValidationServiceLocal_1>("Scheme2", options =>
-                    {
-                        options.Realm = TestServerBuilder.Realm;
-                    });
+							return Task.CompletedTask;
+						};
+					})
+					.AddBasic<FakeBasicUserValidationServiceLocal_1>("Scheme2", options =>
+					{
+						options.Realm = TestServerBuilder.Realm;
+					});
 
 #if !(NET461 || NETSTANDARD2_0 || NETCOREAPP2_1)
 				services.Configure<AuthorizationOptions>(options => options.FallbackPolicy = new AuthorizationPolicyBuilder(schemes.ToArray()).RequireAuthenticatedUser().Build());
 #endif
 			});
 
-            using var client = server.CreateClient();
+			using var client = server.CreateClient();
 
-            using var request1 = new HttpRequestMessage(HttpMethod.Get, TestServerBuilder.ClaimsPrincipalUrl + "?scheme=" + schemes[0]);
+			using var request1 = new HttpRequestMessage(HttpMethod.Get, TestServerBuilder.ClaimsPrincipalUrl + "?scheme=" + schemes[0]);
 			request1.Headers.Authorization = FakeUsers.FakeUser.ToAuthenticationHeaderValue();
 			using var response1 = await client.SendAsync(request1);
-            Assert.True(response1.IsSuccessStatusCode);
-            Assert.Equal(HttpStatusCode.OK, response1.StatusCode);
-            var response1Principal = await DeserializeClaimsPrincipalAsync(response1);
-            Assert.Contains(response1.Headers, r => r.Key == "X-Custom" && r.Value.Any(v => v == "Scheme1"));
-            Assert.Contains(response1Principal.Claims, c => c.Type == claimRole.Type && c.Value == claimRole.Value);
+			Assert.True(response1.IsSuccessStatusCode);
+			Assert.Equal(HttpStatusCode.OK, response1.StatusCode);
+			var response1Principal = await DeserializeClaimsPrincipalAsync(response1);
+			Assert.Contains(response1.Headers, r => r.Key == "X-Custom" && r.Value.Any(v => v == "Scheme1"));
+			Assert.Contains(response1Principal.Claims, c => c.Type == claimRole.Type && c.Value == claimRole.Value);
 
 
-            using var request2 = new HttpRequestMessage(HttpMethod.Get, TestServerBuilder.ClaimsPrincipalUrl + "?scheme=" + schemes[1]);
+			using var request2 = new HttpRequestMessage(HttpMethod.Get, TestServerBuilder.ClaimsPrincipalUrl + "?scheme=" + schemes[1]);
 			request2.Headers.Authorization = new User("test", "test").ToAuthenticationHeaderValue();
 			using var response2 = await client.SendAsync(request2);
-            Assert.True(response2.IsSuccessStatusCode);
-            Assert.Equal(HttpStatusCode.OK, response2.StatusCode);
-            var response2Principal = await DeserializeClaimsPrincipalAsync(response2);
-            Assert.DoesNotContain(response2.Headers, r => r.Key == "X-Custom" && r.Value.Any(v => v == "Scheme1"));
-            Assert.DoesNotContain(response2Principal.Claims, c => c.Type == claimRole.Type && c.Value == claimRole.Value);
-        }
+			Assert.True(response2.IsSuccessStatusCode);
+			Assert.Equal(HttpStatusCode.OK, response2.StatusCode);
+			var response2Principal = await DeserializeClaimsPrincipalAsync(response2);
+			Assert.DoesNotContain(response2.Headers, r => r.Key == "X-Custom" && r.Value.Any(v => v == "Scheme1"));
+			Assert.DoesNotContain(response2Principal.Claims, c => c.Type == claimRole.Type && c.Value == claimRole.Value);
+		}
 
-        #endregion // Multi-Scheme
+		#endregion // Multi-Scheme
 
-        private async Task<ClaimsPrincipalDto> DeserializeClaimsPrincipalAsync(HttpResponseMessage response)
-        {
+		private async Task<ClaimsPrincipalDto> DeserializeClaimsPrincipalAsync(HttpResponseMessage response)
+		{
 			return JsonSerializer.Deserialize<ClaimsPrincipalDto>(await response.Content.ReadAsStringAsync());
 		}
 
-        private class FakeBasicUserValidationServiceLocal_1 : IBasicUserValidationService
-        {
-            public Task<bool> IsValidAsync(string username, string password)
-            {
+		private class FakeBasicUserValidationServiceLocal_1 : IBasicUserValidationService
+		{
+			public Task<bool> IsValidAsync(string username, string password)
+			{
 				return Task.FromResult(true);
-            }
-        }
+			}
+		}
 
 		private class FakeBasicUserValidationServiceLocal_2 : IBasicUserValidationService
 		{
-            public Task<bool> IsValidAsync(string username, string password)
-            {
+			public Task<bool> IsValidAsync(string username, string password)
+			{
 				return Task.FromResult(true);
 			}
 		}

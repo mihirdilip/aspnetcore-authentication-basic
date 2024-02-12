@@ -24,7 +24,7 @@ namespace AspNetCore.Authentication.Basic.Tests.Infrastructure
         internal static string ClaimsPrincipalUrl = $"{BaseUrl}claims-principal";
         internal static string Realm = "BasicTests";
 
-        internal static TestServer BuildTestServer(Action<BasicOptions> configureOptions = null)
+        internal static TestServer BuildTestServer(Action<BasicOptions>? configureOptions = null)
         {
             return BuildTestServer(
                 services =>
@@ -35,7 +35,7 @@ namespace AspNetCore.Authentication.Basic.Tests.Infrastructure
             );
         }
 
-        internal static TestServer BuildTestServerWithService(Action<BasicOptions> configureOptions = null)
+        internal static TestServer BuildTestServerWithService(Action<BasicOptions>? configureOptions = null)
         {
             return BuildTestServer(
                 services =>
@@ -46,7 +46,7 @@ namespace AspNetCore.Authentication.Basic.Tests.Infrastructure
             );
         }
 
-        internal static TestServer BuildTestServer(Action<IServiceCollection> configureServices, Action<IApplicationBuilder> configure = null)
+        internal static TestServer BuildTestServer(Action<IServiceCollection> configureServices, Action<IApplicationBuilder>? configure = null)
         {
             if (configureServices == null) throw new ArgumentNullException(nameof(configureServices));
 
