@@ -7,11 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
-using System;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 
 namespace AspNetCore.Authentication.Basic
 {

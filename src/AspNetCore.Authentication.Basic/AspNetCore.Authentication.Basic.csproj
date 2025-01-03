@@ -20,7 +20,7 @@
     <NeutralLanguage />
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
-    <!--<ImplicitUsings>enable</ImplicitUsings>-->
+    <ImplicitUsings>enable</ImplicitUsings>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
