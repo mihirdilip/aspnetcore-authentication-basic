@@ -31,9 +31,8 @@ namespace AspNetCore.Authentication.Basic
 			: base(options, logger, encoder)
 		{
 		}
-
-		[Obsolete("ISystemClock is obsolete, use TimeProvider on AuthenticationSchemeOptions instead.")]
 #endif
+
 		/// <summary>
 		/// Basic Handler Constructor.
 		/// </summary>
@@ -41,6 +40,9 @@ namespace AspNetCore.Authentication.Basic
 		/// <param name="logger"></param>
 		/// <param name="encoder"></param>
 		/// <param name="clock"></param>
+#if NET8_0_OR_GREATER
+		[Obsolete("ISystemClock is obsolete, use TimeProvider on AuthenticationSchemeOptions instead.")]
+#endif
 		public BasicHandler(IOptionsMonitor<BasicOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
 			: base(options, logger, encoder, clock)
 		{
