@@ -17,8 +17,10 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Title>$(AssemblyName)</Title>
     <RepositoryType>git</RepositoryType>
-    <PackageIconUrl />
     <NeutralLanguage />
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <!--<ImplicitUsings>enable</ImplicitUsings>-->
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>

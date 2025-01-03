@@ -4,22 +4,20 @@
 using AspNetCore.Authentication.Basic.Tests.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
-using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace AspNetCore.Authentication.Basic.Tests.Events
 {
     public class BasicHandleChallengeContextTests : IDisposable
     {
-        private readonly List<TestServer> _serversToDispose = new List<TestServer>();
+        private readonly List<TestServer> _serversToDispose = [];
 
         public void Dispose()
         {
             _serversToDispose.ForEach(s => s.Dispose());
+            GC.SuppressFinalize(this);
         }
 
         [Fact]

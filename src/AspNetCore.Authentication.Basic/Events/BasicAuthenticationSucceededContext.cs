@@ -30,7 +30,7 @@ namespace AspNetCore.Authentication.Basic
         /// <summary>
         /// Get the <see cref="ClaimsPrincipal"/> containing the user claims.
         /// </summary>
-        public new ClaimsPrincipal Principal => base.Principal;
+        public new ClaimsPrincipal Principal => base.Principal!;
 
         /// <summary>
         /// Called to replace the claims principal. The supplied principal will replace the value of the 
@@ -57,7 +57,7 @@ namespace AspNetCore.Authentication.Basic
         public void AddClaim(Claim claim)
         {
             if (claim == null) throw new ArgumentNullException(nameof(claim));
-            (Principal?.Identity as ClaimsIdentity).AddClaim(claim);
+            (Principal.Identity as ClaimsIdentity)?.AddClaim(claim);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace AspNetCore.Authentication.Basic
         public void AddClaims(IEnumerable<Claim> claims)
         {
             if (claims == null) throw new ArgumentNullException(nameof(claims));
-            (Principal?.Identity as ClaimsIdentity).AddClaims(claims);
+            (Principal.Identity as ClaimsIdentity)?.AddClaims(claims);
         }
     }
 }

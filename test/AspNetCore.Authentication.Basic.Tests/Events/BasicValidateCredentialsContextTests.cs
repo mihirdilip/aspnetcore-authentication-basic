@@ -3,21 +3,17 @@
 
 using AspNetCore.Authentication.Basic.Tests.Infrastructure;
 using Microsoft.AspNetCore.TestHost;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace AspNetCore.Authentication.Basic.Tests.Events
 {
     public class BasicValidateCredentialsContextTests : IDisposable
     {
-        private readonly List<TestServer> _serversToDispose = new List<TestServer>();
+        private readonly List<TestServer> _serversToDispose = [];
 
         public void Dispose()
         {
@@ -190,14 +186,14 @@ namespace AspNetCore.Authentication.Basic.Tests.Events
             return server.CreateClient();
         }
 
-        private async Task RunUnauthorizedTests(HttpClient client)
+        private static async Task RunUnauthorizedTests(HttpClient client)
         {
             using var response_unauthorized = await client.GetAsync(TestServerBuilder.ClaimsPrincipalUrl);
             Assert.False(response_unauthorized.IsSuccessStatusCode);
             Assert.Equal(HttpStatusCode.Unauthorized, response_unauthorized.StatusCode);
         }
 
-        private async Task<ClaimsPrincipalDto> RunSuccessTests(HttpClient client)
+        private static async Task<ClaimsPrincipalDto> RunSuccessTests(HttpClient client)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, TestServerBuilder.ClaimsPrincipalUrl);
             request.Headers.Authorization = FakeUsers.FakeUser.ToAuthenticationHeaderValue();

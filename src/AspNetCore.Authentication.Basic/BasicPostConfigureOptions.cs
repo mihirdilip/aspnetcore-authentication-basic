@@ -11,7 +11,7 @@ namespace AspNetCore.Authentication.Basic
 	/// </summary>
 	internal class BasicPostConfigureOptions : IPostConfigureOptions<BasicOptions>
 	{
-		public void PostConfigure(string name, BasicOptions options)
+		public void PostConfigure(string? name, BasicOptions options)
 		{
 			if (!options.SuppressWWWAuthenticateHeader && string.IsNullOrWhiteSpace(options.Realm))
 			{

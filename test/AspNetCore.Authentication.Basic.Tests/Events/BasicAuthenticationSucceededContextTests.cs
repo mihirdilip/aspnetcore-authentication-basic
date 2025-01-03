@@ -3,20 +3,17 @@
 
 using AspNetCore.Authentication.Basic.Tests.Infrastructure;
 using Microsoft.AspNetCore.TestHost;
-using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace AspNetCore.Authentication.Basic.Tests.Events
 {
     public class BasicAuthenticationSucceededContextTests : IDisposable
     {
-        private readonly List<TestServer> _serversToDispose = new List<TestServer>();
+        private readonly List<TestServer> _serversToDispose = [];
 
         public void Dispose()
         {
@@ -45,7 +42,7 @@ namespace AspNetCore.Authentication.Basic.Tests.Events
             using var client = BuildClient(
                 context =>
                 {
-                    Assert.Throws<ArgumentNullException>(() => context.ReplacePrincipal(null));
+                    Assert.Throws<ArgumentNullException>(() => context.ReplacePrincipal(null!));
                     return Task.CompletedTask;
                 }
             );
@@ -113,8 +110,8 @@ namespace AspNetCore.Authentication.Basic.Tests.Events
         public async Task AddClaims()
         {
             var claims = new List<Claim>{
-                new Claim(ClaimTypes.Actor, "Actor"),
-                new Claim(ClaimTypes.Country, "Country")
+                new(ClaimTypes.Actor, "Actor"),
+                new(ClaimTypes.Country, "Country")
             };
 
             using var client = BuildClient(
@@ -148,7 +145,7 @@ namespace AspNetCore.Authentication.Basic.Tests.Events
             return server.CreateClient();
         }
 
-        private async Task RunUnauthorizedTests(HttpClient client)
+        private static async Task RunUnauthorizedTests(HttpClient client)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, TestServerBuilder.ClaimsPrincipalUrl);
             request.Headers.Authorization = FakeUsers.FakeUser.ToAuthenticationHeaderValue();
@@ -157,7 +154,7 @@ namespace AspNetCore.Authentication.Basic.Tests.Events
             Assert.Equal(HttpStatusCode.Unauthorized, response_unauthorized.StatusCode);
         }
 
-        private async Task<ClaimsPrincipalDto> RunSuccessTests(HttpClient client)
+        private static async Task<ClaimsPrincipalDto> RunSuccessTests(HttpClient client)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, TestServerBuilder.ClaimsPrincipalUrl);
             request.Headers.Authorization = FakeUsers.FakeUser.ToAuthenticationHeaderValue();

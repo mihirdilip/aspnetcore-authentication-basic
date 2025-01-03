@@ -40,7 +40,7 @@ namespace AspNetCore.Authentication.Basic
 		/// <param name="builder"></param>
 		/// <param name="configureOptions">The configure options.</param>
 		/// <returns>The instance of <see cref="AuthenticationBuilder"/></returns>
-		public static AuthenticationBuilder AddBasic(this AuthenticationBuilder builder, Action<BasicOptions> configureOptions)
+		public static AuthenticationBuilder AddBasic(this AuthenticationBuilder builder, Action<BasicOptions>? configureOptions)
 			=> builder.AddBasic(BasicDefaults.AuthenticationScheme, configureOptions);
 
 		/// <summary>
@@ -51,7 +51,7 @@ namespace AspNetCore.Authentication.Basic
 		/// <param name="authenticationScheme">The authentication scheme.</param>
 		/// <param name="configureOptions">The configure options.</param>
 		/// <returns>The instance of <see cref="AuthenticationBuilder"/></returns>
-		public static AuthenticationBuilder AddBasic(this AuthenticationBuilder builder, string authenticationScheme, Action<BasicOptions> configureOptions)
+		public static AuthenticationBuilder AddBasic(this AuthenticationBuilder builder, string authenticationScheme, Action<BasicOptions>? configureOptions)
 			=> builder.AddBasic(authenticationScheme, displayName: null, configureOptions: configureOptions);
 
 		/// <summary>
@@ -63,7 +63,7 @@ namespace AspNetCore.Authentication.Basic
 		/// <param name="displayName">The display name.</param>
 		/// <param name="configureOptions">The configure options.</param>
 		/// <returns>The instance of <see cref="AuthenticationBuilder"/></returns>
-		public static AuthenticationBuilder AddBasic(this AuthenticationBuilder builder, string authenticationScheme, string displayName, Action<BasicOptions> configureOptions)
+		public static AuthenticationBuilder AddBasic(this AuthenticationBuilder builder, string authenticationScheme, string? displayName, Action<BasicOptions>? configureOptions)
 		{
 			// Adds post configure options to the pipeline.
 			builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<BasicOptions>, BasicPostConfigureOptions>());
@@ -107,7 +107,7 @@ namespace AspNetCore.Authentication.Basic
 		/// <param name="builder"></param>
 		/// <param name="configureOptions">The <see cref="BasicOptions"/>.</param>
 		/// <returns>The instance of <see cref="AuthenticationBuilder"/></returns>
-		public static AuthenticationBuilder AddBasic<TBasicUserValidationService>(this AuthenticationBuilder builder, Action<BasicOptions> configureOptions) where TBasicUserValidationService : class, IBasicUserValidationService
+		public static AuthenticationBuilder AddBasic<TBasicUserValidationService>(this AuthenticationBuilder builder, Action<BasicOptions>? configureOptions) where TBasicUserValidationService : class, IBasicUserValidationService
 			=> builder.AddBasic<TBasicUserValidationService>(BasicDefaults.AuthenticationScheme, configureOptions);
 
 		/// <summary>
@@ -119,7 +119,7 @@ namespace AspNetCore.Authentication.Basic
 		/// <param name="authenticationScheme">The authentication scheme.</param>
 		/// <param name="configureOptions">The <see cref="BasicOptions"/>.</param>
 		/// <returns>The instance of <see cref="AuthenticationBuilder"/></returns>
-		public static AuthenticationBuilder AddBasic<TBasicUserValidationService>(this AuthenticationBuilder builder, string authenticationScheme, Action<BasicOptions> configureOptions) where TBasicUserValidationService : class, IBasicUserValidationService
+		public static AuthenticationBuilder AddBasic<TBasicUserValidationService>(this AuthenticationBuilder builder, string authenticationScheme, Action<BasicOptions>? configureOptions) where TBasicUserValidationService : class, IBasicUserValidationService
 			=> builder.AddBasic<TBasicUserValidationService>(authenticationScheme, displayName: null, configureOptions: configureOptions);
 
 		/// <summary>
@@ -132,7 +132,7 @@ namespace AspNetCore.Authentication.Basic
 		/// <param name="displayName">The display name.</param>
 		/// <param name="configureOptions">The <see cref="BasicOptions"/>.</param>
 		/// <returns>The instance of <see cref="AuthenticationBuilder"/></returns>
-		public static AuthenticationBuilder AddBasic<TBasicUserValidationService>(this AuthenticationBuilder builder, string authenticationScheme, string displayName, Action<BasicOptions> configureOptions)
+		public static AuthenticationBuilder AddBasic<TBasicUserValidationService>(this AuthenticationBuilder builder, string authenticationScheme, string? displayName, Action<BasicOptions>? configureOptions)
 			where TBasicUserValidationService : class, IBasicUserValidationService
 		{
 			// Adds implementation of IBasicUserValidationService to the dependency container.

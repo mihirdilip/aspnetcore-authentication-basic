@@ -9,10 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
-using System;
-using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace AspNetCore.Authentication.Basic.Tests.Infrastructure
 {

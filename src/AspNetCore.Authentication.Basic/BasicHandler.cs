@@ -53,7 +53,7 @@ namespace AspNetCore.Authentication.Basic
 		/// <summary>
 		/// Get or set <see cref="BasicEvents"/>.
 		/// </summary>
-		protected new BasicEvents Events { get => (BasicEvents)base.Events; set => base.Events = value; }
+		protected new BasicEvents Events { get => (BasicEvents)base.Events!; set => base.Events = value; }
 
 		/// <summary>
 		/// Create an instance of <see cref="BasicEvents"/>.
@@ -88,6 +88,12 @@ namespace AspNetCore.Authentication.Basic
 			if (!headerValue.Scheme.Equals(BasicDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase))
 			{
 				Logger.LogInformation($"'Authorization' header found but the scheme is not a '{BasicDefaults.AuthenticationScheme}' scheme.");
+				return AuthenticateResult.NoResult();
+			}
+
+			if (string.IsNullOrWhiteSpace(headerValue.Parameter))
+			{
+				Logger.LogInformation($"'Authorization' header found but the scheme value/credentials is not present.");
 				return AuthenticateResult.NoResult();
 			}
 
@@ -172,7 +178,7 @@ namespace AspNetCore.Authentication.Basic
 			await base.HandleChallengeAsync(properties);
 		}
 
-		private async Task<AuthenticateResult> RaiseAndHandleEventValidateCredentialsAsync(BasicCredentials credentials)
+		private async Task<AuthenticateResult?> RaiseAndHandleEventValidateCredentialsAsync(BasicCredentials credentials)
 		{
 			var validateCredentialsContext = new BasicValidateCredentialsContext(Context, Scheme, Options, credentials.Username, credentials.Password);
 			await Events.ValidateCredentialsAsync(validateCredentialsContext).ConfigureAwait(false);
@@ -210,7 +216,10 @@ namespace AspNetCore.Authentication.Basic
 			{
 				// If claims principal is set and is authenticated then build a ticket by calling and return success.
 				authenticationSucceededContext.Success();
-				return authenticationSucceededContext.Result;
+				if (authenticationSucceededContext.Result != null)
+				{
+					return authenticationSucceededContext.Result;
+				}
 			}
 
 			Logger.LogError("No authenticated prinicipal set.");
@@ -229,7 +238,7 @@ namespace AspNetCore.Authentication.Basic
 
 		private async Task<bool> ValidateUsingBasicUserValidationServiceAsync(string username, string password)
 		{
-			IBasicUserValidationService basicUserValidationService = null;
+			IBasicUserValidationService? basicUserValidationService = null;
 			if (Options.BasicUserValidationServiceType != null)
 			{
 				basicUserValidationService = ActivatorUtilities.GetServiceOrCreateInstance(Context.RequestServices, Options.BasicUserValidationServiceType) as IBasicUserValidationService;
@@ -279,10 +288,7 @@ namespace AspNetCore.Authentication.Basic
 				throw new Exception("Username cannot be empty.");
 			}
 
-			if (password == null)
-			{
-				password = string.Empty;
-			}
+			password ??= string.Empty;
 
 			return new BasicCredentials(username, password);
 		}
@@ -290,7 +296,7 @@ namespace AspNetCore.Authentication.Basic
 		private readonly struct BasicCredentials
 		{
 			public BasicCredentials(string username, string password)
-			{
+		{
 				Username = username;
 				Password = password;
 			}

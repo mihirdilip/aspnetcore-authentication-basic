@@ -45,7 +45,7 @@ namespace AspNetCore.Authentication.Basic
         /// and <see cref="ResultContext{TOptions}.Success"/> method will also be called.
         /// </summary>
         /// <param name="claims">Claims to be added to the identity.</param>
-        public void ValidationSucceeded(IEnumerable<Claim> claims = null)
+        public void ValidationSucceeded(IEnumerable<Claim>? claims = null)
         {
             Principal = BasicUtils.BuildClaimsPrincipal(Username, Scheme.Name, Options.ClaimsIssuer, claims);
             Success();
@@ -56,7 +56,7 @@ namespace AspNetCore.Authentication.Basic
         /// otherwise, <see cref="ResultContext{TOptions}.Fail(string)"/> method will be called.
         /// </summary>
         /// <param name="failureMessage">(Optional) The failure message.</param>
-        public void ValidationFailed(string failureMessage = null)
+        public void ValidationFailed(string? failureMessage = null)
         {
             if (string.IsNullOrWhiteSpace(failureMessage))
             {

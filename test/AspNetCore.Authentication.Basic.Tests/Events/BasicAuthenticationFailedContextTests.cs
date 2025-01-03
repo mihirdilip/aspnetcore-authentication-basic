@@ -2,16 +2,14 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 using AspNetCore.Authentication.Basic.Tests.Infrastructure;
-using System;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace AspNetCore.Authentication.Basic.Tests.Events
 {
-    public class BasicAuthenticationFailedContext
-    {
+	public class BasicAuthenticationFailedContext
+	{
 		private static readonly string ExpectedExceptionMessage = $"Either {nameof(BasicOptions.Events.OnValidateCredentials)} delegate on configure options {nameof(BasicOptions.Events)} should be set or use an extention method with type parameter of type {nameof(IBasicUserValidationService)}.";
 
 		[Fact]

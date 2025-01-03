@@ -1,13 +1,9 @@
 ﻿// Copyright (c) Mihir Dilip. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace AspNetCore.Authentication.Basic.Tests.Infrastructure
 {
@@ -64,12 +60,12 @@ namespace AspNetCore.Authentication.Basic.Tests.Infrastructure
         internal static User FakeUserThrowsNotImplemented => new(FakeUserName, FakePasswordThrowsNotImplemented, new List<Claim> { FakeNameClaim, FakeNameIdentifierClaim, FakeRoleClaim });
         internal static User FakeUserIgnoreAuthenticationIfAllowAnonymous => new(FakeUserName, FakePasswordIgnoreAuthenticationIfAllowAnonymous, new List<Claim> { FakeNameClaim, FakeNameIdentifierClaim, FakeRoleClaim });
 
-        internal static List<User> Users => new()
-        {
+        internal static List<User> Users =>
+        [
             FakeUser,
             FakeUserWithEmptyPassword,
             FakeUserThrowsNotImplemented,
             FakeUserIgnoreAuthenticationIfAllowAnonymous
-        };
+        ];
     }
 }

@@ -23,7 +23,7 @@ namespace AspNetCore.Authentication.Basic
 		/// <param name="claimsIssuer">The claims issuer.</param>
 		/// <param name="claims">The list of claims.</param>
 		/// <returns></returns>
-		internal static ClaimsPrincipal BuildClaimsPrincipal(string username, string schemeName, string claimsIssuer, IEnumerable<Claim> claims = null)
+		internal static ClaimsPrincipal BuildClaimsPrincipal(string? username, string schemeName, string? claimsIssuer, IEnumerable<Claim>? claims = null)
 		{
 			if (string.IsNullOrWhiteSpace(schemeName)) throw new ArgumentNullException(nameof(schemeName));
 
