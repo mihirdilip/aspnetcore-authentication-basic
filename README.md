@@ -300,7 +300,7 @@ public void ConfigureServices(IServiceCollection services)
 ## Release Notes
 | Version | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Notes |
 |---------|-------|
-|9.0.0    | <ul><li>net9.0 support added</li><li>Sample project for net9.0 added</li><li>Readme updated</li><li>Nullable reference types enabled</li><li>Language version set to latest</li><li>Implicit usings enabled</li></ul> |
+|9.0.0    | <ul><li>net9.0 support added</li><li>Sample project for net9.0 added</li><li>Readme updated</li><li>Nullable reference types enabled</li><li>Language version set to latest</li><li>Implicit usings enabled</li><li>AOT support added</li></ul> |
 |8.0.0    | <ul><li>net8.0 support added</li><li>Sample project for net8.0 added</li><li>BasicSamplesClient.http file added for testing sample projects</li><li>Readme updated</li></ul> |
 |7.0.0    | <ul><li>net7.0 support added</li><li>Information log on handler is changed to Debug log when Authorization header is not found on the request</li><li>Added package validations</li><li>Sample project for net7.0 added</li><li>Readme updated</li><li>Readme added to package</li></ul> |
 |6.0.1    | <ul><li>net6.0 support added</li><li>Information log on handler is changed to Debug log when IgnoreAuthenticationIfAllowAnonymous is enabled [#9](https://github.com/mihirdilip/aspnetcore-authentication-basic/issues/9)</li><li>Sample project added</li><li>Readme updated</li><li>Copyright year updated on License</li></ul> |

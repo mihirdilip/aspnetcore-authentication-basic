@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AspNetCore.Authentication.Basic
 {
@@ -84,8 +85,13 @@ namespace AspNetCore.Authentication.Basic
 		/// <typeparam name="TBasicUserValidationService"></typeparam>
 		/// <param name="builder"></param>
 		/// <returns>The instance of <see cref="AuthenticationBuilder"/></returns>
+#if NET5_0_OR_GREATER
+		public static AuthenticationBuilder AddBasic<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TBasicUserValidationService>(this AuthenticationBuilder builder) where TBasicUserValidationService : class, IBasicUserValidationService
+			=> builder.AddBasic<TBasicUserValidationService>(BasicDefaults.AuthenticationScheme);
+#else
 		public static AuthenticationBuilder AddBasic<TBasicUserValidationService>(this AuthenticationBuilder builder) where TBasicUserValidationService : class, IBasicUserValidationService
 			=> builder.AddBasic<TBasicUserValidationService>(BasicDefaults.AuthenticationScheme);
+#endif
 
 		/// <summary>
 		/// Adds basic authentication scheme to the project. It takes a implementation of <see cref="IBasicUserValidationService"/> as type parameter.
@@ -95,8 +101,13 @@ namespace AspNetCore.Authentication.Basic
 		/// <param name="builder"></param>
 		/// <param name="authenticationScheme">The authentication scheme.</param>
 		/// <returns>The instance of <see cref="AuthenticationBuilder"/></returns>
+#if NET5_0_OR_GREATER
+		public static AuthenticationBuilder AddBasic<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TBasicUserValidationService>(this AuthenticationBuilder builder, string authenticationScheme) where TBasicUserValidationService : class, IBasicUserValidationService
+			=> builder.AddBasic<TBasicUserValidationService>(authenticationScheme, configureOptions: null);
+#else
 		public static AuthenticationBuilder AddBasic<TBasicUserValidationService>(this AuthenticationBuilder builder, string authenticationScheme) where TBasicUserValidationService : class, IBasicUserValidationService
 			=> builder.AddBasic<TBasicUserValidationService>(authenticationScheme, configureOptions: null);
+#endif
 
 		/// <summary>
 		/// Adds basic authentication scheme to the project. It takes a implementation of <see cref="IBasicUserValidationService"/> as type parameter.
@@ -106,8 +117,13 @@ namespace AspNetCore.Authentication.Basic
 		/// <param name="builder"></param>
 		/// <param name="configureOptions">The <see cref="BasicOptions"/>.</param>
 		/// <returns>The instance of <see cref="AuthenticationBuilder"/></returns>
+#if NET5_0_OR_GREATER
+		public static AuthenticationBuilder AddBasic<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TBasicUserValidationService>(this AuthenticationBuilder builder, Action<BasicOptions>? configureOptions) where TBasicUserValidationService : class, IBasicUserValidationService
+			=> builder.AddBasic<TBasicUserValidationService>(BasicDefaults.AuthenticationScheme, configureOptions);
+#else
 		public static AuthenticationBuilder AddBasic<TBasicUserValidationService>(this AuthenticationBuilder builder, Action<BasicOptions>? configureOptions) where TBasicUserValidationService : class, IBasicUserValidationService
 			=> builder.AddBasic<TBasicUserValidationService>(BasicDefaults.AuthenticationScheme, configureOptions);
+#endif
 
 		/// <summary>
 		/// Adds basic authentication scheme to the project. It takes a implementation of <see cref="IBasicUserValidationService"/> as type parameter.
@@ -118,8 +134,13 @@ namespace AspNetCore.Authentication.Basic
 		/// <param name="authenticationScheme">The authentication scheme.</param>
 		/// <param name="configureOptions">The <see cref="BasicOptions"/>.</param>
 		/// <returns>The instance of <see cref="AuthenticationBuilder"/></returns>
+#if NET5_0_OR_GREATER
+		public static AuthenticationBuilder AddBasic<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TBasicUserValidationService>(this AuthenticationBuilder builder, string authenticationScheme, Action<BasicOptions>? configureOptions) where TBasicUserValidationService : class, IBasicUserValidationService
+			=> builder.AddBasic<TBasicUserValidationService>(authenticationScheme, displayName: null, configureOptions: configureOptions);
+#else
 		public static AuthenticationBuilder AddBasic<TBasicUserValidationService>(this AuthenticationBuilder builder, string authenticationScheme, Action<BasicOptions>? configureOptions) where TBasicUserValidationService : class, IBasicUserValidationService
 			=> builder.AddBasic<TBasicUserValidationService>(authenticationScheme, displayName: null, configureOptions: configureOptions);
+#endif
 
 		/// <summary>
 		/// Adds basic authentication scheme to the project. It takes a implementation of <see cref="IBasicUserValidationService"/> as type parameter.
@@ -131,8 +152,13 @@ namespace AspNetCore.Authentication.Basic
 		/// <param name="displayName">The display name.</param>
 		/// <param name="configureOptions">The <see cref="BasicOptions"/>.</param>
 		/// <returns>The instance of <see cref="AuthenticationBuilder"/></returns>
+#if NET5_0_OR_GREATER
+		public static AuthenticationBuilder AddBasic<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TBasicUserValidationService>(this AuthenticationBuilder builder, string authenticationScheme, string? displayName, Action<BasicOptions>? configureOptions)
+			where TBasicUserValidationService : class, IBasicUserValidationService
+#else
 		public static AuthenticationBuilder AddBasic<TBasicUserValidationService>(this AuthenticationBuilder builder, string authenticationScheme, string? displayName, Action<BasicOptions>? configureOptions)
 			where TBasicUserValidationService : class, IBasicUserValidationService
+#endif
 		{
 			// Adds implementation of IBasicUserValidationService to the dependency container.
 			builder.Services.AddTransient<IBasicUserValidationService, TBasicUserValidationService>();

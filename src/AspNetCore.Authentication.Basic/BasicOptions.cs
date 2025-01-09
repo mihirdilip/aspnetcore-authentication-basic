@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 using Microsoft.AspNetCore.Authentication;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AspNetCore.Authentication.Basic
 {
@@ -53,6 +54,9 @@ namespace AspNetCore.Authentication.Basic
         public bool IgnoreAuthenticationIfAllowAnonymous { get; set; }
 #endif
 
+#if NET5_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+#endif
         internal Type? BasicUserValidationServiceType { get; set; } = null;
     }
 }

@@ -9,6 +9,10 @@
     <PackageReleaseNotes>- net9.0 support added
 - Sample project for net9.0 added
 - Readme updated
+- Nullable reference types enabled
+- Language version set to latest
+- Implicit usings enabled
+- AOT support added
     </PackageReleaseNotes>
     <Description>Easy to use and very light weight Microsoft style Basic Scheme Authentication implementation for ASP.NET Core.</Description>
     <Authors>Mihir Dilip</Authors>
@@ -21,6 +25,7 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <IsAotCompatible>true</IsAotCompatible>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
