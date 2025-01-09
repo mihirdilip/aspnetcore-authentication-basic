@@ -10,13 +10,13 @@
 
   <Import Project="..\SampleWebApi.Shared\SampleWebApi.Shared.projitems" Label="Shared" />
 
-  <!--<ItemGroup>
-    <PackageReference Include="AspNetCore.Authentication.Basic" Version="9.0.0" />
-  </ItemGroup>-->
-
   <ItemGroup>
+    <PackageReference Include="AspNetCore.Authentication.Basic" Version="9.0.0" />
+  </ItemGroup>
+
+  <!--<ItemGroup>
     <ProjectReference Include="..\..\src\AspNetCore.Authentication.Basic\AspNetCore.Authentication.Basic.csproj" />
     <TrimmerRootAssembly Include="AspNetCore.Authentication.Basic" />
-  </ItemGroup>
+  </ItemGroup>-->
 
 </Project>
