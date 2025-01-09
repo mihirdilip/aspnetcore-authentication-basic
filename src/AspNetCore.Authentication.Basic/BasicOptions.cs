@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 using Microsoft.AspNetCore.Authentication;
-using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AspNetCore.Authentication.Basic
 {
@@ -24,7 +24,7 @@ namespace AspNetCore.Authentication.Basic
         /// Required to be set if SuppressWWWAuthenticateHeader is not set to true.
         /// <see href="https://tools.ietf.org/html/rfc7235#section-2.2"/>
         /// </summary>
-        public string Realm { get; set; }
+        public string? Realm { get; set; }
 
         /// <summary>
         /// Default value is false.
@@ -42,7 +42,7 @@ namespace AspNetCore.Authentication.Basic
         /// </summary>
         public new BasicEvents Events
         {
-            get => (BasicEvents)base.Events;
+            get => (BasicEvents)base.Events!;
             set => base.Events = value;
         }
 
@@ -54,6 +54,9 @@ namespace AspNetCore.Authentication.Basic
         public bool IgnoreAuthenticationIfAllowAnonymous { get; set; }
 #endif
 
-        internal Type BasicUserValidationServiceType { get; set; } = null;
+#if NET5_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+#endif
+        internal Type? BasicUserValidationServiceType { get; set; } = null;
     }
 }

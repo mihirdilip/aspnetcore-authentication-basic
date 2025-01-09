@@ -1,9 +1,6 @@
 ﻿// Copyright (c) Mihir Dilip. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-using System;
-using System.Threading.Tasks;
-
 namespace AspNetCore.Authentication.Basic
 {
     /// <summary>
@@ -20,7 +17,7 @@ namespace AspNetCore.Authentication.Basic
         /// or construct an authentication principal from the user details &amp; attach it to the context.Principal property and finally call context.Success() method.
         /// If only context.Principal property set without calling context.Success() method then, Success() method is automaticalled called.
         /// </remarks>
-        public Func<BasicValidateCredentialsContext, Task> OnValidateCredentials { get; set; }
+        public Func<BasicValidateCredentialsContext, Task>? OnValidateCredentials { get; set; }
 
         /// <summary>
         /// A delegate assigned to this property will be invoked when the authentication succeeds. It will not be called if OnValidateCredentials delegate is assigned.
@@ -29,12 +26,12 @@ namespace AspNetCore.Authentication.Basic
         /// <remarks>
         /// Only use this if you know what you are doing.
         /// </remarks>
-        public Func<BasicAuthenticationSucceededContext, Task> OnAuthenticationSucceeded { get; set; }
+        public Func<BasicAuthenticationSucceededContext, Task>? OnAuthenticationSucceeded { get; set; }
 
         /// <summary>
         /// A delegate assigned to this property will be invoked when the authentication fails.
         /// </summary>
-        public Func<BasicAuthenticationFailedContext, Task> OnAuthenticationFailed { get; set; }
+        public Func<BasicAuthenticationFailedContext, Task>? OnAuthenticationFailed { get; set; }
 
         /// <summary>
         /// A delegate assigned to this property will be invoked before a challenge is sent back to the caller when handling unauthorized response.
@@ -46,7 +43,7 @@ namespace AspNetCore.Authentication.Basic
         /// changing the 401 result to 302 of a login page or external sign-in location.)
         /// Call context.Handled() at the end so that any default logic for this challenge will be skipped.
         /// </remarks>
-        public Func<BasicHandleChallengeContext, Task> OnHandleChallenge { get; set; }
+        public Func<BasicHandleChallengeContext, Task>? OnHandleChallenge { get; set; }
 
         /// <summary>
         /// A delegate assigned to this property will be invoked if Authorization fails and results in a Forbidden response.
@@ -56,7 +53,7 @@ namespace AspNetCore.Authentication.Basic
         /// Set the delegate to handle Forbid.
         /// Call context.Handled() at the end so that any default logic will be skipped.
         /// </remarks>
-        public Func<BasicHandleForbiddenContext, Task> OnHandleForbidden { get; set; }
+        public Func<BasicHandleForbiddenContext, Task>? OnHandleForbidden { get; set; }
 
 
 

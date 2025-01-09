@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 using Microsoft.Extensions.Options;
-using System;
 
 namespace AspNetCore.Authentication.Basic
 {
@@ -11,7 +10,7 @@ namespace AspNetCore.Authentication.Basic
 	/// </summary>
 	internal class BasicPostConfigureOptions : IPostConfigureOptions<BasicOptions>
 	{
-		public void PostConfigure(string name, BasicOptions options)
+		public void PostConfigure(string? name, BasicOptions options)
 		{
 			if (!options.SuppressWWWAuthenticateHeader && string.IsNullOrWhiteSpace(options.Realm))
 			{

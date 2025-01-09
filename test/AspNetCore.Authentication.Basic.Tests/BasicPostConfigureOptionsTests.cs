@@ -2,14 +2,12 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 using AspNetCore.Authentication.Basic.Tests.Infrastructure;
-using System;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace AspNetCore.Authentication.Basic.Tests
 {
-    public class BasicPostConfigureOptionsTests
-    {
+	public class BasicPostConfigureOptionsTests
+	{
 		[Fact]
 		public async Task PostConfigure_no_option_set_throws_exception()
 		{
@@ -77,13 +75,13 @@ namespace AspNetCore.Authentication.Basic.Tests
 		}
 
 
-		private async Task RunAuthInitAsync(Action<BasicOptions> configureOptions)
+		private static async Task RunAuthInitAsync(Action<BasicOptions> configureOptions)
 		{
 			var server = TestServerBuilder.BuildTestServer(configureOptions);
 			await server.CreateClient().GetAsync(TestServerBuilder.BaseUrl);
 		}
 
-		private async Task RunAuthInitWithServiceAsync(Action<BasicOptions> configureOptions)
+		private static async Task RunAuthInitWithServiceAsync(Action<BasicOptions> configureOptions)
 		{
 			var server = TestServerBuilder.BuildTestServerWithService(configureOptions);
 			await server.CreateClient().GetAsync(TestServerBuilder.BaseUrl);

@@ -1,25 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net7.0;net6.0;net5.0;netcoreapp3.1;netcoreapp3.0;netstandard2.0;net461</TargetFrameworks>
-    <Version>8.0.0</Version>
+    <TargetFrameworks>net9.0;net8.0;net7.0;net6.0;net5.0;netcoreapp3.1;netcoreapp3.0;netstandard2.0;net461</TargetFrameworks>
+    <Version>9.0.0</Version>
     <RepositoryUrl>https://github.com/mihirdilip/aspnetcore-authentication-basic/tree/$(Version)</RepositoryUrl>
     <PackageProjectUrl>https://github.com/mihirdilip/aspnetcore-authentication-basic/tree/$(Version)</PackageProjectUrl>
-    <PackageTags>aspnetcore, security, authentication, microsoft, microsoft.aspnetcore.authentication, microsoft-aspnetcore-authentication, microsoft.aspnetcore.authentication.basic, microsoft-aspnetcore-authentication-basic, asp-net-core, netstandard, netstandard20, basic-authentication, basicauthentication, dotnetcore, dotnetcore3.1, net5, net5.0, net6, net6.0, net7, net7.0, net8, net8.0, asp-net-core-basic-authentication, aspnetcore-basic-authentication, asp-net-core-authentication, aspnetcore-authentication, asp, aspnet, basic, authentication-scheme</PackageTags>
-    <PackageReleaseNotes>- net8.0 support added
-- Sample project for net8.0 added
-- BasicSamplesClient.http file added for testing sample projects
+    <PackageTags>aspnetcore, security, authentication, microsoft, microsoft.aspnetcore.authentication, microsoft-aspnetcore-authentication, microsoft.aspnetcore.authentication.basic, microsoft-aspnetcore-authentication-basic, asp-net-core, netstandard, netstandard20, basic-authentication, basicauthentication, dotnetcore, dotnetcore3.1, net5, net5.0, net6, net6.0, net7, net7.0, net8, net8.0, net9, net9.0, asp-net-core-basic-authentication, aspnetcore-basic-authentication, asp-net-core-authentication, aspnetcore-authentication, asp, aspnet, basic, authentication-scheme</PackageTags>
+    <PackageReleaseNotes>- net9.0 support added
+- Sample project for net9.0 added
 - Readme updated
+- Nullable reference types enabled
+- Language version set to latest
+- Implicit usings enabled
+- AOT support added
     </PackageReleaseNotes>
     <Description>Easy to use and very light weight Microsoft style Basic Scheme Authentication implementation for ASP.NET Core.</Description>
     <Authors>Mihir Dilip</Authors>
     <Company>Mihir Dilip</Company>
-    <Copyright>Copyright (c) 2024 Mihir Dilip</Copyright>    
+    <Copyright>Copyright (c) 2025 Mihir Dilip</Copyright>    
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Title>$(AssemblyName)</Title>
     <RepositoryType>git</RepositoryType>
-    <PackageIconUrl />
     <NeutralLanguage />
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsAotCompatible>true</IsAotCompatible>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -30,7 +36,7 @@
     <!--<GenerateCompatibilitySuppressionFile>true</GenerateCompatibilitySuppressionFile>-->
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1' Or '$(TargetFramework)' == 'net5.0'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1' Or '$(TargetFramework)' == 'net5.0' Or '$(TargetFramework)' == 'net7.0'">
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
   </PropertyGroup>
 
@@ -71,7 +77,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0' Or '$(TargetFramework)' == 'netcoreapp3.1' Or '$(TargetFramework)' == 'net5.0' Or '$(TargetFramework)' == 'net6.0' Or '$(TargetFramework)' == 'net7.0' Or '$(TargetFramework)' == 'net8.0'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0' Or '$(TargetFramework)' == 'netcoreapp3.1' Or '$(TargetFramework)' == 'net5.0' Or '$(TargetFramework)' == 'net6.0' Or '$(TargetFramework)' == 'net7.0' Or '$(TargetFramework)' == 'net8.0' Or '$(TargetFramework)' == 'net9.0'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 

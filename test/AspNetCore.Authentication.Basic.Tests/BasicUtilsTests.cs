@@ -1,9 +1,6 @@
 ﻿// Copyright (c) Mihir Dilip. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using Xunit;
 
@@ -21,7 +18,7 @@ namespace AspNetCore.Authentication.Basic.Tests
         [Fact]
         public static void BuildClaimsPrincipal_null_schemeName_throws_ArgumentNullException()
         {
-            var exception = Assert.Throws<ArgumentNullException>(() => BasicUtils.BuildClaimsPrincipal(null, null, null, null));
+            var exception = Assert.Throws<ArgumentNullException>(() => BasicUtils.BuildClaimsPrincipal(null, null!, null, null));
             Assert.Contains("schemeName", exception.Message);
         }
 
@@ -57,8 +54,8 @@ namespace AspNetCore.Authentication.Basic.Tests
             var schemeName = "Test";
             var claims = new List<Claim> 
             { 
-                new Claim(ClaimTypes.Email, "abc@xyz.com") ,
-                new Claim(ClaimTypes.Role, "admin")
+                new(ClaimTypes.Email, "abc@xyz.com") ,
+                new(ClaimTypes.Role, "admin")
             };
             var claimsPrincipal = BasicUtils.BuildClaimsPrincipal(null, schemeName, null, claims);
             Assert.NotNull(claimsPrincipal);
@@ -89,8 +86,8 @@ namespace AspNetCore.Authentication.Basic.Tests
             var schemeName = "Test";
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, "abc@xyz.com") ,
-                new Claim(ClaimTypes.Role, "admin")
+                new(ClaimTypes.Email, "abc@xyz.com") ,
+                new(ClaimTypes.Role, "admin")
             };
             var claimsPrincipal = BasicUtils.BuildClaimsPrincipal(ownerName, schemeName, null, claims);
             Assert.NotNull(claimsPrincipal);
@@ -108,8 +105,8 @@ namespace AspNetCore.Authentication.Basic.Tests
             var schemeName = "Test";
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, "Admin"),
-                new Claim(ClaimTypes.Role, "admin")
+                new(ClaimTypes.Name, "Admin"),
+                new(ClaimTypes.Role, "admin")
             };
             var claimsPrincipal = BasicUtils.BuildClaimsPrincipal(ownerName, schemeName, null, claims);
             Assert.NotNull(claimsPrincipal);
